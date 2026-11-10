@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f4f7f3;
+    --foreground: #10201c;
+    --surface: #ffffff;
+    --surface-raised: #f9fbf8;
+    --surface-strong: #e9f0ec;
+    --line: #d5e0da;
+    --line-strong: #aebfb6;
+    --brand: #08705a;
+    --brand-strong: #045242;
+    --brand-soft: #dff4ec;
+    --muted: #5a6b65;
+    --muted-strong: #344a43;
+    --shadow: 0 20px 60px rgba(19, 52, 43, 0.1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: radial-gradient(circle at 8% -10%, rgba(8, 112, 90, 0.11), transparent 34rem), #f4f7f3;
+    color: #10201c;
+    min-width: 320px;
+    font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  ::selection {
+    background: rgba(8, 112, 90, 0.24);
+    color: #045242;
+  }
+}
+
+/* Custom scrollbar styling matching Unheic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aebfb6;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a6b65;
+}

@@ -1,0 +1,9 @@
+# Reference material kept locally only (not part of the app source)
+REFERENCE/
+stitch_cleanaimetadata_privacy_suite/
+
+node_modules/
+dist/
+*.local
+.DS_Store
+_tmp-*
