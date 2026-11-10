@@ -228,14 +228,12 @@ export default function EditMetadataPage() {
       />
 
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-12">
-        <div className="text-center space-y-2.5 max-w-3xl mx-auto pt-2 pb-1">
-          <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
-            Edit Image Metadata Online | <span className="text-brand">EXIF &amp; IPTC Editor</span>
+        <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
+          <h1 className="font-display text-4xl sm:text-[50px] text-foreground leading-[1.08] tracking-[-0.01em]">
+            Edit photo <span className="text-brand italic">EXIF &amp; IPTC tags</span>
           </h1>
-          <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
-            Add or replace EXIF, IPTC and XMP tags in JPEG, PNG and WebP photos. Files
-            stay in your browser, pixels are never re-encoded, and every write is
-            verified before download.
+          <p className="text-base text-muted leading-relaxed max-w-xl mx-auto">
+            Add or overwrite metadata in JPEG, PNG, and WebP files without re-encoding pixels.
           </p>
         </div>
 
@@ -323,59 +321,54 @@ export default function EditMetadataPage() {
           />
         )}
 
-        <section className="space-y-6 pt-4">
-          <div className="space-y-2 text-center max-w-xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              How to edit image metadata online in 5 steps
-            </h2>
-            <p className="text-xs sm:text-[14px] text-muted">
-              Five steps, all inside your browser.
-            </p>
-          </div>
+        <section className="space-y-4 pt-4">
+          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+            How editing works
+          </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {EDIT_STEPS.map((step) => (
-              <div
-                key={step.step}
-                className="bg-white rounded-panel border border-subtle p-5 shadow-subtle space-y-2.5"
-              >
-                <span className="font-mono text-xl font-bold text-brand block">
-                  {step.step}
-                </span>
-                <h3 className="font-bold text-sm text-foreground">{step.title}</h3>
-                <p className="text-xs text-muted leading-relaxed">{step.desc}</p>
+          <div className="bg-white rounded-panel border border-subtle p-5 sm:p-6 shadow-subtle">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-subtle">
+              <div className="space-y-1 md:px-4 first:px-0 pt-3 md:pt-0 first:pt-0">
+                <span className="font-display text-2xl text-brand leading-none">1</span>
+                <h3 className="text-sm font-semibold text-foreground">Open and inspect</h3>
+                <p className="text-xs text-muted leading-relaxed">Reads EXIF, IPTC, and XMP segments in browser memory.</p>
               </div>
-            ))}
+              <div className="space-y-1 md:px-4 pt-3 md:pt-0">
+                <span className="font-display text-2xl text-brand leading-none">2</span>
+                <h3 className="text-sm font-semibold text-foreground">Edit or overwrite</h3>
+                <p className="text-xs text-muted leading-relaxed">Fill camera, copyright, or GPS values without touching pixel data.</p>
+              </div>
+              <div className="space-y-1 md:px-4 pt-3 md:pt-0">
+                <span className="font-display text-2xl text-brand leading-none">3</span>
+                <h3 className="text-sm font-semibold text-foreground">Write and verify</h3>
+                <p className="text-xs text-muted leading-relaxed">Generates clean file headers and re-reads the output to confirm tags.</p>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="bg-white rounded-panel border border-subtle p-6 sm:p-8 shadow-subtle space-y-5">
-          <div className="space-y-1.5">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              Remove or keep: which mode to pick?
-            </h2>
-            <p className="text-xs sm:text-[14px] text-muted">
-              Both modes keep the pixels and the ICC colour profile unchanged.
-            </p>
-          </div>
+        <section className="bg-white rounded-panel border border-subtle p-6 shadow-subtle space-y-4">
+          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+            Remove or keep: which mode to pick?
+          </h2>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-[13px]">
-              <thead className="bg-card-raised border-b border-subtle text-foreground font-mono font-bold uppercase tracking-wider text-[11px]">
+              <thead className="bg-card-raised border-b border-subtle text-foreground text-xs font-semibold">
                 <tr>
-                  <th className="py-3 px-4">Feature / Signal</th>
-                  <th className="py-3 px-4">Remove, then write</th>
-                  <th className="py-3 px-4">Keep &amp; overwrite</th>
+                  <th className="py-2.5 px-4">Signal</th>
+                  <th className="py-2.5 px-4">Remove, then write</th>
+                  <th className="py-2.5 px-4">Keep &amp; overwrite</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-subtle/50 text-muted-strong">
+              <tbody className="divide-y divide-subtle text-muted-strong">
                 {MODE_COMPARISON.map((row) => (
-                  <tr key={row.feature} className="hover:bg-card-raised/50 transition-colors">
-                    <td className="py-3 px-4 font-bold text-foreground">{row.feature}</td>
-                    <td className="py-3 px-4 font-mono text-brand font-medium">
+                  <tr key={row.feature} className="hover:bg-card-raised/40 transition-colors">
+                    <td className="py-2.5 px-4 font-semibold text-foreground">{row.feature}</td>
+                    <td className="py-2.5 px-4 text-brand font-medium">
                       {row.removeMode}
                     </td>
-                    <td className="py-3 px-4 text-muted">{row.preserveMode}</td>
+                    <td className="py-2.5 px-4 text-muted">{row.preserveMode}</td>
                   </tr>
                 ))}
               </tbody>
@@ -383,35 +376,30 @@ export default function EditMetadataPage() {
           </div>
         </section>
 
-        <section className="bg-white rounded-panel border border-subtle p-6 sm:p-8 shadow-subtle space-y-5">
-          <div className="space-y-1.5">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              What each metadata field does
-            </h2>
-            <p className="text-xs sm:text-[14px] text-muted">
-              The standard fields this editor writes.
-            </p>
-          </div>
+        <section className="bg-white rounded-panel border border-subtle p-6 shadow-subtle space-y-4">
+          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+            Supported metadata fields
+          </h2>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-[13px]">
-              <thead className="bg-card-raised border-b border-subtle text-foreground font-mono font-bold uppercase tracking-wider text-[11px]">
+              <thead className="bg-card-raised border-b border-subtle text-foreground text-xs font-semibold">
                 <tr>
-                  <th className="py-3 px-4">Field Name</th>
-                  <th className="py-3 px-4">Standard Container</th>
-                  <th className="py-3 px-4">Technical Purpose</th>
+                  <th className="py-2.5 px-4">Field</th>
+                  <th className="py-2.5 px-4">Container</th>
+                  <th className="py-2.5 px-4">Purpose</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-subtle/50 text-muted-strong">
+              <tbody className="divide-y divide-subtle text-muted-strong">
                 {FIELD_DICTIONARY.map((field) => (
-                  <tr key={field.field} className="hover:bg-card-raised/50 transition-colors">
-                    <td className="py-3 px-4 font-bold text-foreground whitespace-nowrap">
+                  <tr key={field.field} className="hover:bg-card-raised/40 transition-colors">
+                    <td className="py-2.5 px-4 font-semibold text-foreground whitespace-nowrap">
                       {field.field}
                     </td>
-                    <td className="py-3 px-4 font-mono text-muted text-xs">
+                    <td className="py-2.5 px-4 text-muted text-xs">
                       {field.container}
                     </td>
-                    <td className="py-3 px-4 text-muted leading-relaxed">{field.purpose}</td>
+                    <td className="py-2.5 px-4 text-muted leading-relaxed">{field.purpose}</td>
                   </tr>
                 ))}
               </tbody>
@@ -419,43 +407,34 @@ export default function EditMetadataPage() {
           </div>
         </section>
 
-        <section className="space-y-6 pt-2 pb-6">
-          <div className="space-y-2 text-center max-w-xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Common Questions About Editing Metadata
-            </h2>
-            <p className="text-xs sm:text-[14px] text-muted">
-              Formats, modes, maker notes and the read-back check.
-            </p>
-          </div>
+        <section className="space-y-4 pt-2 pb-6">
+          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+            Frequently asked questions
+          </h2>
 
-          <div className="max-w-3xl mx-auto space-y-3">
+          <div className="bg-white rounded-panel border border-subtle divide-y divide-subtle shadow-subtle overflow-hidden">
             {EDIT_FAQS.map((faq, index) => {
               const isOpen = openFaqIndex === index;
               return (
-                <div
-                  key={faq.question}
-                  className="bg-white rounded-panel border border-subtle overflow-hidden shadow-subtle transition-all"
-                >
+                <div key={faq.question}>
                   <button
                     type="button"
                     onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                    className="w-full py-4 sm:py-5 px-6 flex items-center justify-between gap-4 text-left hover:bg-card-raised/60 transition-colors"
+                    className="w-full py-4 px-6 flex items-center justify-between gap-4 text-left hover:bg-card-raised/40 transition-colors"
+                    aria-expanded={isOpen}
                   >
-                    <span className="text-sm sm:text-base font-bold text-foreground">
+                    <span className="text-sm font-semibold text-foreground">
                       {faq.question}
                     </span>
-                    <div
-                      className={`w-7 h-7 rounded-lg bg-card-strong border border-subtle flex items-center justify-center shrink-0 text-muted transition-transform duration-200 ${
+                    <ChevronDown
+                      className={`w-4 h-4 text-muted shrink-0 transition-transform duration-200 ${
                         isOpen ? 'rotate-180 text-brand' : ''
                       }`}
-                    >
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
+                    />
                   </button>
 
                   {isOpen && (
-                    <div className="px-6 pb-5 pt-1 text-xs sm:text-[14px] text-muted leading-relaxed border-t border-subtle/50 bg-card-raised/30 animate-fadeIn">
+                    <div className="px-6 pb-4 pt-0 text-sm text-muted leading-relaxed">
                       {faq.answer}
                     </div>
                   )}

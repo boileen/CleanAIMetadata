@@ -21,20 +21,18 @@ export default function Navbar() {
       {/* 74rem max-width matching Unheic container */}
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 h-[76px] flex items-center justify-between gap-6">
         
-        {/* Brand Left: Official Logo Mark + Name + Subtitle */}
+        {/* Brand Left: Official Logo Mark + Name */}
         <Link to="/" className="flex items-center gap-3 shrink-0 group">
           <div className="relative shrink-0">
             <LogoIcon className="w-10 h-10 transition-transform group-hover:scale-105" />
           </div>
 
-          <div className="flex flex-col">
-            <span className="font-bold text-[19px] tracking-tight text-foreground leading-none">
-              {BRAND_CONFIG.logo.primary}{' '}
-              <span className="text-brand font-bold">{BRAND_CONFIG.logo.accent}</span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-display text-[26px] text-foreground leading-none">
+              {BRAND_CONFIG.logo.primary}
             </span>
-            <span className="text-[10px] font-mono font-bold text-muted uppercase tracking-[0.14em] mt-1.5 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan inline-block"></span>
-              {BRAND_CONFIG.logo.tagline}
+            <span className="font-display text-[26px] text-brand leading-none">
+              {BRAND_CONFIG.logo.accent}
             </span>
           </div>
         </Link>

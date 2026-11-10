@@ -297,13 +297,12 @@ export default function GeoTagPage() {
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-12">
 
         {/* Hero */}
-        <div className="text-center space-y-2.5 max-w-3xl mx-auto pt-2 pb-1">
-          <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
-            Geo Tag Photo Online | <span className="text-brand">Add or Remove GPS Location</span>
+        <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
+          <h1 className="font-display text-4xl sm:text-[50px] text-foreground leading-[1.08] tracking-[-0.01em]">
+            Add or remove <span className="text-brand italic">photo GPS tags</span>
           </h1>
-          <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
-            Add, change, or remove GPS coordinates from your photos in the browser. Files stay on
-            your device.
+          <p className="text-base text-muted leading-relaxed max-w-xl mx-auto">
+            View, edit, or clear decimal coordinates from your photos in the browser.
           </p>
         </div>
 
@@ -658,81 +657,35 @@ export default function GeoTagPage() {
           </div>
         )}
 
-        {/* HOW TO GET COORDINATES */}
-        <section id="gps-guide" className="bg-white rounded-panel border border-subtle p-6 sm:p-10 shadow-subtle space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              How to get Latitude and Longitude for any Location?
-            </h2>
-            <p className="text-xs sm:text-[14px] text-muted">
-              Pull decimal coordinates from Google Maps or Apple Maps in a few seconds.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-muted leading-relaxed">
-            <div className="space-y-2 p-4 rounded-xl bg-card-raised border border-subtle">
-              <h3 className="font-bold text-foreground text-sm">On desktop</h3>
-              <p>
-                Open Google Maps, right-click the spot, then click the coordinates at the top of the
-                menu to copy them (e.g. <code>37.7749, -122.4194</code>).
-              </p>
-            </div>
-
-            <div className="space-y-2 p-4 rounded-xl bg-card-raised border border-subtle">
-              <h3 className="font-bold text-foreground text-sm">On mobile</h3>
-              <p>
-                Open Google Maps or Apple Maps and hold a point until a pin drops. The coordinates
-                appear in the search bar or location card.
-              </p>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-xl bg-brand-soft/60 border border-brand/20 flex items-start gap-3 text-xs sm:text-[13px] text-foreground font-medium">
-            <Info className="w-5 h-5 text-brand shrink-0 mt-0.5" />
-            <span>
-              Latitude comes first (-90 to 90), longitude second (-180 to 180).
-            </span>
-          </div>
-        </section>
-
         {/* FAQs */}
-        <section className="space-y-6 pt-2 pb-6">
-          <div className="space-y-2 text-center max-w-xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xs sm:text-[14px] text-muted">
-              Photo geotagging, coordinate formats, and removing GPS data.
-            </p>
-          </div>
+        <section className="space-y-4 pt-2 pb-6">
+          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+            Frequently asked questions
+          </h2>
 
-          <div className="max-w-3xl mx-auto space-y-3">
+          <div className="bg-white rounded-panel border border-subtle divide-y divide-subtle shadow-subtle overflow-hidden">
             {GEOTAG_FAQS.map((faq, idx) => {
               const isOpen = openFaqIndex === idx;
               return (
-                <div
-                  key={idx}
-                  className="bg-white rounded-panel border border-subtle overflow-hidden shadow-subtle"
-                >
+                <div key={idx}>
                   <button
                     type="button"
                     onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full py-4 sm:py-5 px-6 flex items-center justify-between gap-4 text-left hover:bg-card-raised/60 transition-colors"
+                    className="w-full py-4 px-6 flex items-center justify-between gap-4 text-left hover:bg-card-raised/40 transition-colors"
+                    aria-expanded={isOpen}
                   >
-                    <span className="text-sm sm:text-base font-bold text-foreground">
+                    <span className="text-sm font-semibold text-foreground">
                       {faq.question}
                     </span>
-                    <div
-                      className={`w-7 h-7 rounded-lg bg-card-strong border border-subtle flex items-center justify-center shrink-0 text-muted transition-transform duration-200 ${
+                    <ChevronDown
+                      className={`w-4 h-4 text-muted shrink-0 transition-transform duration-200 ${
                         isOpen ? 'rotate-180 text-brand' : ''
                       }`}
-                    >
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
+                    />
                   </button>
 
                   {isOpen && (
-                    <div className="px-6 pb-5 pt-1 text-xs sm:text-[14px] text-muted leading-relaxed border-t border-subtle/50 bg-card-raised/30 animate-fadeIn">
+                    <div className="px-6 pb-4 pt-0 text-sm text-muted leading-relaxed">
                       {faq.answer}
                     </div>
                   )}

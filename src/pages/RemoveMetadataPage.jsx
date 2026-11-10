@@ -77,12 +77,12 @@ export default function RemoveMetadataPage() {
         {/* Top Header & Workspace Group */}
         <div className="space-y-6">
           {/* Hero Section */}
-          <div className="text-center space-y-2.5 max-w-2xl mx-auto pt-2 pb-1">
-            <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
-              Strip AI Metadata &amp; <span className="text-brand">EXIF Footprints</span> Instantly
+          <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
+            <h1 className="font-display text-4xl sm:text-[52px] text-foreground leading-[1.08] tracking-[-0.01em]">
+              Strip AI metadata and <span className="text-brand italic">EXIF tags</span>
             </h1>
-            <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed">
-              Remove EXIF, GPS, and AI tags in your browser. Your photo is never uploaded.
+            <p className="text-base text-muted leading-relaxed">
+              Remove EXIF, GPS, and AI provenance in your browser. Nothing is uploaded.
             </p>
           </div>
 

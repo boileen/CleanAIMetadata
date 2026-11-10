@@ -82,12 +82,12 @@ export default function ViewMetadataPage() {
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-12">
 
         {/* Top Header Section */}
-        <div className="text-center space-y-2.5 max-w-3xl mx-auto pt-2 pb-1">
-          <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
-            View Image Metadata and Find out <span className="text-brand">GPS, AI &amp; Other Footprints</span>
+        <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
+          <h1 className="font-display text-4xl sm:text-[50px] text-foreground leading-[1.08] tracking-[-0.01em]">
+            Inspect photo <span className="text-brand italic">EXIF &amp; provenance tags</span>
           </h1>
-          <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
-            Inspect EXIF, IPTC, XMP, and C2PA credentials in your browser. No uploads.
+          <p className="text-base text-muted leading-relaxed max-w-xl mx-auto">
+            Read EXIF, IPTC, XMP, and C2PA credentials directly in your browser.
           </p>
         </div>
 
@@ -171,41 +171,34 @@ export default function ViewMetadataPage() {
         </section>
 
         {/* FAQ SECTION */}
-        <section className="space-y-6 pt-2 pb-6">
-          <div className="space-y-2 text-center max-w-xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xs sm:text-[14px] text-muted">
-              Inspection, AI signals, and exports.
-            </p>
-          </div>
+        <section className="space-y-4 pt-2 pb-6">
+          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+            Frequently asked questions
+          </h2>
 
-          <div className="max-w-3xl mx-auto space-y-3">
+          <div className="bg-white rounded-panel border border-subtle divide-y divide-subtle shadow-subtle overflow-hidden">
             {VIEW_FAQS.map((faq, idx) => {
               const isOpen = openFaqIndex === idx;
               return (
-                <div
-                  key={idx}
-                  className="bg-white rounded-panel border border-subtle overflow-hidden shadow-subtle transition-all"
-                >
+                <div key={idx}>
                   <button
                     type="button"
                     onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full py-4 sm:py-5 px-6 flex items-center justify-between gap-4 text-left hover:bg-card-raised/60 transition-colors"
+                    className="w-full py-4 px-6 flex items-center justify-between gap-4 text-left hover:bg-card-raised/40 transition-colors"
+                    aria-expanded={isOpen}
                   >
-                    <span className="text-sm sm:text-base font-bold text-foreground">
+                    <span className="text-sm font-semibold text-foreground">
                       {faq.question}
                     </span>
-                    <div className={`w-7 h-7 rounded-lg bg-card-strong border border-subtle flex items-center justify-center shrink-0 text-muted transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-brand' : ''
-                    }`}>
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
+                    <ChevronDown
+                      className={`w-4 h-4 text-muted shrink-0 transition-transform duration-200 ${
+                        isOpen ? 'rotate-180 text-brand' : ''
+                      }`}
+                    />
                   </button>
 
                   {isOpen && (
-                    <div className="px-6 pb-5 pt-1 text-xs sm:text-[14px] text-muted leading-relaxed border-t border-subtle/50 bg-card-raised/30 animate-fadeIn">
+                    <div className="px-6 pb-4 pt-0 text-sm text-muted leading-relaxed">
                       {faq.answer}
                     </div>
                   )}
