@@ -1,7 +1,7 @@
-# Architecture Specification: CleanAIMetadata Suite
+# Architecture Specification: AI Metadata Eraser Suite
 
 ## 1. Executive Summary & Vision
-**CleanAIMetadata** is a high-performance, SEO-optimized, 100% client-side web utility suite designed to inspect, sanitize, edit, and losslessly remove AI provenance credentials (C2PA/JUMBF manifests, IPTC DigitalSourceType, PNG tEXt/iTXt chunks) and traditional camera metadata (EXIF, IPTC, GPS coordinates) without re-compressing image pixels.
+**AI Metadata Eraser** is a high-performance, SEO-optimized, 100% client-side web utility suite designed to inspect, sanitize, edit, and losslessly remove AI provenance credentials (C2PA/JUMBF manifests, IPTC DigitalSourceType, PNG tEXt/iTXt chunks) and traditional camera metadata (EXIF, IPTC, GPS coordinates) without re-compressing image pixels.
 
 - **Visual Inspiration:** **Unheic.io** (minimalist Swiss utility, high-contrast light mode, generous whitespace, crisp 1px borders, zero intrusive above-the-fold clutter).
 - **Functional Source:** **DeleteFootprints.ai** (5-in-1 privacy tools, batch processing, 4-step workflow, feature directory, and educational SEO content).
@@ -36,12 +36,12 @@ Search engine crawlers index client-side Single Page Applications when the docum
 ### 2.1 Route & Keyword Target Matrix
 | Route | Legacy / Alt Paths | Primary Keywords | Exact `<title>` Tag | Exact `<h1>` Heading |
 |---|---|---|---|---|
-| `/` | `/` | clean ai metadata, remove ai metadata from image, c2pa remover | Remove AI Metadata & C2PA from Images Free \| CleanAIMetadata | Remove AI Detection & Metadata from Images |
-| `/view-metadata` | `/view-image-metadata/` | view image metadata, exif c2pa viewer online | View Image Metadata, EXIF & C2PA Inspector \| CleanAIMetadata | View & Inspect Hidden Image Metadata |
-| `/edit-metadata` | `/add-image-metadata/` | edit image metadata online, modify exif data | Edit Image Metadata & EXIF Tags Online Free \| CleanAIMetadata | Edit Image Metadata & EXIF Tags Online |
-| `/geo-tag-photo` | `/geo-tag-photo/` | geo tag photo online, remove gps from photo | Geo Tag Photo Online — Add, Edit or Strip GPS \| CleanAIMetadata | Geo Tag Photo & GPS Coordinate Editor |
-| `/ai-text-cleaner` | `/ai-text-watermark-remover/` | ai text watermark remover, zero width space remover | AI Text Watermark & Hidden Character Cleaner \| CleanAIMetadata | AI Text Watermark & Hidden Character Cleaner |
-| `/instagram-ai-label-guide` | `/remove-ai-info-instagram/` | remove ai info label instagram, made with ai fix | How to Remove the "AI Info" Label on Instagram (2026 Guide) \| CleanAIMetadata | How to Prevent & Remove Instagram's "AI Info" Label |
+| `/` | `/` | clean ai metadata, remove ai metadata from image, c2pa remover | Remove AI Metadata & C2PA from Images Free \| AI Metadata Eraser | Remove AI Detection & Metadata from Images |
+| `/view-metadata` | `/view-image-metadata/` | view image metadata, exif c2pa viewer online | View Image Metadata, EXIF & C2PA Inspector \| AI Metadata Eraser | View & Inspect Hidden Image Metadata |
+| `/edit-metadata` | `/add-image-metadata/` | edit image metadata online, modify exif data | Edit Image Metadata & EXIF Tags Online Free \| AI Metadata Eraser | Edit Image Metadata & EXIF Tags Online |
+| `/geo-tag-photo` | `/geo-tag-photo/` | geo tag photo online, remove gps from photo | Geo Tag Photo Online — Add, Edit or Strip GPS \| AI Metadata Eraser | Geo Tag Photo & GPS Coordinate Editor |
+| `/ai-text-cleaner` | `/ai-text-watermark-remover/` | ai text watermark remover, zero width space remover | AI Text Watermark & Hidden Character Cleaner \| AI Metadata Eraser | AI Text Watermark & Hidden Character Cleaner |
+| `/instagram-ai-label-guide` | `/remove-ai-info-instagram/` | remove ai info label instagram, made with ai fix | How to Remove the "AI Info" Label on Instagram (2026 Guide) \| AI Metadata Eraser | How to Prevent & Remove Instagram's "AI Info" Label |
 
 ### 2.2 Programmatic Structured Data (JSON-LD)
 Every route dynamically injects Google-compliant schema via `react-helmet-async`:
@@ -64,10 +64,10 @@ All identity tokens, logos, domain configurations, and copy references are isola
 ```javascript
 // src/config/brandConfig.js
 export const BRAND_CONFIG = {
-  name: "CleanAIMetadata",              // Placeholder App Name
+  name: "AI Metadata Eraser",              // Placeholder App Name
   tagline: "Local Privacy Engine",      // Header Badge Subtitle
-  domain: "cleanaimetadata.com",
-  canonicalBase: "https://cleanaimetadata.com",
+  domain: "aimetadataeraser.com",
+  canonicalBase: "https://aimetadataeraser.com",
   logo: {
     type: "icon_text",                 // "icon_text" | "svg" | "image"
     text: "CleanAI",
@@ -78,7 +78,7 @@ export const BRAND_CONFIG = {
     twitter: "https://twitter.com/placeholder",
     github: "https://github.com/placeholder",
   },
-  supportEmail: "support@cleanaimetadata.com",
+  supportEmail: "support@aimetadataeraser.com",
 };
 ```
 

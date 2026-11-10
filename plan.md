@@ -1,4 +1,4 @@
-# Master Implementation Plan: CleanAIMetadata Suite
+# Master Implementation Plan: AI Metadata Eraser Suite
 
 ## High-Level Vision & Guiding Rules
 1. **Skeleton First, Functionality Second:** Build the complete visual frontend, page structure, responsive layouts, and mock components first across all pages. Binary processing, tag parsing, coordinate manipulation, and metadata math are wired in Phase 4 once the UI skeleton is validated.

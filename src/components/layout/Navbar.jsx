@@ -30,7 +30,7 @@ export default function Navbar() {
 
           <div className="flex flex-col">
             <span className="font-bold text-[19px] tracking-tight text-foreground leading-none">
-              {BRAND_CONFIG.logo.primary}
+              {BRAND_CONFIG.logo.primary}{' '}
               <span className="text-brand font-bold">{BRAND_CONFIG.logo.accent}</span>
             </span>
             <span className="text-[10px] font-mono font-bold text-muted uppercase tracking-[0.14em] mt-1.5 flex items-center gap-1.5">

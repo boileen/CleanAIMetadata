@@ -1,4 +1,4 @@
-# Design System Specification: CleanAIMetadata Suite (Authentic Unheic.io Skin)
+# Design System Specification: AI Metadata Eraser Suite (Authentic Unheic.io Skin)
 
 ## 1. Design Philosophy & North Star
 

@@ -50,7 +50,7 @@ export async function downloadZip(files) {
   }
 
   const blob = await zip.generateAsync({ type: 'blob' });
-  triggerDownload(blob, 'cleanaimetadata-cleaned.zip');
+  triggerDownload(blob, 'aimetadataeraser-cleaned.zip');
 }
 
 export { triggerDownload };

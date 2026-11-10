@@ -157,7 +157,7 @@ export function buildXmpPacket(values = {}) {
   if (!properties.length) return '';
 
   const packet = `<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>
-<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="CleanAIMetadata 1.0">
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="AI Metadata Eraser 1.0">
   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <rdf:Description rdf:about=""
       xmlns:dc="http://purl.org/dc/elements/1.1/"
