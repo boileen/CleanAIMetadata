@@ -137,7 +137,7 @@ export default function Footer() {
               <ShieldCheck className="w-3.5 h-3.5" />
             </div>
             <span>
-              Part of the {BRAND_CONFIG.name} suite — free privacy utilities that run 100% in your browser.
+              Part of the {BRAND_CONFIG.name} suite of free privacy utilities, all running in your browser.
             </span>
           </div>
 

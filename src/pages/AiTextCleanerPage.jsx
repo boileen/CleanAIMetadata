@@ -19,66 +19,66 @@ import TextSanitizer from '../components/tools/TextSanitizer';
 const TEXT_FEATURES = [
   {
     icon: Sparkles,
-    title: 'Strip Hidden Zero-Width Text',
-    description: 'Purges U+200B, U+200C, U+200D, U+2060, and U+FEFF zero-width spaces commonly left by algorithmic text processors.',
+    title: 'Strip zero-width characters',
+    description: 'Removes U+200B, U+200C, U+200D, U+2060 and U+FEFF, the invisible characters AI tools leave behind.',
   },
   {
     icon: Lock,
-    title: 'Zero Logs, 100% In-Browser',
-    description: 'Your sensitive prompts, articles, and emails are processed strictly in client RAM and are never transmitted to any external server.',
+    title: 'Runs in your browser',
+    description: 'Text stays in browser memory and is never sent to a server.',
   },
   {
     icon: Zap,
-    title: 'Instant Real-Time Sanitization',
-    description: 'Text is parsed and cleaned in real time as you paste or type, giving you immediate feedback with zero latency.',
+    title: 'Cleans as you type',
+    description: 'Results update while you paste or type, with no delay.',
   },
   {
     icon: FileText,
-    title: 'Punctuation & Quote Normalization',
-    description: 'Converts telltale AI em-dashes (—) and typographic curly quotes into natural, standard human characters.',
+    title: 'Fix punctuation and quotes',
+    description: 'Turns em dashes and curly quotes into plain hyphens and straight quotes.',
   },
   {
     icon: Sliders,
-    title: 'Customizable Heuristic Rules',
-    description: 'Toggle individual cleaning filters on or off depending on your specific formatting or CMS publishing requirements.',
+    title: 'Toggle each filter',
+    description: 'Turn individual rules on or off to suit your format or CMS.',
   },
   {
     icon: Layers,
-    title: 'Accurate Character & Word Counts',
-    description: 'Inspect exact word counts and detected invisible token numbers with side-by-side comparison counters.',
+    title: 'Character and word counts',
+    description: 'Compare word counts and hidden characters before and after.',
   },
   {
     icon: ShieldCheck,
-    title: 'Clean LLM Signature Patterns',
-    description: 'Removes the formatting artifacts that modern AI detectors scan for when screening student essays and marketing copy.',
+    title: 'Remove AI formatting tells',
+    description: 'Clears the formatting artifacts detectors look for.',
   },
   {
     icon: HelpCircle,
-    title: '1-Click Export to .TXT or Clipboard',
-    description: 'Export sanitized text directly to a plain text file or copy it with one click for pasting into Google Docs or Word.',
+    title: 'Export to .TXT or clipboard',
+    description: 'Download a plain text file or copy the result in one click.',
   },
 ];
 
 const TEXT_FAQS = [
   {
     question: 'How do AI generators leave invisible watermarks in text?',
-    answer: 'Language models and text generation pipelines can inject invisible Unicode formatting characters (such as zero-width spaces U+200B and word joiners U+2060) or characteristic non-breaking spaces (U+00A0) between tokens. AI detectors search for these specific character codes to identify synthetic content.',
+    answer: 'Some pipelines insert invisible Unicode characters such as zero-width spaces (U+200B) or word joiners (U+2060). Detectors look for those exact codes.',
   },
   {
     question: 'Does this change the meaning of my writing?',
-    answer: 'No. The cleaner removes only invisible zero-width characters and normalizes punctuation formatting (like em-dashes and curly quotes). Your vocabulary, sentence structure, and original meaning remain 100% intact.',
+    answer: 'No. It removes invisible characters and normalises punctuation. Your words, sentences and meaning stay the same.',
   },
   {
     question: 'Can this remove Google SynthID text watermarking?',
-    answer: 'SynthID for text operates by subtly shifting the statistical probability of word tokens (n-grams) rather than injecting binary invisible characters. While our tool cleans all Unicode and punctuation artifacts, defeating token-level probability detectors requires slight rephrasing or manual editing.',
+    answer: 'No. SynthID shifts the probability of word choices rather than adding hidden characters. Beating it needs rephrasing, not cleaning.',
   },
   {
     question: 'Is my text stored or sent to any server?',
-    answer: 'Never. All regex replacement and character filtering execute 100% locally in your web browser tab. If you disconnect your internet connection, the tool continues working perfectly.',
+    answer: 'Never. Everything runs in the browser tab, and the tool still works with the network off.',
   },
   {
     question: 'Why do AI detectors look for em-dashes and smart quotes?',
-    answer: 'LLMs like ChatGPT and Claude are trained on curated datasets that heavily favor typographic em-dashes (—) with specific spacing and curly quotation marks. Normalizing them to standard hyphens and straight quotes creates natural, human-formatted text.',
+    answer: 'Their training data leans on em dashes and curly quotes, so models repeat them. Converting to hyphens and straight quotes makes text look plainer.',
   },
 ];
 
@@ -106,7 +106,7 @@ export default function AiTextCleanerPage() {
             AI Text Watermark Remover | <span className="text-brand">Hidden Characters &amp; AI Tags</span>
           </h1>
           <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
-            Strip zero-width characters, invisible watermarks, non-breaking spaces, and telltale AI punctuation patterns from ChatGPT, Claude, and Gemini text directly in your browser.
+            Strip zero-width characters, non-breaking spaces, and AI punctuation from ChatGPT, Claude, and Gemini text in your browser.
           </p>
         </div>
 
@@ -149,10 +149,10 @@ export default function AiTextCleanerPage() {
         <section className="space-y-6 pt-4">
           <div className="space-y-2 text-center max-w-xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Features of Our AI Text Footprint Cleaner
+              Features of the AI text cleaner
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Built to sanitize machine-generated text for writers, marketers, researchers, and students.
+              For writers, marketers, researchers, and students.
             </p>
           </div>
 
@@ -183,31 +183,32 @@ export default function AiTextCleanerPage() {
         <section className="bg-white rounded-panel border border-subtle p-6 sm:p-10 shadow-subtle space-y-8 leading-relaxed">
           <div className="space-y-2">
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              AI Text Watermarks: Hidden Characters Versus Telltale Detection Marks
+              AI text watermarks: hidden characters vs. detection marks
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Understanding the difference between binary Unicode watermarks and stylistic pattern analysis.
+              Two different mechanisms that get confused.
             </p>
           </div>
 
           <div className="space-y-4 text-xs sm:text-[14px] text-muted leading-relaxed">
             <p>
-              When people discuss AI watermarks in text, they usually refer to two distinct mechanisms:
+              Two different things get called AI watermarks:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
               <div className="p-4 rounded-xl bg-card-raised border border-subtle space-y-2">
-                <h3 className="font-bold text-sm text-foreground">1. Hidden Unicode Characters</h3>
+                <h3 className="font-bold text-sm text-foreground">1. Hidden Unicode characters</h3>
                 <p className="text-xs leading-relaxed">
-                  Invisible zero-width characters (like <code>U+200B</code> and <code>U+FEFF</code>) that are invisible on the screen 
-                  but detectable in the raw string. CleanAIMetadata carves these out 100% losslessly.
+                  Invisible characters such as <code>U+200B</code> and <code>U+FEFF</code>. You
+                  cannot see them, but they sit in the raw string. This tool removes them without
+                  changing your words.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl bg-card-raised border border-subtle space-y-2">
-                <h3 className="font-bold text-foreground text-sm">2. Punctuation &amp; Typography Patterns</h3>
+                <h3 className="font-bold text-foreground text-sm">2. Punctuation and typography</h3>
                 <p className="text-xs leading-relaxed">
-                  Characteristic stylistic patterns such as long em-dashes (—), smart curly quotes (“ ”), and non-breaking spaces 
-                  that LLM tokenizers generate with high frequency.
+                  Em dashes, curly quotes, and non-breaking spaces that language models produce
+                  more often than people do.
                 </p>
               </div>
             </div>
@@ -215,8 +216,8 @@ export default function AiTextCleanerPage() {
             <div className="p-3.5 rounded-xl bg-card-raised border border-subtle text-muted flex items-start gap-2.5 mt-2">
               <Info className="w-4 h-4 text-brand shrink-0 mt-0.5" />
               <span>
-                <strong>100% Private Client Execution:</strong> All string replacements, regex pattern checks, and character cleaning execute 
-                strictly inside your browser memory. Your writing is never shared, logged, or saved to any external database.
+                <strong>Nothing leaves your browser:</strong> every replacement runs in local
+                memory. Your writing is never logged or saved.
               </span>
             </div>
           </div>
@@ -229,7 +230,7 @@ export default function AiTextCleanerPage() {
               Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Common questions about zero-width spaces, token watermarks, and AI text sanitization.
+              Zero-width spaces, token watermarks, and text cleaning.
             </p>
           </div>
 

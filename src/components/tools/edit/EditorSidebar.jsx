@@ -171,7 +171,7 @@ export default function EditorSidebar({
             onClick={() => setMode('remove')}
             icon={Eraser}
             title="Remove, then write"
-            description="Deletes every metadata carrier first—including C2PA and AI manifests—then writes only the fields below. ICC colour is preserved."
+            description="Deletes every metadata carrier first, including C2PA and AI manifests, then writes only the fields below. ICC colour is preserved."
           />
         </div>
 

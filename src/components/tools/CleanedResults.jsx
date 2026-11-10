@@ -40,7 +40,7 @@ export default function CleanedResults() {
       <div className="p-6 sm:p-7 border-b border-subtle/60 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 text-risk-emerald-text font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-risk-emerald-text">
               <CheckCircle2 className="w-3.5 h-3.5" />
               Verified clean
             </div>
@@ -48,8 +48,8 @@ export default function CleanedResults() {
               Your cleaned images
             </h2>
             <p className="text-xs sm:text-[13px] text-muted">
-              {cleanedFiles.length} {cleanedFiles.length === 1 ? 'image' : 'images'} · Removed AI Labels,
-              C2PA, XMP, IPTC, EXIF, GPS and timestamps
+              {cleanedFiles.length} {cleanedFiles.length === 1 ? 'image' : 'images'} · AI labels,
+              C2PA, XMP, IPTC, EXIF, GPS, and timestamps removed
             </p>
           </div>
 

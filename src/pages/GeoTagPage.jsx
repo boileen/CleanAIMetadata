@@ -42,30 +42,30 @@ const DEFAULT_COORDS = {
   removeOtherMetadata: true,
 };
 
-const GEOTAG_FAQS = [  {
+const GEOTAG_FAQS = [
+  {
     question: 'How to get Latitude and Longitude for any Location?',
     answer:
-      'To get accurate Latitude and Longitude, use Google Maps on desktop or mobile. On desktop: right-click any point on the map — the coordinates appear as the first option. On mobile: touch and hold any unlabelled spot, then tap the dropped pin; the coordinates show in the info card. The first number is Latitude and the second is Longitude.',
+      'In Google Maps, right-click a point on desktop to see the coordinates. On mobile, touch and hold the map until a pin drops. Latitude comes first, longitude second.',
   },
   {
     question: 'How do I geotag a photo?',
     answer:
-      'Upload the photo in the box above, enter the latitude and longitude (or use the map), optionally fill in GPS time, altitude, and other fields, then click "Save Location". The coordinates are written into the EXIF GPS IFD block and the file is downloaded instantly.',
+      'Upload the photo, enter the coordinates or pick them on the map, then click "Save Location". The file downloads with the new GPS tags written in.',
   },
   {
     question: 'What format do GPS coordinates use?',
     answer:
-      'GPS coordinates use Signed Decimal Degrees. Latitude runs from -90 to 90 and longitude from -180 to 180, with positive values north and east. The file itself stores unsigned numbers plus separate N/S/E/W reference tags — the tool converts between the two for you.',
+      'Signed decimal degrees. Latitude runs from -90 to 90 and longitude from -180 to 180, with north and east positive. The tool handles the N/S/E/W tags.',
   },
   {
     question: 'How do I remove GPS data from a photo?',
     answer:
-      'Upload the photo and click "Remove Location". Every GPS tag is cleared from both the EXIF GPS IFD and XMP namespace while camera exposure, copyright and all other fields are preserved.',
+      'Upload the photo and click "Remove Location". Every GPS tag is cleared while camera exposure, copyright, and other fields stay intact.',
   },
   {
     question: 'Does geotagging change the photo itself?',
-    answer:
-      'No. Only the metadata block changes. The pixels are untouched and the image is not recompressed.',
+    answer: 'No. Only the metadata changes. The pixels are not re-compressed.',
   },
 ];
 
@@ -302,8 +302,8 @@ export default function GeoTagPage() {
             Geo Tag Photo Online | <span className="text-brand">Add or Remove GPS Location</span>
           </h1>
           <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
-            Add, modify, or strip GPS coordinates from your photos entirely in-browser. Nothing
-            leaves your device.
+            Add, change, or remove GPS coordinates from your photos in the browser. Files stay on
+            your device.
           </p>
         </div>
 
@@ -630,7 +630,7 @@ export default function GeoTagPage() {
                         ) : isDone ? (
                           <>
                             <Check className="w-4 h-4" />
-                            Saved — click to re-save
+                            Saved. Click to re-save
                           </>
                         ) : (
                           <>
@@ -665,26 +665,24 @@ export default function GeoTagPage() {
               How to get Latitude and Longitude for any Location?
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Quick instructions for extracting precise decimal coordinates from Google Maps or Apple Maps.
+              Pull decimal coordinates from Google Maps or Apple Maps in a few seconds.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-muted leading-relaxed">
             <div className="space-y-2 p-4 rounded-xl bg-card-raised border border-subtle">
-              <h3 className="font-bold text-foreground text-sm">On Computers / Desktop:</h3>
+              <h3 className="font-bold text-foreground text-sm">On desktop</h3>
               <p>
-                1. Open Google Maps in your web browser.<br />
-                2. Right-click the exact location on the map.<br />
-                3. The first option in the menu displays the coordinates (e.g. <code>37.7749, -122.4194</code>). Click to copy.
+                Open Google Maps, right-click the spot, then click the coordinates at the top of the
+                menu to copy them (e.g. <code>37.7749, -122.4194</code>).
               </p>
             </div>
 
             <div className="space-y-2 p-4 rounded-xl bg-card-raised border border-subtle">
-              <h3 className="font-bold text-foreground text-sm">On Smartphones / Mobile:</h3>
+              <h3 className="font-bold text-foreground text-sm">On mobile</h3>
               <p>
-                1. Open Google Maps or Apple Maps.<br />
-                2. Touch and hold any point on the map to drop a red pin.<br />
-                3. The search bar or location card displays the decimal coordinates.
+                Open Google Maps or Apple Maps and hold a point until a pin drops. The coordinates
+                appear in the search bar or location card.
               </p>
             </div>
           </div>
@@ -692,7 +690,7 @@ export default function GeoTagPage() {
           <div className="p-4 rounded-xl bg-brand-soft/60 border border-brand/20 flex items-start gap-3 text-xs sm:text-[13px] text-foreground font-medium">
             <Info className="w-5 h-5 text-brand shrink-0 mt-0.5" />
             <span>
-              <strong>NOTE:</strong> The first number is always <strong>Latitude</strong> (−90 to +90) and the second is <strong>Longitude</strong> (−180 to +180).
+              Latitude comes first (-90 to 90), longitude second (-180 to 180).
             </span>
           </div>
         </section>
@@ -704,7 +702,7 @@ export default function GeoTagPage() {
               Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Common questions about photo geotagging, coordinate formats, and removing GPS data.
+              Photo geotagging, coordinate formats, and removing GPS data.
             </p>
           </div>
 

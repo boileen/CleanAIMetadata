@@ -14,27 +14,27 @@ const EDIT_STEPS = [
   {
     step: '01',
     title: 'Upload one photo',
-    desc: 'Choose a JPEG, PNG or WebP up to 100 MB. Files are read in your browser and never uploaded.',
+    desc: 'A JPEG, PNG or WebP up to 100 MB. Nothing leaves your browser.',
   },
   {
     step: '02',
     title: 'Pick a write mode',
-    desc: 'Keep and rebuild standard tags, or strip every metadata carrier before writing the fields you select.',
+    desc: 'Wipe every tag first, or keep the existing ones and overwrite.',
   },
   {
     step: '03',
     title: 'Edit the fields',
-    desc: 'Use the EXIF, IPTC and XMP tabs, search across 60+ fields, or apply a camera preset.',
+    desc: 'EXIF, IPTC and XMP tabs, 60+ fields, and camera presets.',
   },
   {
     step: '04',
     title: 'Write and verify',
-    desc: 'The output is re-parsed in your browser and every selected field is compared before download.',
+    desc: 'The output is read back and compared before you download.',
   },
   {
     step: '05',
     title: 'Download losslessly',
-    desc: 'Your pixels are never re-encoded. The file keeps its original container and ICC colour profile.',
+    desc: 'Pixels and the ICC colour profile stay as they were.',
   },
 ];
 
@@ -47,12 +47,12 @@ const MODE_COMPARISON = [
   {
     feature: 'C2PA & AI manifests',
     removeMode: 'Purged from the output',
-    preserveMode: 'May remain when stored outside the replaced carriers',
+    preserveMode: 'May remain outside the replaced carriers',
   },
   {
     feature: 'GPS location',
     removeMode: 'Gone unless you fill the GPS fields',
-    preserveMode: 'Prefilled from the original; clear the fields to remove it',
+    preserveMode: 'Prefilled; clear the fields to remove it',
   },
   {
     feature: 'ICC colour profile',
@@ -80,42 +80,42 @@ const FIELD_DICTIONARY = [
   {
     field: 'Camera Make & Model',
     container: 'EXIF (0th IFD)',
-    purpose: 'Identifies the camera body (e.g. Canon EOS R5, Sony A7 IV) used for capture.',
+    purpose: 'The camera body, such as Canon EOS R5 or Sony A7 IV.',
   },
   {
     field: 'Lens Model',
     container: 'EXIF (Exif IFD)',
-    purpose: 'Records the specific optical lens mounted on the body (e.g. RF 24-70mm F2.8L).',
+    purpose: 'The lens used, such as RF 24-70mm F2.8L.',
   },
   {
     field: 'Software',
     container: 'EXIF / XMP',
-    purpose: 'Names the processing application (e.g. Adobe Photoshop Lightroom Classic).',
+    purpose: 'The app that processed the file, such as Lightroom Classic.',
   },
   {
     field: 'Artist / Creator',
     container: 'EXIF / IPTC / XMP',
-    purpose: 'Establishes photographer or creator identity for attribution and rights.',
+    purpose: 'The photographer or creator name used for attribution.',
   },
   {
     field: 'Copyright Notice',
     container: 'EXIF / IPTC / XMP',
-    purpose: 'Formal copyright declaration establishing legal rights reservation.',
+    purpose: 'A copyright statement reserving your rights.',
   },
   {
     field: 'DateTimeOriginal',
     container: 'EXIF (Exif IFD)',
-    purpose: 'Exact timestamp when the shutter was pressed (YYYY:MM:DD HH:MM:SS format).',
+    purpose: 'When the shutter fired, in YYYY:MM:DD HH:MM:SS format.',
   },
   {
     field: 'GPS Latitude & Longitude',
     container: 'EXIF GPS IFD',
-    purpose: 'Decimal-degree coordinates stored as degrees, minutes and seconds.',
+    purpose: 'Coordinates stored as degrees, minutes and seconds.',
   },
   {
     field: 'Keywords',
     container: 'IPTC / XMP',
-    purpose: 'Controlled vocabulary terms used by photo libraries and search engines.',
+    purpose: 'Terms used by photo libraries and search engines.',
   },
 ];
 
@@ -123,42 +123,42 @@ const EDIT_FAQS = [
   {
     question: 'Can I edit metadata on an iPhone HEIC photo?',
     answer:
-      'Not with this editor yet. HEIC, TIFF and AVIF are detected and shown an unsupported notice instead of being silently converted. Open a JPEG, PNG or WebP to write metadata losslessly.',
+      'Not yet. HEIC, TIFF and AVIF show an unsupported notice instead of being silently converted. Open a JPEG, PNG or WebP to write tags.',
   },
   {
     question: 'Why are fields already filled when I choose remove mode?',
     answer:
-      'The editor prefills values it found in the original file so you can review them. In remove mode, every metadata carrier is deleted first and then only fields that still have a value are written. Use “Clear fields” to start from a genuinely empty slate.',
+      'The editor prefills what it found so you can review it. Remove mode deletes every carrier first, then writes only the fields that still have a value. Use “Clear fields” for an empty start.',
   },
   {
     question: 'Can I edit more than one photo at a time?',
     answer:
-      'This page intentionally edits one photo at a time so the read-back verification and mode disclosure stay accurate. Use the Remove Metadata tool for a batch of up to 5 files.',
+      'No. One photo at a time keeps the read-back check and mode disclosure accurate. For batches of up to 5 files, use the Remove Metadata tool.',
   },
   {
     question: 'Does editing remove AI labels or C2PA provenance?',
     answer:
-      'Remove, then write deletes all metadata carriers first, including C2PA and AI manifests, and then injects only your selected fields. Keep & overwrite replaces EXIF, IPTC and XMP carriers; C2PA data stored elsewhere in the container may remain.',
+      'In remove mode, yes. All carriers go first, including C2PA, then only your chosen fields are written. Keep & overwrite replaces EXIF, IPTC and XMP, so C2PA data stored elsewhere may remain.',
   },
   {
     question: 'What output format will I get?',
     answer:
-      'The output keeps the input format: JPEG stays JPEG, PNG stays PNG and WebP stays WebP. The compressed pixel stream is copied through without re-encoding, and the ICC colour profile is preserved.',
+      'The same format you uploaded. Pixels are copied through without re-encoding and the ICC colour profile is preserved.',
   },
   {
     question: 'How does the verification step work?',
     answer:
-      'After writing, the new file is parsed again inside your browser. Every non-empty field is compared with the requested value, and the result card shows any mismatch before you download. Nothing is sent to a server.',
+      'The new file is parsed again in your browser. Each non-empty field is compared with the value you asked for, and any mismatch is shown before download.',
   },
   {
     question: 'What happens to proprietary maker notes?',
     answer:
-      'Maker notes are vendor-specific blocks. This editor rebuilds standard EXIF, IPTC and XMP tags from the values you see, so unknown maker notes and vendor-specific tags are dropped in both modes.',
+      'They are dropped. The editor rebuilds only standard EXIF, IPTC and XMP tags from the values shown, in both modes.',
   },
   {
     question: 'Does editing change the picture or its visual quality?',
     answer:
-      'No. The image data is never decoded or re-encoded. Only metadata containers are rebuilt, so the pixels and visual quality stay exactly as they were.',
+      'No. Image data is never decoded or re-encoded. Only the metadata containers are rebuilt.',
   },
 ];
 
@@ -329,7 +329,7 @@ export default function EditMetadataPage() {
               How to edit image metadata online in 5 steps
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              A local, verified metadata workflow with no upload step.
+              Five steps, all inside your browser.
             </p>
           </div>
 
@@ -355,7 +355,7 @@ export default function EditMetadataPage() {
               Remove or keep: which mode to pick?
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Both modes are lossless for pixels and preserve the ICC colour profile.
+              Both modes keep the pixels and the ICC colour profile unchanged.
             </p>
           </div>
 
@@ -389,8 +389,7 @@ export default function EditMetadataPage() {
               What each metadata field does
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Technical breakdown of the standard EXIF, IPTC and XMP fields this editor
-              writes.
+              The standard fields this editor writes.
             </p>
           </div>
 
@@ -426,7 +425,7 @@ export default function EditMetadataPage() {
               Common Questions About Editing Metadata
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Answers about formats, modes, maker notes and the read-back verification.
+              Formats, modes, maker notes and the read-back check.
             </p>
           </div>
 

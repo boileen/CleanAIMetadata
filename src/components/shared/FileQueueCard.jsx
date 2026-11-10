@@ -77,7 +77,7 @@ export default function FileQueueCard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-4 border-b border-subtle/60">
         <div className="space-y-1.5 min-w-0">
-          <div className="inline-flex items-center gap-2 text-brand font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
+          <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand">
             <span className={`w-1.5 h-1.5 rounded-full bg-brand ${uploading ? 'animate-pulse' : ''}`} />
             {headerStatus}
           </div>
@@ -86,7 +86,7 @@ export default function FileQueueCard() {
             {formatBytes(uploadedBytes)} of {formatBytes(totalBytes)}
           </h3>
           <p className="text-xs sm:text-[13px] text-muted">
-            Lossless byte rewrite without visual compression degradation. All in browser memory.
+            Metadata is rewritten in place. Pixels are not touched.
           </p>
         </div>
 

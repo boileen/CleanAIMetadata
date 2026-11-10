@@ -19,19 +19,19 @@ import UploadDropzone from '../components/shared/UploadDropzone';
 const VIEW_FAQS = [
   {
     question: 'What metadata can I see on this page?',
-    answer: 'You can inspect all embedded technical metadata containers including EXIF (camera make, model, exposure, timestamps), IPTC (creator credits, digital source type), XMP (software history, AI prompt strings), C2PA (cryptographic provenance manifests), and GPS decimal coordinates.',
+    answer: 'EXIF (camera, exposure, timestamps), IPTC (credits, digital source type), XMP (software history, AI prompts), C2PA provenance manifests, and GPS coordinates.',
   },
   {
     question: 'Does viewing metadata change my file?',
-    answer: 'No. Viewing metadata is a strictly read-only operation. Your image bytes are parsed in browser memory and no modifications or overwrites are written to your file on this page.',
+    answer: 'No. Nothing is written. The file is parsed in browser memory and stays untouched.',
   },
   {
     question: 'How do you detect AI footprints?',
-    answer: 'Our in-browser parser scans raw binary headers for C2PA JUMBF manifests, IPTC digitalSourceType markers (such as trainedAlgorithmicMedia), software creator tools (such as Midjourney, DALL-E, Firefly), and PNG prompt chunks (tEXt, iTXt).',
+    answer: 'The parser scans raw headers for C2PA JUMBF manifests, IPTC digitalSourceType markers, generator names such as Midjourney or Firefly, and PNG prompt chunks (tEXt, iTXt).',
   },
   {
     question: 'Can I export a report of the metadata?',
-    answer: 'Yes. Open any file’s metadata panel and use Copy JSON or CSV. The full section-by-section breakdown is generated in your browser — no report is ever sent to a server.',
+    answer: 'Yes. Open a file’s panel and use Copy JSON or CSV. The report is built in your browser and never sent to a server.',
   },
 ];
 
@@ -87,7 +87,7 @@ export default function ViewMetadataPage() {
             View Image Metadata and Find out <span className="text-brand">GPS, AI &amp; Other Footprints</span>
           </h1>
           <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
-            Inspect embedded EXIF, IPTC, XMP, and C2PA Content Credentials 100% locally in your browser. Zero server uploads.
+            Inspect EXIF, IPTC, XMP, and C2PA credentials in your browser. No uploads.
           </p>
         </div>
 
@@ -141,27 +141,28 @@ export default function ViewMetadataPage() {
               View Image Metadata Info (EXIF, IPTC, XMP, C2PA)
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Deep forensic triage for researchers, photographers, and creators.
+              For researchers, photographers, and creators.
             </p>
           </div>
 
           <div className="space-y-4 text-xs sm:text-[14px] text-muted leading-relaxed pt-2">
             <p>
-              Upload an image to inspect all embedded metadata including EXIF, IPTC, and XMP.
-              Our parser reads the binary headers directly in your browser without transmitting any file bytes over the network.
+              Upload an image to read its EXIF, IPTC, and XMP tags. The parser works on the
+              binary headers in your browser, so no file bytes cross the network.
             </p>
             <p>
-              We also highlight possible AI-related signals when present, such as signed C2PA manifests from Adobe Firefly or DALL·E 3,
-              IPTC <span className="font-mono text-foreground">digitalSourceType</span> markers, and Stable Diffusion prompt strings saved inside PNG chunks.
+              AI signals are flagged too: signed C2PA manifests from Firefly or DALL·E 3,
+              IPTC <span className="font-mono text-foreground">digitalSourceType</span> markers,
+              and Stable Diffusion prompts saved in PNG chunks.
             </p>
             <p>
-              Click “View Metadata” to see a detailed, easy-to-read breakdown. Expand each section to inspect file information and
-              hidden metadata, then copy the full report as JSON or download it as a CSV spreadsheet.
+              Click “View Metadata” to expand each section, then copy the report as JSON or
+              download it as CSV.
             </p>
             <div className="p-3.5 rounded-xl bg-card-raised border border-subtle text-muted flex items-start gap-2.5">
               <Info className="w-4 h-4 text-brand shrink-0 mt-0.5" />
               <span>
-                <strong>Read-Only Guarantee:</strong> No changes are made to your file on this page. If you wish to purge or customize tags, use the
+                <strong>Read-only:</strong> this page never changes your file. To purge or customise tags, use the
                 <Link to="/" className="text-brand font-semibold hover:underline ml-1">Remove Metadata</Link> or
                 <Link to="/edit-metadata" className="text-brand font-semibold hover:underline ml-1">Edit Metadata</Link> tools.
               </span>
@@ -176,7 +177,7 @@ export default function ViewMetadataPage() {
               Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-[14px] text-muted">
-              Common questions about inspecting image metadata and AI credentials.
+              Inspection, AI signals, and exports.
             </p>
           </div>
 

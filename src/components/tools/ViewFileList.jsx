@@ -59,8 +59,8 @@ export default function ViewFileList({ openFileId, onToggleMetadata, onRemoved }
   return (
     <div className="bg-white rounded-panel border border-subtle shadow-subtle overflow-hidden animate-fadeIn">
       <div className="flex items-center justify-between gap-3 px-5 sm:px-6 py-3 border-b border-subtle/60">
-        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.14em] text-muted">
-          File Preview
+        <span className="text-[11px] font-semibold text-muted">
+          Files
         </span>
         <span className="text-[11px] font-mono text-muted">
           {files.length} of {maxFiles} files

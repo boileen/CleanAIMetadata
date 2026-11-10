@@ -262,14 +262,7 @@ export default function MetadataPreview({
       <div className="p-6 sm:p-7 space-y-4 border-b border-subtle/60">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="min-w-0 space-y-1.5">
-            {showFileName && (
-              <div className="inline-flex items-center gap-2 text-brand font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand" />
-                Metadata Inspection
-              </div>
-            )}
-
-            <p className="text-[11px] font-mono font-bold uppercase tracking-[0.14em] text-muted">
+            <p className="text-[11px] font-semibold text-muted">
               Total fields
             </p>
 
@@ -377,7 +370,7 @@ export default function MetadataPreview({
       <div className="p-6 sm:p-7 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-muted">
+            <p className="text-[11px] font-semibold text-muted">
               By section · select to expand
             </p>
 

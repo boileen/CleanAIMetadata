@@ -82,7 +82,7 @@ export default function RemoveMetadataPage() {
               Strip AI Metadata &amp; <span className="text-brand">EXIF Footprints</span> Instantly
             </h1>
             <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed">
-              Wipe AI credentials, EXIF tags, and location data right in your browser—fast, private, and completely lossless.
+              Remove EXIF, GPS, and AI tags in your browser. Your photo is never uploaded.
             </p>
           </div>
 

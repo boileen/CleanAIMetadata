@@ -5,25 +5,25 @@ const STEPS = [
   {
     number: '01',
     title: 'Inspect',
-    description: 'Read a bounded header in browser memory and estimate tags before touching bytes.',
+    description: 'Opens the file and lists every metadata block it finds.',
     icon: Eye,
   },
   {
     number: '02',
     title: 'Scan',
-    description: 'Scrutinize C2PA manifests, EXIF parameters, XMP blocks, and generative model signatures.',
+    description: 'Flags AI manifests, camera EXIF, XMP, and prompt records.',
     icon: Cpu,
   },
   {
     number: '03',
-    title: 'Strip losslessly',
-    description: 'Binary slicer extracts metadata headers without decoding or re-compressing pixels.',
+    title: 'Strip',
+    description: 'Cuts those blocks out without re-encoding the pixels.',
     icon: Scissors,
   },
   {
     number: '04',
-    title: 'Verify clean',
-    description: 'Check signature, extension, and 0 footprints before saving pristine output or batch ZIP.',
+    title: 'Verify',
+    description: 'Re-reads the output and confirms nothing is left behind.',
     icon: CheckCheck,
   },
 ];
@@ -31,21 +31,15 @@ const STEPS = [
 export default function HowItWorksStrip() {
   return (
     <section className="space-y-6 pt-4">
-      {/* Section Eyebrow & Title */}
       <div className="space-y-2">
-        <div className="inline-flex items-center gap-2 text-brand font-mono text-[12px] font-bold uppercase tracking-[0.14em]">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block"></span>
-          A RESULT YOU CAN ACCOUNT FOR
-        </div>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           How metadata scrubbing works
         </h2>
         <p className="text-[14px] sm:text-[15px] text-muted max-w-2xl leading-relaxed">
-          Zero cloud transfer. Every scan and sanitize operation executes purely inside your local browser runtime via native Web APIs.
+          Four steps, all inside your browser. Nothing is uploaded.
         </p>
       </div>
 
-      {/* 4-Step Grid matching Unheic Process Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {STEPS.map((step) => {
           const IconComponent = step.icon;
@@ -74,16 +68,6 @@ export default function HowItWorksStrip() {
             </div>
           );
         })}
-      </div>
-
-      {/* Boundary Callout Note matching Unheic */}
-      <div className="p-4 rounded-xl bg-card-raised border border-subtle text-xs sm:text-[13px] text-muted-strong flex items-start gap-3">
-        <span className="font-bold text-foreground font-mono shrink-0 uppercase tracking-wider">
-          Boundary:
-        </span>
-        <p>
-          Source EXIF, GPS, capture date, C2PA manifests, and prompt records are permanently removed from the cleaned output. The compressed pixel entropy stream remains untouched byte-for-byte.
-        </p>
       </div>
     </section>
   );

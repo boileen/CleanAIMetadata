@@ -1,82 +1,76 @@
 import React from 'react';
-import { 
-  ShieldCheck, 
-  FileCode, 
-  Sparkles, 
-  ShieldAlert, 
-  Layers, 
-  Search, 
-  FileImage, 
-  Lock, 
-  Zap 
+import {
+  ShieldCheck,
+  FileCode,
+  Sparkles,
+  ShieldAlert,
+  Layers,
+  Search,
+  FileImage,
+  Lock,
+  Zap
 } from 'lucide-react';
 
 const FEATURES = [
   {
     icon: ShieldCheck,
     title: 'Remove C2PA credentials',
-    description: 'We strip C2PA and JUMBF credentials added by cameras, Adobe Photoshop, and generative tools. These records are the primary signals Instagram checks.',
+    description: 'Deletes the signed manifests that trigger AI labels on Instagram and Facebook.',
   },
   {
     icon: FileCode,
-    title: 'Delete Full EXIF, IPTC & XMP Info',
-    description: 'We delete all EXIF, IPTC, and XMP data from your image. GPS coordinates, camera serial numbers, timestamps, and device details go out together.',
+    title: 'Delete EXIF, IPTC & XMP',
+    description: 'Removes GPS, camera serial numbers, timestamps, and device details in one pass.',
   },
   {
     icon: Sparkles,
-    title: 'Clean without changing pixels',
-    description: 'We strip metadata directly from file headers. We never recompress, resize, or alter image pixels, so your photo looks exactly the same.',
+    title: 'Pixels stay untouched',
+    description: 'No canvas re-encoding, so the image looks exactly the same afterwards.',
   },
   {
     icon: ShieldAlert,
-    title: 'Help prevent false AI labels',
-    description: 'Real photos edited in Lightroom or Photoshop can pick up AI flags from simple retouching. Removing those tags prevents automated AI labeling.',
+    title: 'Avoid false AI labels',
+    description: 'Clears the retouching tags that flag real photos edited in Lightroom or Photoshop.',
   },
   {
     icon: Layers,
     title: 'Clean up to 5 photos at once',
-    description: 'Drop up to 5 images together, 100 MB in total, and clean them in one batch. Download individually or as a single combined .ZIP archive.',
+    description: '100 MB per batch, downloaded individually or as one ZIP.',
   },
   {
     icon: Search,
-    title: 'Inspect every tag before cleaning',
-    description: 'Review every EXIF, IPTC, and XMP tag found in your file before you clean it, then confirm the records are permanently gone after cleaning.',
+    title: 'Inspect tags before cleaning',
+    description: 'See every tag in the original, then confirm they are gone in the output.',
   },
   {
     icon: FileImage,
-    title: 'Works with common image formats',
-    description: 'Clean JPEG, PNG, WebP, TIFF, and HEIC images before uploading them to your Instagram feed, story, carousel, or website.',
+    title: 'Works with common formats',
+    description: 'JPEG, PNG, WebP, TIFF, and HEIC files are all supported.',
   },
   {
     icon: Lock,
-    title: '100% in-browser privacy',
-    description: 'Uploaded images are processed purely in temporary browser memory. Files never leave your computer and are never used for training or analytics.',
+    title: '100% in-browser',
+    description: 'Files are read in browser memory and never sent to a server.',
   },
   {
     icon: Zap,
-    title: 'Free with no account required',
-    description: 'Upload your image and download the cleaned version immediately. There are no signups, no subscriptions, and no added watermarks.',
+    title: 'Free, no account',
+    description: 'No signup, no subscription, and no watermark on the download.',
   },
 ];
 
 export default function FeatureGrid() {
   return (
     <section className="space-y-6 pt-4">
-      {/* Section Eyebrow & Title */}
       <div className="space-y-2">
-        <div className="inline-flex items-center gap-2 text-brand font-mono text-[12px] font-bold uppercase tracking-[0.14em]">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block"></span>
-          UTILITY FEATURES
-        </div>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Built for creators, photographers & developers
         </h2>
         <p className="text-[14px] sm:text-[15px] text-muted max-w-2xl leading-relaxed">
-          Everything needed to inspect, customize, and purge provenance tags across leading social platforms and generative image pipelines.
+          Inspect and remove provenance tags before you post.
         </p>
       </div>
 
-      {/* 3x3 Grid matching Unheic Tool Directory */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {FEATURES.map((feature, idx) => {
           const Icon = feature.icon;

@@ -4,43 +4,43 @@ import { ChevronDown } from 'lucide-react';
 const FAQS = [
   {
     question: 'Will this remove all metadata, including AI-specific tags?',
-    answer: 'Yes. The remover cleans EXIF, IPTC, and XMP blocks as well as common AI-identifying blocks such as C2PA/JUMBF and PNG text chunks when present. This targets metadata-only AI signatures while leaving pixels 100% untouched.',
+    answer: 'Yes. It removes EXIF, IPTC, XMP, C2PA/JUMBF, and PNG text chunks where present. Pixels are not touched.',
   },
   {
     question: 'Can you remove invisible or visual AI watermarks?',
-    answer: 'No. We clean metadata only. Some proprietary models (such as Google Gemini/Imagen with SynthID) embed algorithmic marks inside pixel patterns that survive header stripping. Those require pixel-level editing or manual retouching.',
+    answer: 'No. Only metadata is removed. Pixel-level marks such as Google SynthID survive and need manual retouching.',
   },
   {
     question: 'Do you store my images? How long are files kept?',
-    answer: 'Zero storage. All processing occurs 100% in your local browser tab using native WebAssembly and memory ArrayBuffers. User files are never uploaded to our servers, never stored, and never used for AI training.',
+    answer: 'Nothing is stored. Files are read in browser memory and never uploaded, so there is nothing to keep.',
   },
   {
     question: 'What formats and limits are supported?',
-    answer: 'Supported formats include JPG/JPEG, PNG, WebP, TIFF, and HEIC. The maximum batch size is 5 images up to 100 MB cumulative size per session.',
+    answer: 'JPEG, PNG, WebP, TIFF, and HEIC. Up to 5 images or 100 MB per batch.',
   },
   {
     question: 'Will removing the metadata remove the AI label on Instagram?',
-    answer: 'Yes, for new posts you publish after cleaning. Instagram triggers the label when it detects C2PA manifests, IPTC digitalSourceType markers, or generator software credits in file headers. Stripping these tags removes those triggers.',
+    answer: 'For new posts, yes. Instagram reads C2PA, IPTC digitalSourceType, and generator credits from the header; those are the triggers.',
   },
   {
     question: 'Does cleaning change the picture or its quality?',
-    answer: 'No. The picture will look exactly the same after removing the metadata. The tool does not re-encode or recompress pixels through a lossy canvas. The pixel stream remains byte-for-byte identical.',
+    answer: 'No. The image data is copied unchanged, with no re-encoding, so the photo looks identical.',
   },
   {
     question: 'Does it work on images from ChatGPT, DALL·E, Firefly or Gemini?',
-    answer: 'Yes. These tools write signed C2PA provenance and IPTC tags upon export. CleanAIMetadata carves out those header segments completely. (Note that pixel watermarks like SynthID are not header metadata).',
+    answer: 'Yes. Those exporters write C2PA and IPTC tags, and the tool removes them. Pixel watermarks like SynthID are not header data.',
   },
   {
     question: 'Can I clean HEIC photos from an iPhone?',
-    answer: 'Yes, the tool cleans iPhone HEIC photos and removes embedded camera EXIF, GPS location tags, and device serial markers directly in the browser.',
+    answer: 'Yes. iPhone HEIC files are cleaned along with their EXIF, GPS, and device serial data.',
   },
   {
     question: 'Why did Instagram put an AI label on my real photo?',
-    answer: 'Instagram inspects file headers rather than assessing photos visually. If you used Adobe Lightroom or Photoshop features like Generative Fill, Remove, or simple neural filters, those programs inject C2PA manifests and IPTC tags (e.g. compositeWithTrainedAlgorithmicMedia). Stripping metadata removes these false-positive flags.',
+    answer: 'Retouching tools such as Photoshop Generative Fill and Lightroom neural filters add C2PA and IPTC markers, which Instagram reads as AI use.',
   },
   {
     question: 'Does the tool scan my caption or prompt text for AI words?',
-    answer: 'No. The scanner never reads your captions or social media post copy. Writing words like "AI" or "Midjourney" in your caption does not trigger automated labels. The tool only reads embedded binary tags written into the image file itself.',
+    answer: 'No. It only reads tags inside the image file. Words in your caption never trigger a label.',
   },
 ];
 
@@ -57,17 +57,12 @@ export default function FaqAccordion() {
 
   return (
     <section id="faqs-section" className="space-y-6 pt-4 pb-8">
-      {/* Section Eyebrow & Title */}
       <div className="space-y-2">
-        <div className="inline-flex items-center gap-2 text-brand font-mono text-[12px] font-bold uppercase tracking-[0.14em]">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block"></span>
-          FREQUENTLY ASKED QUESTIONS
-        </div>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-          Everything you need to know about AI metadata
+          Common questions about AI metadata
         </h2>
         <p className="text-[14px] sm:text-[15px] text-muted max-w-2xl leading-relaxed">
-          How our client-side engine guarantees zero-server privacy and removes automated platform flags.
+          Short answers on formats, platform labels, and privacy.
         </p>
       </div>
 
