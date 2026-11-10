@@ -14,7 +14,7 @@ export default function HowItWorksStrip() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 divide-y md:divide-y-0 md:divide-x divide-subtle">
           {STEPS.map((step) => (
             <div key={step.number} className="flex items-center gap-3 pt-3 md:pt-0 md:px-4 first:pt-0 first:px-0">
-              <span className="font-display text-2xl text-brand leading-none">
+              <span className="font-mono text-xl sm:text-2xl font-bold text-brand leading-none">
                 {step.number}
               </span>
               <span className="text-sm font-semibold text-foreground">

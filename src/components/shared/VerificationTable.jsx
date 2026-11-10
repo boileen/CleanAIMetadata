@@ -49,7 +49,7 @@ function PolicyPill({ policy }) {
 export default function VerificationTable() {
   return (
     <section id="verification-section" className="space-y-4 pt-4">
-      <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+      <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
         What stays and what goes
       </h2>
 

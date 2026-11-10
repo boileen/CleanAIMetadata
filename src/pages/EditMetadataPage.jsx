@@ -228,11 +228,11 @@ export default function EditMetadataPage() {
       />
 
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-12">
-        <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
-          <h1 className="font-display text-4xl sm:text-[50px] text-foreground leading-[1.08] tracking-[-0.01em]">
-            Edit photo <span className="text-brand italic">EXIF &amp; IPTC tags</span>
+        <div className="text-center space-y-2.5 max-w-2xl mx-auto pt-2 pb-1">
+          <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
+            Edit Photo <span className="text-brand">EXIF &amp; IPTC Tags</span>
           </h1>
-          <p className="text-base text-muted leading-relaxed max-w-xl mx-auto">
+          <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
             Add or overwrite metadata in JPEG, PNG, and WebP files without re-encoding pixels.
           </p>
         </div>
@@ -322,24 +322,24 @@ export default function EditMetadataPage() {
         )}
 
         <section className="space-y-4 pt-4">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             How editing works
           </h2>
 
           <div className="bg-white rounded-panel border border-subtle p-5 sm:p-6 shadow-subtle">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-subtle">
               <div className="space-y-1 md:px-4 first:px-0 pt-3 md:pt-0 first:pt-0">
-                <span className="font-display text-2xl text-brand leading-none">1</span>
+                <span className="font-mono text-xl sm:text-2xl font-bold text-brand leading-none">1</span>
                 <h3 className="text-sm font-semibold text-foreground">Open and inspect</h3>
                 <p className="text-xs text-muted leading-relaxed">Reads EXIF, IPTC, and XMP segments in browser memory.</p>
               </div>
               <div className="space-y-1 md:px-4 pt-3 md:pt-0">
-                <span className="font-display text-2xl text-brand leading-none">2</span>
+                <span className="font-mono text-xl sm:text-2xl font-bold text-brand leading-none">2</span>
                 <h3 className="text-sm font-semibold text-foreground">Edit or overwrite</h3>
                 <p className="text-xs text-muted leading-relaxed">Fill camera, copyright, or GPS values without touching pixel data.</p>
               </div>
               <div className="space-y-1 md:px-4 pt-3 md:pt-0">
-                <span className="font-display text-2xl text-brand leading-none">3</span>
+                <span className="font-mono text-xl sm:text-2xl font-bold text-brand leading-none">3</span>
                 <h3 className="text-sm font-semibold text-foreground">Write and verify</h3>
                 <p className="text-xs text-muted leading-relaxed">Generates clean file headers and re-reads the output to confirm tags.</p>
               </div>
@@ -348,7 +348,7 @@ export default function EditMetadataPage() {
         </section>
 
         <section className="bg-white rounded-panel border border-subtle p-6 shadow-subtle space-y-4">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Remove or keep: which mode to pick?
           </h2>
 
@@ -377,7 +377,7 @@ export default function EditMetadataPage() {
         </section>
 
         <section className="bg-white rounded-panel border border-subtle p-6 shadow-subtle space-y-4">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Supported metadata fields
           </h2>
 
@@ -408,7 +408,7 @@ export default function EditMetadataPage() {
         </section>
 
         <section className="space-y-4 pt-2 pb-6">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Frequently asked questions
           </h2>
 

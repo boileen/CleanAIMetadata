@@ -82,11 +82,11 @@ export default function ViewMetadataPage() {
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-12">
 
         {/* Top Header Section */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
-          <h1 className="font-display text-4xl sm:text-[50px] text-foreground leading-[1.08] tracking-[-0.01em]">
-            Inspect photo <span className="text-brand italic">EXIF &amp; provenance tags</span>
+        <div className="text-center space-y-2.5 max-w-2xl mx-auto pt-2 pb-1">
+          <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
+            Inspect Photo <span className="text-brand">EXIF &amp; Provenance Tags</span>
           </h1>
-          <p className="text-base text-muted leading-relaxed max-w-xl mx-auto">
+          <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
             Read EXIF, IPTC, XMP, and C2PA credentials directly in your browser.
           </p>
         </div>
@@ -172,7 +172,7 @@ export default function ViewMetadataPage() {
 
         {/* FAQ SECTION */}
         <section className="space-y-4 pt-2 pb-6">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Frequently asked questions
           </h2>
 

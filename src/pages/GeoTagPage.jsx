@@ -297,11 +297,11 @@ export default function GeoTagPage() {
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-12">
 
         {/* Hero */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
-          <h1 className="font-display text-4xl sm:text-[50px] text-foreground leading-[1.08] tracking-[-0.01em]">
-            Add or remove <span className="text-brand italic">photo GPS tags</span>
+        <div className="text-center space-y-2.5 max-w-2xl mx-auto pt-2 pb-1">
+          <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
+            Add or Remove <span className="text-brand">Photo GPS Tags</span>
           </h1>
-          <p className="text-base text-muted leading-relaxed max-w-xl mx-auto">
+          <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
             View, edit, or clear decimal coordinates from your photos in the browser.
           </p>
         </div>
@@ -659,7 +659,7 @@ export default function GeoTagPage() {
 
         {/* FAQs */}
         <section className="space-y-4 pt-2 pb-6">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Frequently asked questions
           </h2>
 

@@ -55,11 +55,11 @@ export default function AiTextCleanerPage() {
 
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-10">
         {/* Header */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto pt-2 pb-1">
-          <h1 className="font-display text-4xl sm:text-[50px] text-foreground leading-[1.08] tracking-[-0.01em]">
-            Clean invisible <span className="text-brand italic">AI text markers</span>
+        <div className="text-center space-y-2.5 max-w-2xl mx-auto pt-2 pb-1">
+          <h1 className="text-3xl sm:text-[40px] font-bold tracking-tight text-foreground leading-tight">
+            Clean Invisible <span className="text-brand">AI Text Markers</span>
           </h1>
-          <p className="text-base text-muted leading-relaxed">
+          <p className="text-[13px] sm:text-[14px] text-muted leading-relaxed max-w-xl mx-auto">
             Strip zero-width characters, non-breaking spaces, and AI punctuation patterns in your browser.
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function AiTextCleanerPage() {
 
         {/* Features */}
         <section className="space-y-4 pt-2">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             What the cleaner handles
           </h2>
 
@@ -93,7 +93,7 @@ export default function AiTextCleanerPage() {
 
         {/* FAQs */}
         <section className="space-y-4 pt-2 pb-6">
-          <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Frequently asked questions
           </h2>
 

@@ -31,9 +31,7 @@
                 #ffffff;
     color: #081736;
     min-width: 320px;
-    font-family: 'Geist Variable', 'Geist', system-ui, -apple-system, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
+    font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   ::selection {

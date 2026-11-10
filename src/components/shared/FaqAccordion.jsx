@@ -42,8 +42,8 @@ export default function FaqAccordion() {
   };
 
   return (
-    <section id="faqs-section" className="space-y-4 pt-4 pb-8">
-      <h2 className="font-display text-2xl sm:text-3xl text-foreground">
+    <section className="space-y-4 pt-4">
+      <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
         Frequently asked questions
       </h2>
 
