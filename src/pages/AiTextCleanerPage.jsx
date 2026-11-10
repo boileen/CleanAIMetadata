@@ -117,7 +117,7 @@ export default function AiTextCleanerPage() {
           {/* Trust Highlights from under.png */}
           <div className="flex flex-wrap items-center gap-5 sm:gap-7 px-2 text-xs text-muted font-medium justify-start pt-1">
             <span className="inline-flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-[#00c853] flex items-center justify-center text-white shrink-0 shadow-sm">
+              <span className="w-3.5 h-3.5 rounded-full bg-brand flex items-center justify-center text-white shrink-0 shadow-sm">
                 <svg className="w-2.5 h-2.5 stroke-[3.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
@@ -126,7 +126,7 @@ export default function AiTextCleanerPage() {
             </span>
 
             <span className="inline-flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-[#00c853] flex items-center justify-center text-white shrink-0 shadow-sm">
+              <span className="w-3.5 h-3.5 rounded-full bg-brand flex items-center justify-center text-white shrink-0 shadow-sm">
                 <svg className="w-2.5 h-2.5 stroke-[3.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
@@ -135,7 +135,7 @@ export default function AiTextCleanerPage() {
             </span>
 
             <span className="inline-flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-[#00c853] flex items-center justify-center text-white shrink-0 shadow-sm">
+              <span className="w-3.5 h-3.5 rounded-full bg-brand flex items-center justify-center text-white shrink-0 shadow-sm">
                 <svg className="w-2.5 h-2.5 stroke-[3.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>

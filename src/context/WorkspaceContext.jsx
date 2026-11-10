@@ -340,8 +340,8 @@ export function WorkspaceProvider({ children }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const gradient = ctx.createLinearGradient(0, 0, 1024, 1024);
-    gradient.addColorStop(0, '#0B4234');
-    gradient.addColorStop(1, '#FF6B4A');
+    gradient.addColorStop(0, '#2563EB');
+    gradient.addColorStop(1, '#06B6D4');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 1024, 1024);
     ctx.fillStyle = 'rgba(255,255,255,0.9)';

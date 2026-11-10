@@ -34,7 +34,7 @@ export default function Navbar() {
               <span className="text-brand font-bold">{BRAND_CONFIG.logo.accent}</span>
             </span>
             <span className="text-[10px] font-mono font-bold text-muted uppercase tracking-[0.14em] mt-1.5 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan inline-block"></span>
               {BRAND_CONFIG.logo.tagline}
             </span>
           </div>

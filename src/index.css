@@ -4,19 +4,19 @@
 
 @layer base {
   :root {
-    --background: #f4f7f3;
-    --foreground: #10201c;
+    --background: #ffffff;
+    --foreground: #081736;
     --surface: #ffffff;
-    --surface-raised: #f9fbf8;
-    --surface-strong: #e9f0ec;
-    --line: #d5e0da;
-    --line-strong: #aebfb6;
-    --brand: #08705a;
-    --brand-strong: #045242;
-    --brand-soft: #dff4ec;
-    --muted: #5a6b65;
-    --muted-strong: #344a43;
-    --shadow: 0 20px 60px rgba(19, 52, 43, 0.1);
+    --surface-raised: #f8fafc;
+    --surface-strong: #f1f5f9;
+    --line: #e2e8f0;
+    --line-strong: #cbd5e1;
+    --brand: #2563eb;
+    --brand-strong: #1d4ed8;
+    --brand-soft: #eff6ff;
+    --muted: #5b6779;
+    --muted-strong: #33415c;
+    --shadow: 0 20px 60px rgba(8, 23, 54, 0.08);
   }
 
   html {
@@ -26,19 +26,21 @@
   }
 
   body {
-    background: radial-gradient(circle at 8% -10%, rgba(8, 112, 90, 0.11), transparent 34rem), #f4f7f3;
-    color: #10201c;
+    background: radial-gradient(circle at 12% -8%, rgba(6, 182, 212, 0.08), transparent 32rem),
+                radial-gradient(circle at 88% -5%, rgba(37, 99, 235, 0.05), transparent 36rem),
+                #ffffff;
+    color: #081736;
     min-width: 320px;
     font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   ::selection {
-    background: rgba(8, 112, 90, 0.24);
-    color: #045242;
+    background: rgba(37, 99, 235, 0.18);
+    color: #081736;
   }
 }
 
-/* Custom scrollbar styling matching Unheic */
+/* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -49,12 +51,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #aebfb6;
+  background: #cbd5e1;
   border-radius: 9999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #5a6b65;
+  background: #94a3b8;
 }

@@ -88,7 +88,7 @@ export default function MapPicker({ coordinates, onCoordinatesChange }) {
       </form>
 
       {/* Interactive Map Canvas */}
-      <div className="relative w-full h-[340px] sm:h-[400px] rounded-xl border border-subtle overflow-hidden bg-[#e5e9e5]">
+      <div className="relative w-full h-[340px] sm:h-[400px] rounded-xl border border-subtle overflow-hidden bg-card-strong">
         {mapLoaded ? (
           <iframe
             title="OpenStreetMap Location Viewer"

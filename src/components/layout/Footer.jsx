@@ -7,7 +7,7 @@ export default function Footer() {
   const currentYear = 2026;
 
   return (
-    <footer className="w-full bg-brand border-t border-brand-hover mt-24 pt-16 pb-14 text-white/70">
+    <footer className="w-full bg-navy border-t border-navy-border mt-24 pt-16 pb-14 text-white/70">
       {/* Real Unheic width: 74rem (1184px) */}
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6">
         
@@ -108,8 +108,8 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-[13px]">
               <li>
-                <span className="inline-flex items-center gap-1.5 text-brand-soft font-semibold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-coral animate-pulse"></span>
+                <span className="inline-flex items-center gap-1.5 text-cyan font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span>
                   100% In-Browser Privacy
                 </span>
               </li>
@@ -133,7 +133,7 @@ export default function Footer() {
         {/* Bottom Bar: Privacy Statement & Brand Host */}
         <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-white/70">
           <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 rounded bg-white/10 border border-white/20 flex items-center justify-center text-brand-soft">
+            <div className="w-5 h-5 rounded bg-white/10 border border-white/20 flex items-center justify-center text-cyan">
               <ShieldCheck className="w-3.5 h-3.5" />
             </div>
             <span>

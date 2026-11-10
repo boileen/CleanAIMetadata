@@ -5,7 +5,7 @@ import Footer from './Footer';
 
 export default function MainLayout() {
   return (
-    <div className="min-h-screen flex flex-col bg-canvas text-slate-900 selection:bg-brand-100 selection:text-brand-900">
+    <div className="min-h-screen flex flex-col bg-canvas text-foreground selection:bg-brand-soft selection:text-brand">
       {/* Sticky Navigation Header */}
       <Navbar />
 
