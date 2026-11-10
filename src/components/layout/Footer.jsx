@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck } from 'lucide-react';
 import { BRAND_CONFIG } from '../../config/brandConfig';
+import LogoIcon from '../brand/LogoIcon';
 
 export default function Footer() {
   const currentYear = 2026;
@@ -133,9 +133,7 @@ export default function Footer() {
         {/* Bottom Bar: Privacy Statement & Brand Host */}
         <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-white/70">
           <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 rounded bg-white/10 border border-white/20 flex items-center justify-center text-cyan">
-              <ShieldCheck className="w-3.5 h-3.5" />
-            </div>
+            <LogoIcon className="w-5 h-5 shrink-0" isDark={true} />
             <span>
               Part of the {BRAND_CONFIG.name} suite of free privacy utilities, all running in your browser.
             </span>

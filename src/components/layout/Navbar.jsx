@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { BRAND_CONFIG } from '../../config/brandConfig';
+import LogoIcon from '../brand/LogoIcon';
 
 const NAV_LINKS = [
   { name: 'Remove Metadata', path: '/' },
@@ -20,12 +21,10 @@ export default function Navbar() {
       {/* 74rem max-width matching Unheic container */}
       <div className="max-w-[74rem] mx-auto px-4 sm:px-6 h-[76px] flex items-center justify-between gap-6">
         
-        {/* Brand Left: Logo Icon with coral micro-dot + Name + Subtitle */}
+        {/* Brand Left: Official Logo Mark + Name + Subtitle */}
         <Link to="/" className="flex items-center gap-3 shrink-0 group">
-          <div className="relative">
-            <div className="w-10 h-10 rounded-xl bg-brand flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
-              <ShieldCheck className="w-6 h-6 text-white" />
-            </div>
+          <div className="relative shrink-0">
+            <LogoIcon className="w-10 h-10 transition-transform group-hover:scale-105" />
           </div>
 
           <div className="flex flex-col">
