@@ -1,0 +1,278 @@
+{
+  "slug": "how-to-add-or-change-gps-geotags-in-photo-metadata",
+  "prefix": "20",
+  "title": "How to Add or Change GPS Geotags in Photo Metadata",
+  "excerpt": "When is adding geolocation useful and when is it risky? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains how to geotag a photo in a pr…",
+  "category": "GPS & Location",
+  "readTime": "8 min read",
+  "date": "November 2026",
+  "targetTool": "/geo-tag-photo",
+  "toolLabel": "Add or Edit Photo Geotags",
+  "toolDesc": "Pick coordinates on an interactive map and inject clean EXIF GPS tags.",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "When is adding geolocation useful and when is it risky? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains how to geotag a photo in a practical way: what to inspect, what can be changed safely, how to verify the result, and what no metadata tool can promise. Use the original image when possible rather than a thumbnail, social-media preview or screenshot. Those copies may already have altered the evidence you hope to examine."
+    },
+    {
+      "type": "h2",
+      "text": "The quick answer"
+    },
+    {
+      "type": "p",
+      "text": "The phrase “how to geotag a photo” can refer to several different operations. A photo can contain multiple metadata families, each with different purposes. EXIF commonly records capture information, XMP may contain descriptive or workflow fields, IPTC carries editorial information, and C2PA can attach signed statements about origin and edits. The correct action is to identify the relevant family first, then change only the information you have a legitimate reason to alter."
+    },
+    {
+      "type": "p",
+      "text": "For this particular question, start by checking whether the evidence is actually in the local file. Do not insert location data for people or private places without authorization. A missing field means only that the selected inspection method did not report it; it does not prove the content has no history."
+    },
+    {
+      "type": "h2",
+      "text": "Know the different evidence layers"
+    },
+    {
+      "type": "p",
+      "text": "EXIF. Camera or device capture settings, timestamps, orientation and sometimes GPS coordinates. EXIF is often embedded in JPEG files and may appear in other formats."
+    },
+    {
+      "type": "p",
+      "text": "IPTC. Creator, credit, captions, subject and rights information useful in professional image publishing. Some IPTC properties are transported in XMP."
+    },
+    {
+      "type": "p",
+      "text": "XMP. Extensible metadata that can carry editing history, descriptive fields, application-specific values, or structured AI-related information."
+    },
+    {
+      "type": "p",
+      "text": "C2PA / Content Credentials. A signed manifest system: assertions and signatures can describe creation and modifications. Verification requires a C2PA-aware implementation, not merely finding a marker."
+    },
+    {
+      "type": "p",
+      "text": "Invisible watermarks and visual evidence. Signals embedded into pixels, statistical patterns, or information retained by a platform. They are not interchangeable with ordinary removable EXIF tags."
+    },
+    {
+      "type": "p",
+      "text": "The distinction matters because a tool can remove one kind of data while preserving another. For instance, a standard EXIF stripper may never inspect the C2PA carrier. A recompression workflow may remove metadata by accident while changing pixel values, orientation interpretation, color management or transparency. Choose a procedure on the basis of file type and intended result rather than the button label alone."
+    },
+    {
+      "type": "h2",
+      "text": "A careful step-by-step workflow"
+    },
+    {
+      "type": "li",
+      "text": "Step 1: Confirm the precise location with permission. Record what you observe before changing the next setting. Work on a duplicate, and examine the exported file independently rather than trusting the presence of a success message."
+    },
+    {
+      "type": "li",
+      "text": "Step 2: Identify target latitude and longitude. Record what you observe before changing the next setting. Work on a duplicate, and examine the exported file independently rather than trusting the presence of a success message."
+    },
+    {
+      "type": "li",
+      "text": "Step 3: Set hemisphere and optional altitude. Record what you observe before changing the next setting. Work on a duplicate, and examine the exported file independently rather than trusting the presence of a success message."
+    },
+    {
+      "type": "li",
+      "text": "Step 4: Verify coordinate conventions. Record what you observe before changing the next setting. Work on a duplicate, and examine the exported file independently rather than trusting the presence of a success message."
+    },
+    {
+      "type": "li",
+      "text": "Step 5: Export a copy. Record what you observe before changing the next setting. Work on a duplicate, and examine the exported file independently rather than trusting the presence of a success message."
+    },
+    {
+      "type": "li",
+      "text": "Step 6: Review sharing risks. Record what you observe before changing the next setting. Work on a duplicate, and examine the exported file independently rather than trusting the presence of a success message."
+    },
+    {
+      "type": "p",
+      "text": "When an online application advertises local-only processing, inspect its privacy statement and browser Network activity if confidentiality is important. A browser-based tool can be designed to work locally, but the phrase “online” alone is not proof that the file never leaves your device. Close unrelated tabs before testing confidential photographs, and do not upload files to an untrusted service simply to check what they contain."
+    },
+    {
+      "type": "h2",
+      "text": "Example: what this looks like in practice"
+    },
+    {
+      "type": "p",
+      "text": "Consider a field-research image cataloged to a public survey location. First write down the format, approximate file size and how the file was obtained. Next record each metadata family that a capable inspector actually detects. Keep separate columns for the field name, field value, tool used, and how certain you are of the interpretation. Then decide whether the goal is privacy, attribution, verification or compatibility. Those goals produce different decisions."
+    },
+    {
+      "type": "p",
+      "text": "For privacy, location, device identifiers and embedded editing comments might deserve removal. For licensing, you may instead want to preserve creator and rights fields. For authentication, destroying the signed original is counterproductive: retain the untouched file and perform experiments on an explicitly labeled copy. In a responsible workflow, the before-and-after inspection becomes the record of what changed, not a broad claim that the image is now impossible to trace."
+    },
+    {
+      "type": "h2",
+      "text": "What to preserve, remove or document"
+    },
+    {
+      "type": "li",
+      "text": "Preserve an unmodified original whenever you may need to establish provenance, rights, authenticity or the history of a professional deliverable."
+    },
+    {
+      "type": "li",
+      "text": "Remove personal information only when it is not required for the intended use: consider GPS coordinates, device serial identifiers and sensitive comments."
+    },
+    {
+      "type": "li",
+      "text": "Check orientation and color-profile handling. Removing every auxiliary block without review can change how a photo displays even when the compressed pixels are the same."
+    },
+    {
+      "type": "li",
+      "text": "Treat missing content credentials as an uncertain observation. Some manifests are stored externally or can be recovered through a separate service."
+    },
+    {
+      "type": "li",
+      "text": "Record file format, application versions and date of export. Those variables frequently explain why two visually identical images expose different metadata."
+    },
+    {
+      "type": "h2",
+      "text": "Common mistakes and how to troubleshoot them"
+    },
+    {
+      "type": "h3",
+      "text": "Only looking at file properties"
+    },
+    {
+      "type": "p",
+      "text": "Operating-system property panes show a subset of metadata. Compare with a dedicated metadata inspector and a C2PA verifier where appropriate."
+    },
+    {
+      "type": "h3",
+      "text": "Confusing metadata with an invisible watermark"
+    },
+    {
+      "type": "p",
+      "text": "Pixel-level watermarks and independent detection tools are different systems. Deleting an XMP packet does not imply they are gone."
+    },
+    {
+      "type": "h3",
+      "text": "Testing a resaved copy instead of the original"
+    },
+    {
+      "type": "p",
+      "text": "Messaging applications and editors can discard or rewrite tags. Get the original download or camera file before drawing conclusions."
+    },
+    {
+      "type": "h3",
+      "text": "Assuming a clean export has identical image bytes"
+    },
+    {
+      "type": "p",
+      "text": "A canvas-based editor may decode and re-encode the photo. Where lossless handling matters, compare encoded image payloads or use a verifiable byte-preserving method."
+    },
+    {
+      "type": "h3",
+      "text": "Deleting rights information without a reason"
+    },
+    {
+      "type": "p",
+      "text": "Copyright and creator tags can be useful for attribution. Choose a narrow privacy cleanup when your goal does not require deleting everything."
+    },
+    {
+      "type": "h3",
+      "text": "Believing the result is permanent on every service"
+    },
+    {
+      "type": "p",
+      "text": "Social platforms can maintain their own data, inferred labels, records of previous uploads or copies of provenance information."
+    },
+    {
+      "type": "h2",
+      "text": "How to verify the outcome"
+    },
+    {
+      "type": "p",
+      "text": "Verification should answer a narrow, testable question: did the intended tag or embedded carrier disappear from this exported copy? Reopen the downloaded file, inspect the same metadata family using the same or a second trusted parser, and compare fields. If location removal is the goal, look specifically for GPS coordinates and related location tags. If C2PA inspection is the goal, a credential-aware verifier should report presence and validation status rather than merely “EXIF absent.”"
+    },
+    {
+      "type": "p",
+      "text": "Quality verification is a separate check. Confirm the pixel dimensions, appearance, orientation, transparency and color rendition. Byte-preserving metadata removal can leave the compressed picture payload untouched, but that conclusion is tool- and format-specific. If the workflow re-encodes, describe it as a new visual export, not pixel-identical metadata editing."
+    },
+    {
+      "type": "h2",
+      "text": "Using AIMetadataEraser.com responsibly"
+    },
+    {
+      "type": "p",
+      "text": "AIMetadataEraser.com is intended to provide browser-based metadata utilities. During research, the live homepage was unavailable for independent verification. Check the current tool interface and supported formats before following instructions or uploading any sensitive material. If the site offers the relevant viewer or editor, use it to inspect a local copy, select only supported changes, download the result and independently recheck that file. Do not assume this guide verifies a particular removal preset, C2PA parser, batch limit or file-size limit."
+    },
+    {
+      "type": "h2",
+      "text": "Questions people ask"
+    },
+    {
+      "type": "h3",
+      "text": "Can I use this method for how to geotag a photo?"
+    },
+    {
+      "type": "p",
+      "text": "Yes when the chosen application supports the actual file format and tag family. Confirm support by inspecting a known test file first."
+    },
+    {
+      "type": "h3",
+      "text": "Does removing metadata prove an image is human-made?"
+    },
+    {
+      "type": "p",
+      "text": "No. Metadata absence cannot establish a human origin, and other evidence may remain."
+    },
+    {
+      "type": "h3",
+      "text": "Will the picture look exactly the same?"
+    },
+    {
+      "type": "p",
+      "text": "It can if the implementation edits metadata without re-encoding and correctly handles orientation and profiles. Do not assume every editor is lossless."
+    },
+    {
+      "type": "h3",
+      "text": "Can a social platform still identify AI-assisted content?"
+    },
+    {
+      "type": "p",
+      "text": "Potentially. Platforms may use disclosed information, retained records and other signals besides locally embedded metadata."
+    },
+    {
+      "type": "h3",
+      "text": "Can a clean file recover its old metadata?"
+    },
+    {
+      "type": "p",
+      "text": "The exported file may not contain the deleted fields, but originals, cloud copies, backups and external manifests may still contain information."
+    },
+    {
+      "type": "h3",
+      "text": "Should I delete every metadata field?"
+    },
+    {
+      "type": "p",
+      "text": "Not automatically. Privacy, provenance and attribution have different needs; removing all tags may discard useful rights or validation data."
+    },
+    {
+      "type": "h2",
+      "text": "Final checklist"
+    },
+    {
+      "type": "p",
+      "text": "Before publishing or sharing, answer three questions: what evidence existed in the original, what precisely changed in the copy, and what does the final inspection actually establish? For how to geotag a photo, the reliable outcome is a documented workflow with limited claims, not an absolute promise about detection or provenance. Use a compatible image metadata viewer or editor, including AIMetadataEraser.com if its current features match your task, and verify the finished copy."
+    },
+    {
+      "type": "h2",
+      "text": "Primary references"
+    },
+    {
+      "type": "p",
+      "text": "C2PA specification"
+    },
+    {
+      "type": "p",
+      "text": "ExifTool tag documentation"
+    },
+    {
+      "type": "p",
+      "text": "IPTC photo metadata"
+    },
+    {
+      "type": "p",
+      "text": "Google SynthID"
+    }
+  ]
+}

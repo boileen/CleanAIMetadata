@@ -1,0 +1,222 @@
+[
+  {
+    "slug": "how-to-remove-ai-metadata-from-an-image-safely",
+    "title": "How to Remove AI Metadata from an Image Safely",
+    "excerpt": "What does an AI metadata remover actually delete? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains remove ai metadata from image in a …",
+    "category": "AI Credentials",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Remove AI Metadata Now",
+    "totalWords": 1564
+  },
+  {
+    "slug": "how-to-check-what-metadata-is-hidden-in-an-ai-image",
+    "title": "How to Check What Metadata Is Hidden in an AI Image",
+    "excerpt": "Which hidden fields can an inspection tool reveal? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains AI image metadata checker in a pra…",
+    "category": "Analysis & Inspection",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/view-metadata",
+    "toolLabel": "Inspect Your Image Metadata",
+    "totalWords": 1569
+  },
+  {
+    "slug": "chatgpt-image-metadata-what-can-be-embedded-and-how-to-inspect-it",
+    "title": "ChatGPT Image Metadata: What Can Be Embedded and How to Inspect It",
+    "excerpt": "Does a ChatGPT-created image contain machine-readable provenance? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains ChatGPT image metad…",
+    "category": "AI Models",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/view-metadata",
+    "toolLabel": "Check ChatGPT Image Metadata",
+    "totalWords": 1588
+  },
+  {
+    "slug": "stable-diffusion-png-metadata-find-prompts-seeds-and-settings",
+    "title": "Stable Diffusion PNG Metadata: Find Prompts, Seeds and Settings",
+    "excerpt": "Where do Stable Diffusion workflows store generation parameters? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains Stable Diffusion PNG…",
+    "category": "AI Models",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Clean Stable Diffusion Prompts",
+    "totalWords": 1582
+  },
+  {
+    "slug": "midjourney-image-metadata-what-you-can-and-cannot-verify",
+    "title": "Midjourney Image Metadata: What You Can and Cannot Verify",
+    "excerpt": "Can a downloaded Midjourney image prove its source? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains Midjourney image metadata in a pr…",
+    "category": "AI Models",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/view-metadata",
+    "toolLabel": "Inspect Midjourney Metadata",
+    "totalWords": 1579
+  },
+  {
+    "slug": "c2pa-content-credentials-explained-what-image-owners-should-know",
+    "title": "C2PA Content Credentials Explained: What Image Owners Should Know",
+    "excerpt": "What does a signed provenance manifest prove? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains what are C2PA content credentials in a …",
+    "category": "C2PA & Provenance",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Remove C2PA Credentials",
+    "totalWords": 1587
+  },
+  {
+    "slug": "how-to-inspect-c2pa-content-credentials-in-jpeg-png-and-webp",
+    "title": "How to Inspect C2PA Content Credentials in JPEG, PNG and WebP",
+    "excerpt": "How does an inspector find embedded C2PA manifests? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains check C2PA metadata in a practica…",
+    "category": "C2PA & Provenance",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/view-metadata",
+    "toolLabel": "Inspect C2PA Manifests",
+    "totalWords": 1585
+  },
+  {
+    "slug": "removing-c2pa-metadata-what-changes-and-what-does-not",
+    "title": "Removing C2PA Metadata: What Changes and What Does Not",
+    "excerpt": "What is affected when embedded Content Credentials are stripped? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains remove C2PA metadata…",
+    "category": "C2PA & Provenance",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Strip Content Credentials",
+    "totalWords": 1582
+  },
+  {
+    "slug": "exif-vs-iptc-vs-xmp-vs-c2pa-a-practical-comparison",
+    "title": "EXIF vs IPTC vs XMP vs C2PA: A Practical Comparison",
+    "excerpt": "Why do metadata standards overlap without being interchangeable? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains EXIF vs IPTC vs XMP …",
+    "category": "Standards & Formats",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/view-metadata",
+    "toolLabel": "Compare Your File Headers",
+    "totalWords": 1562
+  },
+  {
+    "slug": "how-to-remove-exif-data-without-reducing-image-quality",
+    "title": "How to Remove EXIF Data Without Reducing Image Quality",
+    "excerpt": "Can metadata be stripped without recompressing JPEG pixels? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains remove EXIF without losin…",
+    "category": "Lossless Privacy",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Remove EXIF Losslessly",
+    "totalWords": 1586
+  },
+  {
+    "slug": "how-to-remove-gps-location-data-from-photos-before-sharing",
+    "title": "How to Remove GPS Location Data from Photos Before Sharing",
+    "excerpt": "Which GPS fields can reveal a shooting location? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains remove GPS data from photos in a pra…",
+    "category": "GPS & Location",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Scrub GPS Coordinates",
+    "totalWords": 1554
+  },
+  {
+    "slug": "how-to-view-exif-data-on-windows-mac-iphone-and-android",
+    "title": "How to View EXIF Data on Windows, Mac, iPhone and Android",
+    "excerpt": "Where can you see ordinary camera details on each device? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains how to view EXIF data in a …",
+    "category": "Analysis & Inspection",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/view-metadata",
+    "toolLabel": "View Photo EXIF Online",
+    "totalWords": 1548
+  },
+  {
+    "slug": "png-metadata-explained-text-chunks-exif-and-ai-prompts",
+    "title": "PNG Metadata Explained: Text Chunks, EXIF and AI Prompts",
+    "excerpt": "Can a PNG carry more metadata than its appearance suggests? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains PNG metadata in a practic…",
+    "category": "Standards & Formats",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Strip PNG Metadata",
+    "totalWords": 1519
+  },
+  {
+    "slug": "webp-metadata-explained-exif-xmp-and-content-credentials",
+    "title": "WebP Metadata Explained: EXIF, XMP and Content Credentials",
+    "excerpt": "Does WebP retain image metadata after conversion? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains WebP metadata in a practical way: w…",
+    "category": "Standards & Formats",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Strip WebP Headers",
+    "totalWords": 1554
+  },
+  {
+    "slug": "how-to-edit-photo-copyright-and-creator-metadata",
+    "title": "How to Edit Photo Copyright and Creator Metadata",
+    "excerpt": "Which fields should a working photographer update before delivery? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains edit IPTC copyrigh…",
+    "category": "Metadata Editing",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/edit-metadata",
+    "toolLabel": "Edit Photo Copyright Tags",
+    "totalWords": 1560
+  },
+  {
+    "slug": "how-to-remove-xmp-metadata-from-an-image",
+    "title": "How to Remove XMP Metadata from an Image",
+    "excerpt": "What kinds of information can live inside XMP packets? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains remove XMP metadata from image…",
+    "category": "Lossless Privacy",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Remove XMP Metadata",
+    "totalWords": 1528
+  },
+  {
+    "slug": "why-instagram-or-facebook-may-show-an-ai-info-label",
+    "title": "Why Instagram or Facebook May Show an AI Info Label",
+    "excerpt": "Why can an AI label appear after minor edits? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains Instagram AI info label in a practical …",
+    "category": "Social Media",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Clear \"AI Info\" Triggers",
+    "totalWords": 1527
+  },
+  {
+    "slug": "does-removing-image-metadata-prevent-ai-detection",
+    "title": "Does Removing Image Metadata Prevent AI Detection?",
+    "excerpt": "Which identification signals survive metadata removal? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains does removing metadata prevent…",
+    "category": "AI Models",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/view-metadata",
+    "toolLabel": "Inspect AI Signatures",
+    "totalWords": 1535
+  },
+  {
+    "slug": "does-taking-a-screenshot-remove-image-metadata",
+    "title": "Does Taking a Screenshot Remove Image Metadata?",
+    "excerpt": "Why is a screenshot not a reliable privacy checklist? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains does screenshot remove metadata…",
+    "category": "Lossless Privacy",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/",
+    "toolLabel": "Lossless Eraser vs Screenshot",
+    "totalWords": 1530
+  },
+  {
+    "slug": "how-to-add-or-change-gps-geotags-in-photo-metadata",
+    "title": "How to Add or Change GPS Geotags in Photo Metadata",
+    "excerpt": "When is adding geolocation useful and when is it risky? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains how to geotag a photo in a pr…",
+    "category": "GPS & Location",
+    "readTime": "8 min read",
+    "date": "November 2026",
+    "targetTool": "/geo-tag-photo",
+    "toolLabel": "Add or Edit Photo Geotags",
+    "totalWords": 1568
+  }
+]

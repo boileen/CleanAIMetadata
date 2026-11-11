@@ -9,6 +9,8 @@ import EditMetadataPage from './pages/EditMetadataPage';
 import GeoTagPage from './pages/GeoTagPage';
 import AiTextCleanerPage from './pages/AiTextCleanerPage';
 import InstagramGuidePage from './pages/InstagramGuidePage';
+import BlogIndexPage from './pages/BlogIndexPage';
+import BlogPostPage from './pages/BlogPostPage';
 
 export default function App() {
   return (
@@ -21,6 +23,12 @@ export default function App() {
         <Route path="geo-tag-photo" element={<GeoTagPage />} />
         <Route path="ai-text-cleaner" element={<AiTextCleanerPage />} />
         <Route path="instagram-ai-label-guide" element={<InstagramGuidePage />} />
+
+        {/* Static Blog & SEO Guides */}
+        <Route path="blog" element={<BlogIndexPage />} />
+        <Route path="blog/:slug" element={<BlogPostPage />} />
+        <Route path="guides" element={<Navigate to="/blog" replace />} />
+        <Route path="guides/:slug" element={<BlogPostPage />} />
 
         {/* Legacy / Alternative URL Redirects for SEO Parity */}
         <Route path="view-image-metadata" element={<Navigate to="/view-metadata" replace />} />

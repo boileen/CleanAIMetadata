@@ -46,23 +46,29 @@ export default function Footer() {
 
           <div className="space-y-3">
             <h4 className="text-xs font-semibold text-white uppercase tracking-wide">
-              Guides
+              Guides &amp; Blog
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/instagram-ai-label-guide" className="text-white/70 hover:text-white transition-colors">
+                <Link to="/blog" className="text-cyan hover:text-white font-medium transition-colors flex items-center gap-1.5">
+                  <span>Explore All 20 Guides</span>
+                  <span className="text-[10px] font-mono bg-cyan/20 px-1.5 py-0.5 rounded text-cyan">NEW</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog/why-instagram-or-facebook-may-show-an-ai-info-label" className="text-white/70 hover:text-white transition-colors">
                   Instagram AI Label Guide
                 </Link>
               </li>
               <li>
-                <a href="#verification-section" className="text-white/70 hover:text-white transition-colors">
-                  Metadata Signals &amp; Policies
-                </a>
+                <Link to="/blog/how-to-remove-gps-location-data-from-photos-before-sharing" className="text-white/70 hover:text-white transition-colors">
+                  Scrub Photo GPS Location
+                </Link>
               </li>
               <li>
-                <a href="#faqs-section" className="text-white/70 hover:text-white transition-colors">
-                  Frequently Asked Questions
-                </a>
+                <Link to="/blog/c2pa-content-credentials-explained-what-image-owners-should-know" className="text-white/70 hover:text-white transition-colors">
+                  C2PA Content Credentials
+                </Link>
               </li>
             </ul>
           </div>

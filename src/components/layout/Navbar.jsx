@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { name: 'Edit Metadata', path: '/edit-metadata' },
   { name: 'Geo Tag Photo', path: '/geo-tag-photo' },
   { name: 'AI Text Cleaner', path: '/ai-text-cleaner' },
+  { name: 'Blog', path: '/blog' },
 ];
 
 export default function Navbar() {
