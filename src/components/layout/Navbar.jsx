@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { name: 'Geo Tag Photo', path: '/geo-tag-photo' },
   { name: 'AI Text Cleaner', path: '/ai-text-cleaner' },
   { name: 'Blog', path: '/blog' },
+  { name: 'About', path: '/about' },
 ];
 
 export default function Navbar() {

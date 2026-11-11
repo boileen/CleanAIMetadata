@@ -141,6 +141,14 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-xs sm:text-[13px]">
               <li>
+                <Link
+                  to="/about"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  About Our Architecture
+                </Link>
+              </li>
+              <li>
                 <a
                   href={`mailto:${BRAND_CONFIG.supportEmail}`}
                   className="text-white/70 hover:text-white transition-colors"

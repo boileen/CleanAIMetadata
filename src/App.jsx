@@ -11,6 +11,7 @@ import AiTextCleanerPage from './pages/AiTextCleanerPage';
 import InstagramGuidePage from './pages/InstagramGuidePage';
 import BlogIndexPage from './pages/BlogIndexPage';
 import BlogPostPage from './pages/BlogPostPage';
+import AboutPage from './pages/AboutPage';
 
 export default function App() {
   return (
@@ -23,6 +24,9 @@ export default function App() {
         <Route path="geo-tag-photo" element={<GeoTagPage />} />
         <Route path="ai-text-cleaner" element={<AiTextCleanerPage />} />
         <Route path="instagram-ai-label-guide" element={<InstagramGuidePage />} />
+
+        {/* About & Mission */}
+        <Route path="about" element={<AboutPage />} />
 
         {/* Static Blog & SEO Guides */}
         <Route path="blog" element={<BlogIndexPage />} />
