@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Twitter, Github, Instagram, Mail, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { BRAND_CONFIG } from '../../config/brandConfig';
 import LogoIcon from '../brand/LogoIcon';
 
@@ -30,49 +30,6 @@ export default function Footer() {
                 <span className="w-2 h-2 rounded-full bg-cyan animate-pulse"></span>
                 <span>Zero Server Uploads · 100% Private</span>
               </span>
-            </div>
-
-            {/* Social Links */}
-            <div className="pt-2">
-              <h5 className="text-[11px] font-mono uppercase tracking-wider text-white/50 mb-2">
-                Connect
-              </h5>
-              <div className="flex items-center gap-3">
-                <a
-                  href={BRAND_CONFIG.social.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-                  aria-label="Twitter / X"
-                >
-                  <Twitter className="w-4 h-4" />
-                </a>
-                <a
-                  href={BRAND_CONFIG.social.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-                  aria-label="GitHub"
-                >
-                  <Github className="w-4 h-4" />
-                </a>
-                <a
-                  href={BRAND_CONFIG.social.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="w-4 h-4" />
-                </a>
-                <a
-                  href={`mailto:${BRAND_CONFIG.supportEmail}`}
-                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-                  aria-label="Contact Email"
-                >
-                  <Mail className="w-4 h-4" />
-                </a>
-              </div>
             </div>
           </div>
 
