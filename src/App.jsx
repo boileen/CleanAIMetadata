@@ -13,6 +13,8 @@ import InstagramGuidePage from './pages/InstagramGuidePage';
 import BlogIndexPage from './pages/BlogIndexPage';
 import BlogPostPage from './pages/BlogPostPage';
 import AboutPage from './pages/AboutPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsPage from './pages/TermsPage';
 
 export default function App() {
   return (
@@ -30,8 +32,10 @@ export default function App() {
         <Route path="ai-text-cleaner" element={<AiTextCleanerPage />} />
         <Route path="instagram-ai-label-guide" element={<InstagramGuidePage />} />
 
-        {/* About & Mission */}
+        {/* About, Mission & Legal */}
         <Route path="about" element={<AboutPage />} />
+        <Route path="privacy" element={<PrivacyPolicyPage />} />
+        <Route path="terms" element={<TermsPage />} />
 
         {/* Static Blog & SEO Guides */}
         <Route path="blog" element={<BlogIndexPage />} />

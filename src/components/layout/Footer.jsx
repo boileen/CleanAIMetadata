@@ -150,6 +150,22 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  to="/privacy"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/terms"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
                 <a
                   href={`mailto:${BRAND_CONFIG.supportEmail}`}
                   className="text-white/70 hover:text-white transition-colors"
