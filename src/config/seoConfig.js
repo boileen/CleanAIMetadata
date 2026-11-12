@@ -52,8 +52,8 @@ export const SEO_CONFIG = {
     altPaths: ['/ai-text-watermark-remover/'],
     exactTitle: `AI Text Watermark & Hidden Character Cleaner | ${BRAND_CONFIG.name}`,
     h1: 'AI Text Watermark & Hidden Character Cleaner',
-    eyebrow: '• ZERO-WIDTH & PERPLEXITY SANITIZER',
-    description: 'Sanitize hidden unicode watermarks, zero-width spaces (ZWSP), LLM signature punctuation, and ChatGPT / Claude prompt footprints entirely in your browser runtime.',
+    eyebrow: '• ZERO-WIDTH & PUNCTUATION SANITIZER',
+    description: 'Remove zero-width characters, non-breaking spaces, soft hyphens, and AI-style punctuation from pasted text in your browser. Nothing is uploaded and no wording is rewritten.',
     keywords: 'ai text watermark remover, zero width space remover, sanitize chatgpt text, remove claude watermarks',
     canonical: `${BRAND_CONFIG.canonicalBase}/ai-text-cleaner`,
     breadcrumb: 'AI Text Cleaner',
@@ -93,4 +93,21 @@ export const getWebApplicationSchema = (toolConfig) => ({
     "name": BRAND_CONFIG.name,
     "url": BRAND_CONFIG.canonicalBase
   }
+});
+
+/**
+ * Generate FAQPage JSON-LD from a local FAQ list.
+ * Pass the result alongside the WebApplication schema (arrays are valid).
+ */
+export const getFaqSchema = (faqs = []) => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((faq) => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
 });
