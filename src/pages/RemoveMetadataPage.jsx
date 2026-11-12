@@ -102,8 +102,7 @@ export default function RemoveMetadataPage() {
                 multiple
                 maxFiles={Math.max(0, (maxFiles ?? 5) - files.length)}
                 title="Drag photos or AI images here"
-                subtitle="JPEG, PNG, WebP, TIFF or HEIC"
-                limit="Up to 5 images · 100 MB"
+                subtitle="Up to 5 images. Max. Upload Size: 100 MB"
                 buttonLabel="Upload"
                 inputId="file-upload-input"
               />

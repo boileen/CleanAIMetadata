@@ -270,8 +270,7 @@ export default function EditMetadataPage() {
               inputId="edit-metadata-input"
               maxFiles={1}
               title="Drop one photo here to edit its metadata"
-              subtitle="JPEG, PNG or WebP"
-              limit="1 image at a time"
+              subtitle="Support for JPEG, PNG, WebP, TIFF, HEIC (Max: 100MB)"
               buttonLabel="Choose a photo"
             />
           </>

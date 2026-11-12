@@ -109,8 +109,7 @@ export default function ViewMetadataPage() {
             multiple
             maxFiles={Math.max(0, (maxFiles ?? 5) - files.length)}
             title="Drag & Drop or Click to Upload"
-            subtitle="JPEG, PNG, WebP, TIFF or HEIC"
-            limit="Up to 5 images · 100 MB"
+            subtitle="Support for JPEG, PNG, WebP, TIFF, HEIC (Max: 100MB)"
             buttonLabel="Choose Image"
             inputId="view-metadata-input"
           />
