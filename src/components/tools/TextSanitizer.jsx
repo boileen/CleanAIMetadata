@@ -398,7 +398,7 @@ export default function TextSanitizer() {
 
           {showReveal ? (
             <div className="h-[19.5rem] overflow-auto rounded-xl bg-card-raised border border-subtle p-3.5">
-              <pre className="whitespace-pre-wrap break-words font-mono text-[12px] leading-relaxed text-foreground">
+              <pre className="whitespace-pre-wrap break-words font-editor text-[12px] leading-relaxed text-foreground">
                 {revealed.map((segment, index) =>
                   segment.type === 'marker' ? (
                     <span
@@ -421,7 +421,7 @@ export default function TextSanitizer() {
               value={inputText}
               onChange={(event) => setInputText(event.target.value)}
               placeholder="Paste text from ChatGPT, Google Docs, a PDF, or a website. Invisible characters and curly punctuation are detected and cleaned locally."
-              className="w-full p-3.5 rounded-xl bg-card-raised border border-subtle text-xs sm:text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand transition-colors font-sans leading-relaxed resize-none"
+              className="w-full p-3.5 rounded-xl bg-card-raised border border-subtle text-xs sm:text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand transition-colors font-editor leading-relaxed resize-none"
               spellCheck={false}
             />
           )}
@@ -476,7 +476,7 @@ export default function TextSanitizer() {
             rows={12}
             value={output}
             placeholder="Cleaned text appears here as you type."
-            className="w-full p-3.5 rounded-xl bg-card-raised/60 border border-subtle text-xs sm:text-sm text-foreground font-sans leading-relaxed resize-none focus:outline-none"
+            className="w-full p-3.5 rounded-xl bg-card-raised/60 border border-subtle text-xs sm:text-sm text-foreground font-editor leading-relaxed resize-none focus:outline-none"
             spellCheck={false}
           />
 

@@ -56,6 +56,7 @@ export default {
       fontFamily: {
         sans: ['Geist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['Geist Mono', 'JetBrains Mono', 'Fira Code', 'monospace'],
+        editor: ['Consolas', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       borderRadius: {
         'panel': '1.35rem',
