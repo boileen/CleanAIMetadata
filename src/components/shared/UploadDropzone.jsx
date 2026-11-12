@@ -25,7 +25,7 @@ function TrustBadges() {
   const items = ['100% Free', 'No installation required', 'Secure & private'];
 
   return (
-    <div className="flex flex-wrap items-center gap-5 sm:gap-7 px-2 text-xs text-muted font-medium justify-start -mt-2">
+    <div className="flex flex-wrap items-center gap-5 sm:gap-7 px-2 text-[11px] text-muted font-medium justify-start -mt-2">
       {items.map((item) => (
         <span key={item} className="inline-flex items-center gap-1.5">
           <span className="w-3.5 h-3.5 rounded-full bg-brand flex items-center justify-center text-white shrink-0 shadow-sm">
@@ -53,6 +53,7 @@ export default function UploadDropzone({
   inputId,
   allowDrive = true,
   maxFiles,
+  limit = null,
 }) {
   const [dragging, setDragging] = useState(false);
   const [driveState, setDriveState] = useState('idle');
@@ -161,12 +162,19 @@ export default function UploadDropzone({
             <h2 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
               {title}
             </h2>
-            <p className="text-xs sm:text-[13px] text-muted">{subtitle}</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+              <p className="text-[11px] sm:text-xs text-muted leading-relaxed">{subtitle}</p>
+              {limit && (
+                <span className="inline-flex items-center rounded-full border border-subtle bg-card-strong px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-muted-strong">
+                  {limit}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-3 w-full max-w-[15rem]">
             <span className="h-px flex-1 bg-subtle" />
-            <span className="text-[11px] font-medium uppercase tracking-wide text-muted">or</span>
+            <span className="text-[10px] font-medium uppercase tracking-wide text-muted">or</span>
             <span className="h-px flex-1 bg-subtle" />
           </div>
 
