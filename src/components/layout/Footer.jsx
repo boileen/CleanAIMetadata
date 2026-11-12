@@ -143,9 +143,10 @@ export default function Footer() {
               <li>
                 <Link
                   to="/about"
-                  className="text-white/70 hover:text-white transition-colors"
+                  className="text-white hover:text-cyan font-medium transition-colors flex items-center justify-between"
                 >
-                  About Our Architecture
+                  <span>About Us</span>
+                  <span className="text-[10px] font-mono text-cyan/70">Engine</span>
                 </Link>
               </li>
               <li>
