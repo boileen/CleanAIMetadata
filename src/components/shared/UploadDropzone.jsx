@@ -3,11 +3,6 @@ import {
   CloudUpload,
   ImagePlus,
 } from 'lucide-react';
-import UploadSourceMenu from './UploadSourceMenu';
-import {
-  isGoogleDriveConfigured,
-  pickImagesFromGoogleDrive,
-} from '../../services/googleDrive';
 
 /**
  * Shared upload container.
@@ -51,26 +46,10 @@ export default function UploadDropzone({
   showTrustBadges = true,
   error = null,
   inputId,
-  allowDrive = true,
-  maxFiles,
 }) {
   const [dragging, setDragging] = useState(false);
-  const [driveState, setDriveState] = useState('idle');
-  const [driveError, setDriveError] = useState(null);
   const dragDepth = useRef(0);
   const fileInputRef = useRef(null);
-
-  const driveConfigured = isGoogleDriveConfigured();
-  const driveBusy = ['initializing', 'authenticating', 'selecting', 'downloading'].includes(
-    driveState,
-  );
-
-  const DRIVE_BUSY_LABELS = {
-    initializing: 'Opening…',
-    authenticating: 'Signing in…',
-    selecting: 'Choose in Drive…',
-    downloading: 'Downloading…',
-  };
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -85,40 +64,6 @@ export default function UploadDropzone({
     onBrowse?.();
     fileInputRef.current?.click();
   };
-
-  const handleDrivePick = async () => {
-    setDriveError(null);
-
-    if (!driveConfigured) {
-      setDriveError('Google Drive is not configured for this build.');
-      return;
-    }
-
-    if (typeof maxFiles === 'number' && maxFiles <= 0) {
-      setDriveError('The queue is full. Remove a file before adding another one from Drive.');
-      return;
-    }
-
-    try {
-      const picked = await pickImagesFromGoogleDrive({
-        multiple,
-        maxSize: 100 * 1024 * 1024,
-        maxFiles: typeof maxFiles === 'number' ? maxFiles : Infinity,
-        onStatus: setDriveState,
-      });
-
-      if (picked?.length) {
-        setDriveState('idle');
-        onFiles(picked);
-      }
-    } catch (err) {
-      setDriveError(err?.message || 'Could not load that file from Google Drive.');
-    } finally {
-      setDriveState('idle');
-    }
-  };
-
-  const shownError = driveError || error;
 
   return (
     <div className="space-y-4">
@@ -140,8 +85,6 @@ export default function UploadDropzone({
           role="button"
           tabIndex={0}
           onKeyDown={(event) => {
-            // Ignore keys fired from the source dropdown inside the dropzone.
-            if (event.target !== event.currentTarget) return;
             if (event.key === 'Enter' || event.key === ' ') {
               event.preventDefault();
               handleBrowse();
@@ -157,12 +100,12 @@ export default function UploadDropzone({
             <CloudUpload className="w-7 h-7" strokeWidth={1.75} />
           </div>
 
-            <div className="space-y-1.5">
-              <h2 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
-                {title}
-              </h2>
-              <p className="text-[11px] sm:text-xs text-muted leading-relaxed">{subtitle}</p>
-            </div>
+          <div className="space-y-1.5">
+            <h2 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
+              {title}
+            </h2>
+            <p className="text-[11px] sm:text-xs text-muted leading-relaxed">{subtitle}</p>
+          </div>
 
           <div className="flex items-center gap-3 w-full max-w-[15rem]">
             <span className="h-px flex-1 bg-subtle" />
@@ -170,28 +113,17 @@ export default function UploadDropzone({
             <span className="h-px flex-1 bg-subtle" />
           </div>
 
-          {allowDrive ? (
-            <UploadSourceMenu
-              label={buttonLabel}
-              onBrowse={() => handleBrowse()}
-              onDrive={handleDrivePick}
-              driveConfigured={driveConfigured}
-              busy={driveBusy}
-              busyLabel={DRIVE_BUSY_LABELS[driveState] || 'Connecting…'}
-            />
-          ) : (
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                handleBrowse();
-              }}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand hover:bg-brand-hover text-white text-[14px] font-bold shadow-sm transition-all hover:-translate-y-0.5"
-            >
-              <ImagePlus className="w-4 h-4" />
-              {buttonLabel}
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              handleBrowse();
+            }}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand hover:bg-brand-hover text-white text-[14px] font-bold shadow-sm transition-all hover:-translate-y-0.5"
+          >
+            <ImagePlus className="w-4 h-4" />
+            {buttonLabel}
+          </button>
 
           <input
             ref={fileInputRef}
@@ -208,9 +140,9 @@ export default function UploadDropzone({
           />
         </div>
 
-        {shownError && (
+        {error && (
           <div className="mt-4 rounded-xl border border-risk-rose-border bg-risk-rose-bg px-4 py-3 text-[12px] font-medium text-risk-rose-text">
-            {shownError}
+            {error}
           </div>
         )}
       </div>
