@@ -53,7 +53,6 @@ export default function UploadDropzone({
   inputId,
   allowDrive = true,
   maxFiles,
-  limit = null,
 }) {
   const [dragging, setDragging] = useState(false);
   const [driveState, setDriveState] = useState('idle');
@@ -158,19 +157,12 @@ export default function UploadDropzone({
             <CloudUpload className="w-7 h-7" strokeWidth={1.75} />
           </div>
 
-          <div className="space-y-1.5">
-            <h2 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
-              {title}
-            </h2>
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+            <div className="space-y-1.5">
+              <h2 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
+                {title}
+              </h2>
               <p className="text-[11px] sm:text-xs text-muted leading-relaxed">{subtitle}</p>
-              {limit && (
-                <span className="inline-flex items-center rounded-full border border-subtle bg-card-strong px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-muted-strong">
-                  {limit}
-                </span>
-              )}
             </div>
-          </div>
 
           <div className="flex items-center gap-3 w-full max-w-[15rem]">
             <span className="h-px flex-1 bg-subtle" />

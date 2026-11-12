@@ -324,7 +324,6 @@ export default function GeoTagPage() {
               onFiles={selectPhoto}
               title="Drag & drop a photo here"
               subtitle="JPEG, PNG or WebP for GPS editing"
-              limit="1 image at a time"
               buttonLabel="Upload"
               inputId="geotag-file-input"
             />
