@@ -44,6 +44,7 @@ export default function ViewMetadataPage() {
     errorMessage,
     setActiveFileId,
     retryFile,
+    maxFiles,
   } = useWorkspace();
 
   const [openFileId, setOpenFileId] = useState(null);
@@ -106,6 +107,7 @@ export default function ViewMetadataPage() {
             onFiles={(fileList) => addFiles(fileList)}
             accept="image/jpeg,image/png,image/webp,image/tiff,image/heic"
             multiple
+            maxFiles={Math.max(0, (maxFiles ?? 5) - files.length)}
             title="Drag & Drop or Click to Upload"
             subtitle="Support for JPEG, PNG, WebP, TIFF, HEIC (Max: 100MB)"
             buttonLabel="Choose Image"

@@ -219,7 +219,7 @@ function LocationReadout({ gps }) {
 export default function GeoTagPage() {
   const seo = SEO_CONFIG.geoTag;
   const schema = getWebApplicationSchema(seo);
-  const { files, addFiles } = useWorkspace();
+  const { files, addFiles, maxFiles } = useWorkspace();
   const geo = useGeoTagEditor();
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
@@ -311,6 +311,7 @@ export default function GeoTagPage() {
           <UploadDropzone
             onFiles={(fileList) => addFiles(fileList)}
             multiple
+            maxFiles={Math.max(0, (maxFiles ?? 5) - files.length)}
             title="Drag & drop your images here"
             subtitle="JPEG, PNG, WebP, TIFF, or HEIC up to 100MB"
             buttonLabel="Upload"

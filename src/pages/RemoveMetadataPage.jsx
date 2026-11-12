@@ -54,7 +54,7 @@ function TrustBadges() {
 export default function RemoveMetadataPage() {
   const seo = SEO_CONFIG.home;
   const schema = getWebApplicationSchema(seo);
-  const { files, activeFile, addFiles, cleanAll, errorMessage } = useWorkspace();
+  const { files, activeFile, addFiles, cleanAll, errorMessage, maxFiles } = useWorkspace();
 
   const hasFiles = files && files.length > 0;
   const allCleaned = hasFiles && files.every((f) => f.status === 'cleaned');
@@ -100,6 +100,7 @@ export default function RemoveMetadataPage() {
               <UploadDropzone
                 onFiles={(fileList) => addFiles(fileList)}
                 multiple
+                maxFiles={Math.max(0, (maxFiles ?? 5) - files.length)}
                 title="Drag photos or AI images here"
                 subtitle="JPEG, PNG, WebP, TIFF, or HEIC up to 100MB"
                 buttonLabel="Upload"

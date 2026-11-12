@@ -120,6 +120,17 @@
   - Zero-width character stripping and Unicode punctuation normalization.
 - [x] **Step 4.6: Batch Archiver**
   - `jszip` packaging up to 5 cleaned images into a single `.zip` download (dynamically imported).
+- [x] **Step 4.7: Google Drive Upload Source (Optional)**
+  - Split upload button in `UploadDropzone`: primary file picker + chevron source menu (`UploadSourceMenu.jsx`).
+  - `src/services/googleDrive.js` lazily loads Google Identity Services + Picker, requests the minimal `drive.file` scope, and downloads the picked bytes directly into a `File` (browser → Google only; no app server).
+  - Enforces the same 5-file / 100 MB caps before download, and falls back to a disabled "Setup required" row when `VITE_GOOGLE_CLIENT_ID` / `VITE_GOOGLE_API_KEY` are absent.
+  - **Cloud setup (one-time):**
+    1. Create a Google Cloud project.
+    2. Enable **Google Picker API** and **Google Drive API**.
+    3. OAuth consent screen → External → add scope `https://www.googleapis.com/auth/drive.file` → publish (non-sensitive, no verification review).
+    4. Create an **OAuth Client ID** (Web application) with authorized JS origins `http://localhost:3000` and `https://aimetadataeraser.com`.
+    5. Create an **API key** restricted to HTTP referrers for those same origins.
+    6. Copy `.env.example` → `.env.local` and fill `VITE_GOOGLE_CLIENT_ID`, `VITE_GOOGLE_API_KEY` (both are public by design). Restart the dev server.
 
 ---
 
