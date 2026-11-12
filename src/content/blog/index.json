@@ -1,5 +1,16 @@
 [
   {
+    "slug": "ai-text-cleaner-what-it-can-and-cannot-remove",
+    "title": "AI Text Cleaner: What It Can and Cannot Remove",
+    "excerpt": "Invisible Unicode, AI tags and writing patterns are three different problems. This guide separates what a character cleaner can remove, what only a rewrite can change, and what no tool can prove about a document's origin.",
+    "category": "AI Text",
+    "readTime": "9 min read",
+    "date": "November 2026",
+    "targetTool": "/ai-text-cleaner",
+    "toolLabel": "Clean AI Text Markers",
+    "totalWords": 1297
+  },
+  {
     "slug": "how-to-remove-ai-metadata-from-an-image-safely",
     "title": "How to Remove AI Metadata from an Image Safely",
     "excerpt": "What does an AI metadata remover actually delete? The answer depends on the exact file, the information stored in its containers and what you are trying to achieve. This guide explains remove ai metadata from image in a …",

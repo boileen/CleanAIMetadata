@@ -146,7 +146,13 @@ project-root/
 │   │       ├── MetadataPreview.jsx # Inline summary card of notable tags
 │   │       ├── MetadataEditorForm.jsx # EXIF & creator form (edit mode)
 │   │       ├── MapPicker.jsx    # Leaflet map & coordinate inputs (geotag mode)
-│   │       ├── TextSanitizer.jsx # Preset-driven sanitiser: findings table, reveal mode, copy/download
+│   │       ├── TextSanitizer.jsx # Thin entry point for the text workspace
+│   │       ├── text/            # Compact cleaner workspace
+│   │       │   ├── TextWorkspace.jsx # Presets, panes, findings/patterns, report state
+│   │       │   ├── EditorPane.jsx    # Source/cleaned pane with reveal markers
+│   │       │   ├── FindingsPanel.jsx # Characters / Patterns tabs and quoted samples
+│   │       │   ├── RulesPopover.jsx  # Rule switches and dash style
+│   │       │   └── OutputBar.jsx     # Byte delta, copy, .txt and JSON report
 │   │       └── edit/            # Single-photo editor shell (dropzone, sidebar, panel, result)
 │   │
 │   ├── content/

@@ -168,4 +168,9 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-</urlset>
+  <url>
+    <loc>https://aimetadataeraser.com/blog/ai-text-cleaner-what-it-can-and-cannot-remove</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url></urlset>

@@ -1,133 +1,155 @@
 /**
- * Deterministic text sanitizer.
+ * Deterministic text sanitiser.
  *
- * Removes invisible Unicode artifacts, normalises whitespace, and repairs
- * typographic punctuation. Pure string functions with no DOM or React
- * dependency, so the same code runs in the browser and in `node --test`.
+ * One walk over grapheme clusters decides what each character is, whether the
+ * text around it needs it, and what the output should contain. Pure string
+ * functions with no DOM or React dependency, so the same code runs in the
+ * browser and under `node --test`.
  *
- * Two rules govern the design:
+ * Three rules govern the design:
  *  1. Never touch emoji sequences. U+200D, variation selectors, and tag
  *     characters are load-bearing inside glyphs like 👨‍👩‍👧 or 🏴󠁧󠁢󠁳󠁣󠁴󠁿.
- *  2. Never touch code or URLs when "preserve markdown" is on, so pasting a
- *     README through the tool does not break it.
+ *  2. Never touch code, URLs, or emails when "protect code" is on.
+ *  3. Never guess at a script. Joiners stay inside Arabic and Indic words
+ *     because those scripts need them to spell words correctly.
+ *
+ * The character tables come from a generated file pinned to one Unicode
+ * version; see `scripts/gen-unicode.mjs`.
  */
 
 import { CONFUSABLES } from '../data/confusables.js';
+import { DASHES, HAZARD_RANGES, SPACES, UNICODE_VERSION } from '../data/unicodeHazards.generated.js';
+import { decodeHiddenPayload, findAiTags, stripAiReferrer } from './textAiTags.js';
+
+export { UNICODE_VERSION };
+export { decodeHiddenPayload };
 
 /* ────────────────────────── character tables ────────────────────────── */
 
+const NAMED = new Map([
+  [0x200b, 'ZWSP'],
+  [0x200c, 'ZWNJ'],
+  [0x200d, 'ZWJ'],
+  [0x2060, 'WJ'],
+  [0xfeff, 'BOM'],
+  [0x180e, 'MVS'],
+  [0x00ad, 'SHY'],
+  [0x00a0, 'NBSP'],
+  [0x202f, 'NNBSP'],
+  [0x2009, 'THSP'],
+  [0x2007, 'FIGSP'],
+  [0x2003, 'EMSP'],
+  [0x2002, 'ENSP'],
+  [0x3000, 'IDSP'],
+  [0x2028, 'LSEP'],
+  [0x2029, 'PSEP'],
+  [0x2018, '‘'],
+  [0x2019, '’'],
+  [0x201c, '“'],
+  [0x201d, '”'],
+  [0x2026, '…'],
+  [0xff01, '！'],
+  [0xff1f, '？'],
+  [0xe0001, 'TAG'],
+]);
+
 const INFO = new Map();
 
-function define(cps, info) {
-  for (const cp of cps) INFO.set(cp, info);
+function add(cp, info) {
+  INFO.set(cp, info);
 }
 
-const range = (from, to) => {
-  const out = [];
-  for (let cp = from; cp <= to; cp += 1) out.push(cp);
-  return out;
-};
+for (const range of HAZARD_RANGES) {
+  for (let cp = range.from; cp <= range.to; cp += 1) {
+    const name = range.name.includes('{n}')
+      ? range.name.replace('{n}', String(cp - range.from + 1))
+      : range.name;
+    add(cp, {
+      name,
+      short: shortLabel(cp, name),
+      group: 'invisible',
+      rule: range.rule,
+    });
+  }
+}
 
-/* Invisible & format characters */
-define([0x200b], { name: 'ZERO WIDTH SPACE', short: 'ZWSP', group: 'invisible', rule: 'zeroWidth' });
-define([0x200c], { name: 'ZERO WIDTH NON-JOINER', short: 'ZWNJ', group: 'invisible', rule: 'zeroWidth' });
-define([0x200d], { name: 'ZERO WIDTH JOINER', short: 'ZWJ', group: 'invisible', rule: 'zeroWidth' });
-define([0x2060], { name: 'WORD JOINER', short: 'WJ', group: 'invisible', rule: 'zeroWidth' });
-define([0xfeff], { name: 'ZERO WIDTH NO-BREAK SPACE (BOM)', short: 'BOM', group: 'invisible', rule: 'zeroWidth' });
-define([0x180e], { name: 'MONGOLIAN VOWEL SEPARATOR', short: 'MVS', group: 'invisible', rule: 'zeroWidth' });
-define([0x00ad], { name: 'SOFT HYPHEN', short: 'SHY', group: 'invisible', rule: 'zeroWidth' });
-
-define([0x200e], { name: 'LEFT-TO-RIGHT MARK', short: 'LRM', group: 'invisible', rule: 'bidi' });
-define([0x200f], { name: 'RIGHT-TO-LEFT MARK', short: 'RLM', group: 'invisible', rule: 'bidi' });
-define([0x202a], { name: 'LEFT-TO-RIGHT EMBEDDING', short: 'LRE', group: 'invisible', rule: 'bidi' });
-define([0x202b], { name: 'RIGHT-TO-LEFT EMBEDDING', short: 'RLE', group: 'invisible', rule: 'bidi' });
-define([0x202c], { name: 'POP DIRECTIONAL FORMATTING', short: 'PDF', group: 'invisible', rule: 'bidi' });
-define([0x202d], { name: 'LEFT-TO-RIGHT OVERRIDE', short: 'LRO', group: 'invisible', rule: 'bidi' });
-define([0x202e], { name: 'RIGHT-TO-LEFT OVERRIDE', short: 'RLO', group: 'invisible', rule: 'bidi' });
-define([0x2066], { name: 'LEFT-TO-RIGHT ISOLATE', short: 'LRI', group: 'invisible', rule: 'bidi' });
-define([0x2067], { name: 'RIGHT-TO-LEFT ISOLATE', short: 'RLI', group: 'invisible', rule: 'bidi' });
-define([0x2068], { name: 'FIRST STRONG ISOLATE', short: 'FSI', group: 'invisible', rule: 'bidi' });
-define([0x2069], { name: 'POP DIRECTIONAL ISOLATE', short: 'PDI', group: 'invisible', rule: 'bidi' });
-
-define(range(0x00, 0x08).concat([0x0b, 0x0c], range(0x0e, 0x1f), [0x7f]), {
-  name: 'CONTROL CHARACTER',
-  short: 'CTRL',
-  group: 'invisible',
-  rule: 'zeroWidth',
-});
-
-define(range(0xfe00, 0xfe0f), {
-  name: 'VARIATION SELECTOR',
-  short: 'VS',
-  group: 'invisible',
-  rule: 'zeroWidth',
-});
-for (let cp = 0xfe00; cp <= 0xfe0f; cp += 1) {
-  INFO.set(cp, {
-    name: `VARIATION SELECTOR-${cp - 0xfe00 + 1}`,
-    short: `VS${cp - 0xfe00 + 1}`,
-    group: 'invisible',
-    rule: 'zeroWidth',
+for (const space of SPACES) {
+  add(space.cp, {
+    name: space.name,
+    short: spaceShort(space.cp, space.name),
+    group: 'space',
+    rule: 'space',
   });
 }
 
-INFO.set(0xe0001, { name: 'LANGUAGE TAG', short: 'TAG', group: 'invisible', rule: 'zeroWidth' });
-for (let cp = 0xe0020; cp <= 0xe007f; cp += 1) {
-  INFO.set(cp, { name: 'TAG CHARACTER', short: 'TAG', group: 'invisible', rule: 'zeroWidth' });
+for (const dash of DASHES) {
+  if (dash.cp === 0x2d) continue; // plain ASCII hyphen needs no reporting
+  add(dash.cp, {
+    name: dash.name,
+    short: dash.cp === 0x2014 ? '—' : dash.cp === 0x2013 ? '–' : dash.cp === 0x2212 ? '−' : '-',
+    group: 'punctuation',
+    rule: 'dash',
+  });
 }
 
-/* Non-standard spaces */
-const SPACE_INFO = { group: 'space', rule: 'space' };
-define([0x00a0], { ...SPACE_INFO, name: 'NO-BREAK SPACE', short: 'NBSP' });
-define([0x1680], { ...SPACE_INFO, name: 'OGHAM SPACE MARK', short: 'OGSP' });
-define([0x2000], { ...SPACE_INFO, name: 'EN QUAD', short: 'QUAD' });
-define([0x2001], { ...SPACE_INFO, name: 'EM QUAD', short: 'QUAD' });
-define([0x2002], { ...SPACE_INFO, name: 'EN SPACE', short: 'ENSP' });
-define([0x2003], { ...SPACE_INFO, name: 'EM SPACE', short: 'EMSP' });
-define([0x2004], { ...SPACE_INFO, name: 'THREE-PER-EM SPACE', short: '3/EM' });
-define([0x2005], { ...SPACE_INFO, name: 'FOUR-PER-EM SPACE', short: '4/EM' });
-define([0x2006], { ...SPACE_INFO, name: 'SIX-PER-EM SPACE', short: '6/EM' });
-define([0x2007], { ...SPACE_INFO, name: 'FIGURE SPACE', short: 'FIGSP' });
-define([0x2008], { ...SPACE_INFO, name: 'PUNCTUATION SPACE', short: 'PUNSP' });
-define([0x2009], { ...SPACE_INFO, name: 'THIN SPACE', short: 'THSP' });
-define([0x200a], { ...SPACE_INFO, name: 'HAIR SPACE', short: 'HAIR' });
-define([0x202f], { ...SPACE_INFO, name: 'NARROW NO-BREAK SPACE', short: 'NNBSP' });
-define([0x205f], { ...SPACE_INFO, name: 'MEDIUM MATHEMATICAL SPACE', short: 'MMSP' });
-define([0x3000], { ...SPACE_INFO, name: 'IDEOGRAPHIC SPACE', short: 'IDSP' });
-define([0x2028], { ...SPACE_INFO, name: 'LINE SEPARATOR', short: 'LSEP' });
-define([0x2029], { ...SPACE_INFO, name: 'PARAGRAPH SEPARATOR', short: 'PSEP' });
+function shortLabel(cp, name) {
+  if (NAMED.has(cp)) return NAMED.get(cp);
+  if (cp >= 0xfe00 && cp <= 0xfe0f) return `VS${cp - 0xfe00 + 1}`;
+  if (cp >= 0xe0100 && cp <= 0xe01ef) return `VS${cp - 0xe0100 + 17}`;
+  if (cp >= 0xe0020 && cp <= 0xe007f) return 'TAG';
+  if (cp >= 0x202a && cp <= 0x202e) return 'BIDI';
+  if (cp >= 0x2066 && cp <= 0x2069) return 'BIDI';
+  const first = name.split(/[\s-]/)[0];
+  return first.length > 7 ? first.slice(0, 7) : first;
+}
 
-/* Typographic punctuation */
-const QUOTE_INFO = { group: 'punctuation', rule: 'quote' };
-define([0x2018], { ...QUOTE_INFO, name: 'LEFT SINGLE QUOTATION MARK', short: '‘' });
-define([0x2019], { ...QUOTE_INFO, name: 'RIGHT SINGLE QUOTATION MARK', short: '’' });
-define([0x201a], { ...QUOTE_INFO, name: 'SINGLE LOW-9 QUOTATION MARK', short: '‚' });
-define([0x201b], { ...QUOTE_INFO, name: 'SINGLE HIGH-REVERSED-9 QUOTATION MARK', short: '‛' });
-define([0x201c], { ...QUOTE_INFO, name: 'LEFT DOUBLE QUOTATION MARK', short: '“' });
-define([0x201d], { ...QUOTE_INFO, name: 'RIGHT DOUBLE QUOTATION MARK', short: '”' });
-define([0x201e], { ...QUOTE_INFO, name: 'DOUBLE LOW-9 QUOTATION MARK', short: '„' });
-define([0x00ab], { ...QUOTE_INFO, name: 'LEFT-POINTING DOUBLE ANGLE QUOTATION MARK', short: '«' });
-define([0x00bb], { ...QUOTE_INFO, name: 'RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK', short: '»' });
+function spaceShort(cp, name) {
+  if (NAMED.has(cp)) return NAMED.get(cp);
+  return name.split(' ')[0].slice(0, 7);
+}
 
-const DASH_INFO = { group: 'punctuation', rule: 'dash' };
-define([0x2013], { ...DASH_INFO, name: 'EN DASH', short: '–' });
-define([0x2014], { ...DASH_INFO, name: 'EM DASH', short: '—' });
-define([0x2015], { ...DASH_INFO, name: 'HORIZONTAL BAR', short: '―' });
-define([0x2212], { ...DASH_INFO, name: 'MINUS SIGN', short: '−' });
-define([0x2010], { ...DASH_INFO, name: 'HYPHEN', short: '‐' });
-define([0x2011], { ...DASH_INFO, name: 'NON-BREAKING HYPHEN', short: '‑' });
+function punctInfo(cp) {
+  const single = {
+    0x2018: "LEFT SINGLE QUOTATION MARK",
+    0x2019: 'RIGHT SINGLE QUOTATION MARK',
+    0x201a: 'SINGLE LOW-9 QUOTATION MARK',
+    0x201b: 'SINGLE HIGH-REVERSED-9 QUOTATION MARK',
+    0x201c: 'LEFT DOUBLE QUOTATION MARK',
+    0x201d: 'RIGHT DOUBLE QUOTATION MARK',
+    0x201e: 'DOUBLE LOW-9 QUOTATION MARK',
+    0x00ab: 'LEFT-POINTING DOUBLE ANGLE QUOTATION MARK',
+    0x00bb: 'RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK',
+    0x2026: 'HORIZONTAL ELLIPSIS',
+    0xff01: 'FULLWIDTH EXCLAMATION MARK',
+    0xff1f: 'FULLWIDTH QUESTION MARK',
+    0xff0c: 'FULLWIDTH COMMA',
+    0xff1b: 'FULLWIDTH SEMICOLON',
+    0xff1a: 'FULLWIDTH COLON',
+    0xff08: 'FULLWIDTH LEFT PARENTHESIS',
+    0xff09: 'FULLWIDTH RIGHT PARENTHESIS',
+    0xff02: 'FULLWIDTH QUOTATION MARK',
+    0xff07: 'FULLWIDTH APOSTROPHE',
+    0xff0e: 'FULLWIDTH FULL STOP',
+  };
+  const name = single[cp];
+  if (!name) return null;
+  if (NAMED.has(cp)) {
+    return { name, short: NAMED.get(cp), group: 'punctuation', rule: 'punct' };
+  }
+  if (cp >= 0x00ab && cp <= 0x00bb) {
+    return { name, short: cp === 0x00ab ? '«' : '»', group: 'punctuation', rule: 'quote' };
+  }
+  return { name, short: String.fromCodePoint(cp), group: 'punctuation', rule: 'quote' };
+}
 
-define([0x2026], { group: 'punctuation', rule: 'punct', name: 'HORIZONTAL ELLIPSIS', short: '…' });
-define([0xff01], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH EXCLAMATION MARK', short: '！' });
-define([0xff1f], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH QUESTION MARK', short: '？' });
-define([0xff0c], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH COMMA', short: '，' });
-define([0xff1b], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH SEMICOLON', short: '；' });
-define([0xff1a], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH COLON', short: '：' });
-define([0xff08], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH LEFT PARENTHESIS', short: '（' });
-define([0xff09], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH RIGHT PARENTHESIS', short: '）' });
-define([0xff02], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH QUOTATION MARK', short: '＂' });
-define([0xff07], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH APOSTROPHE', short: '＇' });
-define([0xff0e], { group: 'punctuation', rule: 'punct', name: 'FULLWIDTH FULL STOP', short: '．' });
+for (const cp of [0x2018, 0x2019, 0x201a, 0x201b, 0x201c, 0x201d, 0x201e, 0x00ab, 0x00bb]) {
+  const info = punctInfo(cp);
+  if (info) add(cp, info);
+}
+for (const cp of [0xff01, 0xff1f, 0xff0c, 0xff1b, 0xff1a, 0xff08, 0xff09, 0xff02, 0xff07, 0xff0e, 0x2026]) {
+  const info = punctInfo(cp);
+  if (info) add(cp, { ...info, rule: 'punct' });
+}
 
 /* ────────────────────────────── presets ─────────────────────────────── */
 
@@ -135,37 +157,40 @@ export const PRESETS = {
   light: {
     id: 'light',
     label: 'Light',
-    hint: 'Invisible characters only',
+    hint: 'Invisible characters and AI tags',
     options: {
       stripZeroWidth: true,
       stripBidi: false,
       normalizeSpaces: false,
       normalizePunctuation: false,
       foldLetters: false,
+      stripAiMetadata: false,
     },
   },
   standard: {
     id: 'standard',
     label: 'Standard',
-    hint: 'Invisibles, spaces and typography',
+    hint: 'Adds spaces and typography',
     options: {
       stripZeroWidth: true,
       stripBidi: false,
       normalizeSpaces: true,
       normalizePunctuation: true,
       foldLetters: false,
+      stripAiMetadata: false,
     },
   },
   aggressive: {
     id: 'aggressive',
     label: 'Aggressive',
-    hint: 'Adds lookalike letters and bidi controls',
+    hint: 'Adds bidi controls and lookalikes',
     options: {
       stripZeroWidth: true,
       stripBidi: true,
       normalizeSpaces: true,
       normalizePunctuation: true,
       foldLetters: true,
+      stripAiMetadata: true,
     },
   },
 };
@@ -177,23 +202,21 @@ export const DEFAULT_OPTIONS = {
   preserveEmoji: true,
   collapseSpaces: true,
   trimLines: true,
+  removeEmoji: false,
+  stripAiLinks: true,
+  stripChatMarkers: true,
 };
 
 export const MAX_TEXT_CHARS = 200_000;
 
 /* ───────────────────────────── helpers ──────────────────────────────── */
 
-const PICTO = /\p{Extended_Pictographic}/u;
+const PICTO = /\p{Extended_Pictographic}|\p{Regional_Indicator}/u;
 const WORD = /[\p{L}\p{M}]+/gu;
-const SPACE_RE = new RegExp(
-  `[${[
-    0x00a0, 0x1680, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006,
-    0x2007, 0x2008, 0x2009, 0x200a, 0x202f, 0x205f, 0x3000, 0x2028, 0x2029,
-  ]
-    .map((cp) => `\\u{${cp.toString(16)}}`)
-    .join('')}]`,
-  'gu',
-);
+const LETTER = /[\p{L}\p{M}\p{N}]/u;
+const JOINING_SCRIPT =
+  /[\p{Script=Arabic}\p{Script=Syriac}\p{Script=Nko}\p{Script=Mongolian}\p{Script=Devanagari}\p{Script=Bengali}\p{Script=Gurmukhi}\p{Script=Gujarati}\p{Script=Oriya}\p{Script=Tamil}\p{Script=Telugu}\p{Script=Kannada}\p{Script=Malayalam}\p{Script=Sinhala}\p{Script=Myanmar}\p{Script=Khmer}]/u;
+const UNIT = /[\p{L}%‰°℃℉$€£¥]/u;
 
 let segmenter = null;
 if (typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function') {
@@ -208,10 +231,11 @@ function* graphemes(text) {
   yield* Array.from(text);
 }
 
-const isEmojiCluster = (segment, preserveEmoji) =>
-  preserveEmoji && segment.length > 1 && PICTO.test(segment);
-
 const CODE_POINT = (cp) => `U+${cp.toString(16).toUpperCase().padStart(4, '0')}`;
+
+function isEmojiCluster(segment) {
+  return PICTO.test(segment);
+}
 
 function isControl(cp) {
   return (
@@ -219,16 +243,26 @@ function isControl(cp) {
     cp === 0x0b ||
     cp === 0x0c ||
     (cp >= 0x0e && cp <= 0x1f) ||
-    cp === 0x7f
+    (cp >= 0x7f && cp <= 0x9f)
   );
 }
 
-function shouldRemove(cp, opts) {
-  if (cp === 0x0a || cp === 0x09 || cp === 0x0d) return false;
-  const info = INFO.get(cp);
-  if (!info || info.group !== 'invisible') return false;
-  if (info.rule === 'bidi') return Boolean(opts.stripBidi);
-  return Boolean(opts.stripZeroWidth);
+const CONTROL_INFO = {
+  name: 'CONTROL CHARACTER',
+  short: 'CTRL',
+  group: 'invisible',
+  rule: 'zeroWidth',
+};
+
+function infoFor(cp) {
+  return INFO.get(cp) || (isControl(cp) ? CONTROL_INFO : null);
+}
+
+function layoutNeedsSpace(prev, next) {
+  if (!prev || !next) return false;
+  if (/\d/u.test(prev) && UNIT.test(next)) return true;
+  if (/\d/u.test(next) && /[$€£¥]/u.test(prev)) return true;
+  return false;
 }
 
 /* ──────────────────────── protected segments ────────────────────────── */
@@ -248,60 +282,67 @@ function fencedRanges(text) {
     if (isFence) {
       if (open === -1) open = offset;
       else {
-        ranges.push([open, offset + line.length]);
+        ranges.push([open, offset + line.length, 'code']);
         open = -1;
       }
     }
     offset += line.length + 1;
   }
 
-  if (open !== -1) ranges.push([open, text.length]);
+  if (open !== -1) ranges.push([open, text.length, 'code']);
   return ranges;
 }
 
-function regexRanges(text, regex) {
+function regexRanges(text, regex, kind) {
   const ranges = [];
   regex.lastIndex = 0;
   let match;
   while ((match = regex.exec(text)) !== null) {
-    ranges.push([match.index, match.index + match[0].length]);
+    ranges.push([match.index, match.index + match[0].length, kind]);
   }
   return ranges;
 }
 
 function mergeRanges(ranges) {
   if (!ranges.length) return [];
-  const sorted = [...ranges].sort((a, b) => a[0] - b[0]);
+  const sorted = [...ranges].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
   const merged = [sorted[0]];
-  for (const [start, end] of sorted.slice(1)) {
+  for (const [start, end, kind] of sorted.slice(1)) {
     const last = merged[merged.length - 1];
-    if (start <= last[1]) last[1] = Math.max(last[1], end);
-    else merged.push([start, end]);
+    if (start <= last[1]) {
+      last[1] = Math.max(last[1], end);
+      if (last[2] !== 'code' && kind === 'code') last[2] = 'code';
+    } else {
+      merged.push([start, end, kind]);
+    }
   }
   return merged;
 }
 
-/** Splits text into transformable gaps and byte-identical protected spans. */
+/**
+ * Splits text into transformable gaps and byte-identical protected spans.
+ * Code wins over everything else when ranges overlap.
+ */
 function splitProtected(text, preserveMarkdown) {
-  if (!preserveMarkdown) return [{ text, protected: false }];
+  if (!preserveMarkdown) return [{ text, kind: 'text', start: 0 }];
 
   const ranges = mergeRanges([
     ...fencedRanges(text),
-    ...regexRanges(text, INLINE_CODE),
-    ...regexRanges(text, URL_RE),
-    ...regexRanges(text, EMAIL_RE),
+    ...regexRanges(text, INLINE_CODE, 'code'),
+    ...regexRanges(text, URL_RE, 'url'),
+    ...regexRanges(text, EMAIL_RE, 'email'),
   ]);
 
-  if (!ranges.length) return [{ text, protected: false }];
+  if (!ranges.length) return [{ text, kind: 'text', start: 0 }];
 
   const parts = [];
   let cursor = 0;
-  for (const [start, end] of ranges) {
-    if (start > cursor) parts.push({ text: text.slice(cursor, start), protected: false });
-    parts.push({ text: text.slice(start, end), protected: true });
+  for (const [start, end, kind] of ranges) {
+    if (start > cursor) parts.push({ text: text.slice(cursor, start), kind: 'text', start: cursor });
+    parts.push({ text: text.slice(start, end), kind, start });
     cursor = end;
   }
-  if (cursor < text.length) parts.push({ text: text.slice(cursor), protected: false });
+  if (cursor < text.length) parts.push({ text: text.slice(cursor), kind: 'text', start: cursor });
   return parts;
 }
 
@@ -309,33 +350,86 @@ function splitProtected(text, preserveMarkdown) {
 
 function stripInvisible(text, opts) {
   let out = '';
-  for (const segment of graphemes(text)) {
-    if (isEmojiCluster(segment, opts.preserveEmoji)) {
+  let clusters;
+  try {
+    clusters = [...graphemes(text)];
+  } catch {
+    clusters = Array.from(text);
+  }
+
+  for (let index = 0; index < clusters.length; index += 1) {
+    const segment = clusters[index];
+    const prev = clusters[index - 1] || '';
+    const next = clusters[index + 1] || '';
+
+    if (opts.removeEmoji && isEmojiCluster(segment)) continue;
+
+    if (opts.preserveEmoji && isEmojiCluster(segment)) {
       out += segment;
       continue;
     }
-    for (const char of segment) {
-      if (!shouldRemove(char.codePointAt(0), opts)) out += char;
+
+    const prevChar = [...prev].pop() || '';
+    const nextChar = (next[0] || '');
+
+    const chars = [...segment];
+    for (let charIndex = 0; charIndex < chars.length; charIndex += 1) {
+      const char = chars[charIndex];
+      const before = chars[charIndex - 1] || prevChar;
+      const after = chars[charIndex + 1] || nextChar;
+      const joiningContext = JOINING_SCRIPT.test(before) || JOINING_SCRIPT.test(after);
+
+      const cp = char.codePointAt(0);
+      const info = infoFor(cp);
+      if (!info) {
+        out += char;
+        continue;
+      }
+
+      if (info.group === 'space') {
+        if (!opts.normalizeSpaces) {
+          out += char;
+        } else if (layoutNeedsSpace(prevChar, nextChar) && (cp === 0x00a0 || cp === 0x202f)) {
+          out += char;
+        } else {
+          out += ' ';
+        }
+        continue;
+      }
+
+      if (info.group !== 'invisible') {
+        out += char;
+        continue;
+      }
+
+      if (cp === 0x200c || cp === 0x200d) {
+        if (joiningContext) out += char;
+        continue;
+      }
+
+      if (cp === 0x00ad) continue; // soft hyphen: join the word, never add a space
+
+      if (info.rule === 'bidi') {
+        if (!opts.stripBidi) out += char;
+        continue;
+      }
+
+      if (!opts.stripZeroWidth) out += char;
     }
   }
+
   return out;
 }
 
 function normalizeWhitespace(text, opts) {
-  if (!opts.normalizeSpaces) return text;
+  let out = text.replace(/\r\n?/g, '\n');
 
-  let out = text.replace(SPACE_RE, ' ');
-  if (opts.trimLines) {
-    // Only trim before a real newline. Trimming at a gap boundary would eat
-    // the space that separates prose from inline code.
-    out = out.replace(/[ \t]+(?=\n)/g, '');
-  }
+  if (opts.trimLines) out = out.replace(/[ \t]+(?=\n)/g, '');
   if (opts.collapseSpaces) {
     out = out.replace(/ {2,}/g, ' ');
     out = out.replace(/\n{3,}/g, '\n\n');
   }
   out = out.replace(/[ \t]+(?=[,.;:!?])/g, '');
-  out = out.replace(/\r\n?/g, '\n');
   return out;
 }
 
@@ -347,16 +441,16 @@ function normalizePunctuation(text, opts) {
     .replace(/[\u201c\u201d\u201e]/g, '"')
     .replace(/[\u00ab\u00bb]/g, '"')
     .replace(/\u2026/g, '...')
-    .replace(/[\uff01]/g, '!')
-    .replace(/[\uff1f]/g, '?')
-    .replace(/[\uff0c]/g, ',')
-    .replace(/[\uff1b]/g, ';')
-    .replace(/[\uff1a]/g, ':')
-    .replace(/[\uff08]/g, '(')
-    .replace(/[\uff09]/g, ')')
-    .replace(/[\uff02]/g, '"')
-    .replace(/[\uff07]/g, "'")
-    .replace(/[\uff0e]/g, '.');
+    .replace(/\uff01/g, '!')
+    .replace(/\uff1f/g, '?')
+    .replace(/\uff0c/g, ',')
+    .replace(/\uff1b/g, ';')
+    .replace(/\uff1a/g, ':')
+    .replace(/\uff08/g, '(')
+    .replace(/\uff09/g, ')')
+    .replace(/\uff02/g, '"')
+    .replace(/\uff07/g, "'")
+    .replace(/\uff0e/g, '.');
 
   if (opts.dashStyle !== 'keep') {
     const replacement = opts.dashStyle === 'comma' ? ', ' : ' - ';
@@ -366,18 +460,17 @@ function normalizePunctuation(text, opts) {
     out = out.replace(/[ \t]*\u2212[ \t]*/g, ' - ');
     out = out.replace(/[\u2010\u2011]/g, '-');
     out = out.replace(/ {2,}/g, ' ');
-    out = out.replace(/ +([,.;:!?])/g, '$1');
+    out = out.replace(/ +(?=[,.;:!?])/g, '');
     out = out.replace(/, ,/g, ',');
     out = out.replace(/^[ \t]+(?=- )/gm, '');
-    out = out.replace(/[ \t]+(?=\n)/g, '');
   }
 
   return out;
 }
 
 function foldLetters(text) {
-  let out = text.normalize('NFKC');
-  out = out.replace(WORD, (word) => {
+  const out = text.normalize('NFKC');
+  return out.replace(WORD, (word) => {
     if (!/[A-Za-z]/.test(word)) return word;
     let changed = false;
     const folded = Array.from(word)
@@ -390,30 +483,55 @@ function foldLetters(text) {
       .join('');
     return changed ? folded : word;
   });
-  return out;
 }
 
 function applyStages(text, opts) {
   let out = text;
 
-  if (opts.stripZeroWidth || opts.stripBidi) out = stripInvisible(out, opts);
+  if (opts.stripZeroWidth || opts.stripBidi || opts.removeEmoji) out = stripInvisible(out, opts);
   if (opts.normalizeSpaces) out = normalizeWhitespace(out, opts);
   if (opts.normalizePunctuation) out = normalizePunctuation(out, opts);
   if (opts.foldLetters) out = foldLetters(out);
-  if (opts.normalizeSpaces) out = normalizeWhitespace(out, { ...opts, trimLines: true });
+  if (out && (opts.normalizeSpaces || opts.normalizePunctuation)) out = normalizeWhitespace(out, opts);
+
+  return out;
+}
+
+function sanitizeGap(text, opts) {
+  let out = text;
+
+  if (opts.stripZeroWidth || opts.stripBidi || opts.removeEmoji) {
+    const stripped = stripInvisible(out, opts);
+    if (opts.normalizePunctuation) {
+      // Dashes sit inside gaps; let the punctuation pass handle them once.
+      out = stripped;
+    } else {
+      out = stripped;
+    }
+  }
+
+  if (opts.normalizeSpaces) out = normalizeWhitespace(out, opts);
+  if (opts.normalizePunctuation) out = normalizePunctuation(out, opts);
+  if (opts.foldLetters) out = foldLetters(out);
+  if (opts.normalizeSpaces) out = normalizeWhitespace(out, opts);
 
   return out;
 }
 
 /* ─────────────────────────────── public ─────────────────────────────── */
 
-function actionFor(info, opts, inEmoji) {
+function actionFor(info, opts, inEmoji, prevChar, nextChar) {
   if (inEmoji && opts.preserveEmoji) return 'kept (emoji)';
   if (info.group === 'invisible') {
     if (info.rule === 'bidi') return opts.stripBidi ? 'removed' : 'kept';
-    return opts.stripZeroWidth ? 'removed' : 'kept';
+    if (info.rule === 'zeroWidth') return opts.stripZeroWidth ? 'removed' : 'kept';
+    return 'kept';
   }
-  if (info.group === 'space') return opts.normalizeSpaces ? 'normalized' : 'kept';
+  if (info.group === 'space') {
+    if (!opts.normalizeSpaces) return 'kept';
+    if (layoutNeedsSpace(prevChar, nextChar)) return 'kept (layout)';
+    return 'normalized';
+  }
   if (info.group === 'punctuation') {
     if (info.rule === 'dash' && opts.dashStyle === 'keep') return 'kept';
     return opts.normalizePunctuation ? 'normalized' : 'kept';
@@ -421,7 +539,29 @@ function actionFor(info, opts, inEmoji) {
   return 'kept';
 }
 
-const GROUP_ORDER = { invisible: 0, space: 1, punctuation: 2 };
+const GROUP_ORDER = { invisible: 0, space: 1, punctuation: 2, ai: 3 };
+
+function pushFinding(map, cp, char, info, position, inEmoji, opts, prevChar, nextChar) {
+  let entry = map.get(cp);
+  if (!entry) {
+    entry = {
+      code: CODE_POINT(cp),
+      char,
+      name: info.name,
+      short: info.short,
+      group: info.group,
+      rule: info.rule,
+      count: 0,
+      emojiCount: 0,
+      positions: [],
+      action: actionFor(info, opts, false, prevChar, nextChar),
+    };
+    map.set(cp, entry);
+  }
+  entry.count += 1;
+  if (inEmoji) entry.emojiCount += 1;
+  if (entry.positions.length < 50) entry.positions.push(position);
+}
 
 /**
  * Counts every tracked character in the text.
@@ -429,40 +569,46 @@ const GROUP_ORDER = { invisible: 0, space: 1, punctuation: 2 };
  */
 export function analyze(text, options = {}) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  if (!text) return { findings: [], counts: { invisible: 0, space: 0, punctuation: 0 }, total: 0, hidden: 0 };
+  const empty = {
+    findings: [],
+    counts: { invisible: 0, space: 0, punctuation: 0, ai: 0 },
+    total: 0,
+    hidden: 0,
+  };
+  if (!text) return empty;
 
   const byCodePoint = new Map();
+  let position = 0;
+  let clusters;
+  try {
+    clusters = [...graphemes(text)];
+  } catch {
+    clusters = Array.from(text);
+  }
 
-  for (const segment of graphemes(text)) {
-    const inEmoji = isEmojiCluster(segment, opts.preserveEmoji);
+  for (let index = 0; index < clusters.length; index += 1) {
+    const segment = clusters[index];
+    const prev = clusters[index - 1] || '';
+    const next = clusters[index + 1] || '';
+    const inEmoji = opts.preserveEmoji && isEmojiCluster(segment);
+    const prevChar = [...prev].pop() || '';
+    const nextChar = next[0] || '';
+
     for (const char of segment) {
       const cp = char.codePointAt(0);
-      const info = INFO.get(cp);
-      if (!info) continue;
-
-      let entry = byCodePoint.get(cp);
-      if (!entry) {
-        entry = {
-          code: CODE_POINT(cp),
-          char,
-          name: info.name,
-          short: info.short,
-          group: info.group,
-          rule: info.rule,
-          count: 0,
-          emojiCount: 0,
-          action: 'kept',
-        };
-        byCodePoint.set(cp, entry);
-      }
-      entry.count += 1;
-      if (inEmoji) entry.emojiCount += 1;
+      const info = infoFor(cp);
+      if (info) pushFinding(byCodePoint, cp, char, info, position, inEmoji, opts, prevChar, nextChar);
+      position += char.length;
     }
   }
 
   const findings = [...byCodePoint.values()].map((entry) => {
-    const inEmoji = entry.emojiCount === entry.count;
-    return { ...entry, inEmoji, action: actionFor(entry, opts, inEmoji) };
+    const inEmoji = entry.count > 0 && entry.emojiCount === entry.count;
+    return {
+      ...entry,
+      inEmoji,
+      action: actionFor(entry, opts, inEmoji, '', ''),
+    };
   });
 
   findings.sort((a, b) => {
@@ -472,15 +618,68 @@ export function analyze(text, options = {}) {
     return a.code.localeCompare(b.code);
   });
 
-  const counts = { invisible: 0, space: 0, punctuation: 0 };
+  const counts = { invisible: 0, space: 0, punctuation: 0, ai: 0 };
   for (const finding of findings) counts[finding.group] += finding.count;
+
+  const ai = summarizeAiTags(text, opts);
+  findings.push(...ai.findings);
+  counts.ai = ai.count;
 
   return {
     findings,
     counts,
-    total: counts.invisible + counts.space + counts.punctuation,
+    total: counts.invisible + counts.space + counts.punctuation + counts.ai,
     hidden: counts.invisible,
   };
+}
+
+function summarizeAiTags(text, opts) {
+  const tags = findAiTags(text);
+  const groups = new Map();
+
+  for (const tag of tags) {
+    let entry = groups.get(tag.kind);
+    if (!entry) {
+      entry = {
+        code:
+          tag.kind === 'metadata'
+            ? 'AI-META'
+            : tag.kind === 'referrer'
+              ? 'AI-LINK'
+              : 'AI-CHAT',
+        char: '',
+        name:
+          tag.kind === 'metadata'
+            ? 'AI TOOL NAME IN METADATA'
+            : tag.kind === 'referrer'
+              ? 'AI REFERRER TAG IN LINK'
+              : 'CHAT-EXPORT MARKER',
+        short: tag.kind === 'metadata' ? 'META' : tag.kind === 'referrer' ? 'LINK' : 'CHAT',
+        group: 'ai',
+        rule: tag.kind,
+        count: 0,
+        emojiCount: 0,
+        positions: [],
+        action: 'kept',
+      };
+      groups.set(tag.kind, entry);
+    }
+    entry.count += 1;
+    entry.positions.push(tag.start);
+  }
+
+  const findings = [...groups.values()].map((entry) => {
+    if (entry.rule === 'metadata') {
+      entry.action = opts.stripAiMetadata ? 'removed' : 'kept for review';
+    } else if (entry.rule === 'referrer') {
+      entry.action = opts.stripAiLinks ? 'removed' : 'kept';
+    } else {
+      entry.action = opts.stripChatMarkers ? 'removed' : 'kept';
+    }
+    return entry;
+  });
+
+  return { findings, count: findings.reduce((sum, finding) => sum + finding.count, 0) };
 }
 
 function statsFor(text) {
@@ -506,32 +705,90 @@ export function sanitize(text, options = {}) {
     return {
       text: '',
       findings: [],
-      counts: { invisible: 0, space: 0, punctuation: 0 },
+      counts: { invisible: 0, space: 0, punctuation: 0, ai: 0 },
       total: 0,
       hidden: 0,
       stats: { before: empty, after: empty },
       residual: 0,
+      payloads: [],
     };
   }
 
-  const cleaned = splitProtected(text, opts.preserveMarkdown)
-    .map((part) => (part.protected ? part.text : applyStages(part.text, opts)))
-    .join('');
+  const tags = findAiTags(text);
+  const cuts = tags
+    .filter((tag) => {
+      if (tag.kind === 'metadata') return opts.stripAiMetadata;
+      if (tag.kind === 'chat') return opts.stripChatMarkers;
+      return false; // referrers are stripped inside URL segments
+    })
+    .map((tag) => {
+      const start = tag.start > 0 && text[tag.start - 1] === ' ' ? tag.start - 1 : tag.start;
+      return [start, tag.end, 'cut'];
+    });
+
+  const protectedParts = splitProtected(text, opts.preserveMarkdown);
+  const protectedRanges = protectedParts
+    .filter((part) => part.kind !== 'text')
+    .map((part) => [part.start, part.start + part.text.length, part.kind]);
+
+  // Split at every boundary, then label each atom with the strongest claim:
+  // removed AI metadata wins over plain text, but code and URLs stay intact.
+  const points = new Set([0, text.length]);
+  for (const range of [...protectedRanges, ...cuts]) {
+    points.add(range[0]);
+    points.add(range[1]);
+  }
+  const ordered = [...points].sort((a, b) => a - b);
+  const sortedCuts = [...cuts].sort((a, b) => a[0] - b[0]);
+
+  let output = '';
+  let cutIndex = 0;
+  let rangeIndex = 0;
+
+  for (let index = 0; index < ordered.length - 1; index += 1) {
+    const start = ordered[index];
+    const end = ordered[index + 1];
+    if (start === end) continue;
+
+    while (cutIndex < sortedCuts.length && sortedCuts[cutIndex][1] <= start) cutIndex += 1;
+    const activeCut = sortedCuts[cutIndex];
+    if (activeCut && start >= activeCut[0] && end <= activeCut[1]) continue;
+
+    while (
+      rangeIndex < protectedRanges.length &&
+      protectedRanges[rangeIndex][1] <= start
+    ) {
+      rangeIndex += 1;
+    }
+
+    const holder = protectedRanges[rangeIndex];
+    const inHolder = holder && start >= holder[0] && end <= holder[1];
+    const slice = text.slice(start, end);
+
+    if (!inHolder) {
+      output += sanitizeGap(slice, opts);
+    } else if (holder[2] === 'url') {
+      output += opts.stripAiLinks ? stripAiReferrer(slice) : slice;
+    } else {
+      output += slice;
+    }
+  }
 
   const analysis = analyze(text, opts);
-  const after = analyze(cleaned, opts);
+  const after = analyze(output, opts);
   const residual = after.findings
     .filter((finding) => finding.action === 'removed' || finding.action === 'normalized')
     .reduce((sum, finding) => sum + finding.count, 0);
 
   return {
-    text: cleaned,
+    text: output,
     findings: analysis.findings,
     counts: analysis.counts,
     total: analysis.total,
     hidden: analysis.hidden,
-    stats: { before: statsFor(text), after: statsFor(cleaned) },
+    stats: { before: statsFor(text), after: statsFor(output) },
     residual,
+    payloads: decodeHiddenPayload(text),
   };
 }
 
@@ -550,10 +807,10 @@ export function reveal(text, options = {}) {
   };
 
   for (const segment of graphemes(text)) {
-    const inEmoji = isEmojiCluster(segment, opts.preserveEmoji);
+    const inEmoji = opts.preserveEmoji && isEmojiCluster(segment);
     for (const char of segment) {
       const cp = char.codePointAt(0);
-      const info = INFO.get(cp);
+      const info = infoFor(cp);
       const interesting =
         info &&
         (info.group === 'invisible' || (info.group === 'space' && cp !== 0x20)) &&
@@ -567,7 +824,6 @@ export function reveal(text, options = {}) {
           code: CODE_POINT(cp),
           name: info.name,
           short: info.short,
-          kept: info.group === 'invisible' ? !shouldRemove(cp, opts) : !opts.normalizeSpaces,
         });
       } else {
         buffer += char;

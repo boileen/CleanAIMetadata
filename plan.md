@@ -117,9 +117,12 @@
 - [x] **Step 4.4: EXIF & GPS Writer**
   - `piexifjs`-compatible EXIF/IPTC/XMP serialisers in `src/utils/metadataWriter/` (JPEG, PNG, WebP) and Leaflet GPS coordinate tagging.
 - [x] **Step 4.5: Text Sanitizer Engine**
-  - `src/utils/textSanitizer.js`: deterministic rule registry with three presets (Light / Standard / Aggressive), character tables, findings analysis, and reveal mode.
-  - Characters and punctuation only — no word or phrase rewriting, no model calls. Code fences, inline code, URLs, emails, and emoji sequences are protected.
-  - Covered by `tests/textSanitizer.test.mjs` (`npm test`, `node --test`), including idempotency and a 200k-character performance case.
+  - `src/utils/textSanitizer.js`: one grapheme-cluster walk that classifies every code point, applies preset rules with context (script joiners, emoji, layout spaces), and emits findings with byte offsets.
+  - `src/utils/textAiTags.js`: generator metadata, AI referrer parameters, chat-export markers and decoded tag-character payloads.
+  - `src/utils/textPatterns.js`: English-gated writing-pattern diagnostics (rhythm, repeated openers, stock phrases, chatbot phrasing, list structure, paragraph shape, word variety) — counts and quotes only, never a score or a rewrite.
+  - Character tables are generated from Unicode 17.0.0 by `scripts/gen-unicode.mjs` into `src/data/unicodeHazards.generated.js`; `--check` verifies the committed table is current.
+  - Characters and punctuation only — no word or phrase rewriting, no model calls. Code fences, inline code, URLs, emails, emoji sequences and Arabic/Indic joiners are protected.
+  - Covered by `tests/textSanitizer.test.mjs`, `tests/textAiTags.test.mjs` and `tests/textPatterns.test.mjs` (`npm test`), including idempotency, script fixtures and a 200k-character performance case.
 - [x] **Step 4.6: Batch Archiver**
   - `jszip` packaging up to 5 cleaned images into a single `.zip` download (dynamically imported).
 - [x] **Step 4.8: Per-Tool Upload Scope**

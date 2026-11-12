@@ -1,0 +1,202 @@
+{
+  "slug": "ai-text-cleaner-what-it-can-and-cannot-remove",
+  "prefix": "21",
+  "title": "AI Text Cleaner: What It Can and Cannot Remove",
+  "excerpt": "Invisible Unicode, AI tags and writing patterns are three different problems. This guide separates what a character cleaner can remove, what only a rewrite can change, and what no tool can prove about a document's origin.",
+  "category": "AI Text",
+  "readTime": "9 min read",
+  "date": "November 2026",
+  "targetTool": "/ai-text-cleaner",
+  "toolLabel": "Clean AI Text Markers",
+  "toolDesc": "Strip invisible characters and AI tags, then review writing patterns. Nothing leaves your browser.",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "Pasted text carries more than the words on screen. It can carry zero-width spaces, non-breaking spaces, soft hyphens, byte-order marks, bidi controls, generator metadata, referrer parameters and export markers from a chat interface. Those are separate problems with separate fixes. A character cleaner handles the first group. It cannot handle the second, and it cannot tell you who wrote a document. This guide marks the line clearly."
+    },
+    {
+      "type": "h2",
+      "text": "The quick answer"
+    },
+    {
+      "type": "p",
+      "text": "A deterministic cleaner can remove invisible format characters, normalise irregular whitespace and punctuation, and strip visible AI provenance strings such as generator: lines and utm_source=chatgpt.com link tags. It cannot remove statistical watermarks embedded in token selection, and it cannot lower a detector score by deleting characters, because detectors do not read those characters in the first place."
+    },
+    {
+      "type": "p",
+      "text": "A writing-pattern panel can count habits a reader would notice: uniform sentence length, repeated openers, stock phrases and list-style transitions. That is diagnostic, not generative. Counting a pattern does not change it, and no honest tool can promise that changing it will make text undetectable."
+    },
+    {
+      "type": "h2",
+      "text": "What character cleaning actually removes"
+    },
+    {
+      "type": "p",
+      "text": "Unicode has a small set of assigned code points that render as nothing or as a different amount of space. They are legitimate in some contexts and accidental in most documents. The cleaner handles each category with a rule based on context rather than a blanket delete."
+    },
+    {
+      "type": "h3",
+      "text": "Zero-width and default-ignorable characters"
+    },
+    {
+      "type": "li",
+      "text": "Zero-width space (U+200B), word joiner (U+2060), function application (U+2061) and invisible times or separator (U+2062, U+2063) break search, diff and copy-paste behaviour."
+    },
+    {
+      "type": "li",
+      "text": "Byte-order mark (U+FEFF) at the start of a document is a byte-order signal in the wrong place; in the middle it is invisible noise."
+    },
+    {
+      "type": "li",
+      "text": "Soft hyphen (U+00AD) is inserted by PDF extraction to mark line-break opportunities. Removed correctly, it joins the word. Replaced with a space, it invents one."
+    },
+    {
+      "type": "li",
+      "text": "Tag characters (U+E0020–U+E007F) can encode an entire ASCII message invisibly. A useful cleaner decodes them before deleting, so a hidden instruction is shown rather than silently discarded."
+    },
+    {
+      "type": "li",
+      "text": "Variation selectors and zero-width joiners are load-bearing inside emoji sequences. They must be kept when the surrounding cluster is an emoji, or a family glyph becomes four separate people."
+    },
+    {
+      "type": "h3",
+      "text": "Spaces and punctuation"
+    },
+    {
+      "type": "p",
+      "text": "Non-breaking space (U+00A0), narrow no-break space (U+202F), thin space (U+2009) and ideographic space (U+3000) are the usual paste residue. In running prose they can become one ordinary space. Between a number and a unit, or inside a formatted date, the no-break behaviour may be intentional, so the decision belongs to a visible rule rather than a hidden default."
+    },
+    {
+      "type": "p",
+      "text": "Curly quotes, guillemets, ellipses, em dashes, en dashes, minus signs and fullwidth punctuation are visible characters. They are not hidden and they are not evidence of AI authorship. Normalising them is a typography choice, offered separately because plenty of writers want their typographic quotes left alone."
+    },
+    {
+      "type": "h3",
+      "text": "Bidi controls"
+    },
+    {
+      "type": "p",
+      "text": "Right-to-left overrides and isolates can reorder how a filename or sentence appears without changing its code points. They are the basis of trojan-source tricks. They are also required for correct rendering of mixed-direction text, which is why stripping them is opt-in and labelled as capable of affecting real Arabic or Hebrew content."
+    },
+    {
+      "type": "h2",
+      "text": "The em-dash myth"
+    },
+    {
+      "type": "p",
+      "text": "Em dashes are punctuation. Models produce them, and so do novelists, copy editors, newspapers and anyone who has read a style guide. Their presence says nothing about how a document was produced. Treating an em dash as a watermark confuses a stylistic preference with a provenance signal. A cleaner may offer to convert them, but it should never claim that doing so changes a detector's verdict."
+    },
+    {
+      "type": "h2",
+      "text": "AI tags are metadata, not watermarks"
+    },
+    {
+      "type": "p",
+      "text": "Some AI residue is plain readable text. A copied Markdown block may begin with a generator line. An exported HTML fragment may contain a meta tag naming the tool. A link pasted from a chat interface may carry utm_source=chatgpt.com or a provider-specific referrer. Chat exports sometimes include markers such as :contentReference[oaicite:0]{index=0} around citation anchors."
+    },
+    {
+      "type": "p",
+      "text": "These strings are easy to detect and safe to review. Removing a referrer parameter does not break the link. Removing a generator line does not alter the prose. Removing an export marker does not change meaning. They are provenance hints, not cryptographic proof, and their absence proves nothing either."
+    },
+    {
+      "type": "h2",
+      "text": "What no character cleaner can remove"
+    },
+    {
+      "type": "h3",
+      "text": "Token-selection watermarks"
+    },
+    {
+      "type": "p",
+      "text": "Google's SynthID-Text and similar schemes bias which tokens a model samples according to a secret key, then detect that bias statistically in a longer passage. The watermark lives in the choice of words, not in a character you can delete. Rewriting the passage can disturb the signal, but that is a rewrite, not a cleanup. Any tool claiming to strip these marks by removing invisible characters is describing something it cannot do."
+    },
+    {
+      "type": "h3",
+      "text": "Detector scores"
+    },
+    {
+      "type": "p",
+      "text": "Detectors such as GPTZero, Originality.ai and Turnitin estimate how predictable a passage is. They look at token probability, perplexity, sentence variation and sometimes classifier features trained on labelled text. Invisible characters are not part of that computation. Deleting them changes byte count and searchability; it does not change the statistical shape of the prose."
+    },
+    {
+      "type": "h3",
+      "text": "Authorship"
+    },
+    {
+      "type": "p",
+      "text": "No set of code points establishes who wrote a paragraph. The same zero-width space can come from a content management system, a PDF extractor or a humanizer. The same em dash can come from a model or a magazine. A cleaner can report what it found and what it did; it cannot certify origin."
+    },
+    {
+      "type": "h2",
+      "text": "Writing patterns are diagnostics, not a score"
+    },
+    {
+      "type": "p",
+      "text": "Readers notice rhythm before they notice word choice. Eight sentences of nearly identical length feel mechanical. Five paragraphs that open with Furthermore, Moreover and Additionally feel assembled. A pattern panel can count those habits and quote the exact sentences involved."
+    },
+    {
+      "type": "li",
+      "text": "Sentence-length spread: mean length, variation and how many sentences sit within two words of the average."
+    },
+    {
+      "type": "li",
+      "text": "Repeated openers: the same first word or phrase starting three or more sentences."
+    },
+    {
+      "type": "li",
+      "text": "Stock phrases: a fixed list of overused transitions and business clichés, each with its offset."
+    },
+    {
+      "type": "li",
+      "text": "Chatbot phrasing: phrases addressed to a conversational partner rather than a reader."
+    },
+    {
+      "type": "li",
+      "text": "Structure tells: sequencing words, one-sentence paragraphs and low word variety over moving windows."
+    },
+    {
+      "type": "p",
+      "text": "The output is a list of counts and quotations, not a percentage. A low variation count does not mean a machine wrote the text. A high one does not mean a person did. Editing is a judgement call, and a diagnostic should leave that judgement where it belongs."
+    },
+    {
+      "type": "h2",
+      "text": "Why the word lists are English-only"
+    },
+    {
+      "type": "p",
+      "text": "Word-boundary checks assume spaces separate words. Chinese, Japanese and Thai do not work that way, and Arabic and Indic scripts have their own joinery rules. Running an English cliché list against those languages produces noise. The panel therefore gates on Latin-script coverage and says so instead of pretending to be multilingual. Character cleaning remains script-aware separately: joiners stay inside Arabic and Indic words because removing them changes spelling."
+    },
+    {
+      "type": "h2",
+      "text": "A practical order of operations"
+    },
+    {
+      "type": "li",
+      "text": "Clean characters first. Remove invisible residue, repair word joins and decide whether typography should be normalised."
+    },
+    {
+      "type": "li",
+      "text": "Review AI tags. Delete referrer parameters and export markers; decide whether a generator line belongs in the document at all."
+    },
+    {
+      "type": "li",
+      "text": "Read the pattern report. Fix the habits you agree with, sentence by sentence. Ignore the ones you do not."
+    },
+    {
+      "type": "li",
+      "text": "Proofread the result. Character removal can expose doubled spaces or joined words, and no automated pass replaces a final read."
+    },
+    {
+      "type": "h2",
+      "text": "Method and sources"
+    },
+    {
+      "type": "p",
+      "text": "The character tables are generated from the Unicode Character Database version 17.0.0, specifically UnicodeData.txt, DerivedCoreProperties.txt and PropList.txt. Only assigned code points are counted. The emoji and script rules follow Unicode grapheme clustering and the Default_Ignorable_Code_Point property. Watermark claims follow the published SynthID-Text paper and provider documentation; detector behaviour is described from their public documentation rather than reverse engineering."
+    },
+    {
+      "type": "p",
+      "text": "All processing described here happens in the browser tab. No text is uploaded, queued or stored. The cleaner is deterministic JavaScript, not a language model, and it does not rewrite a single word."
+    }
+  ]
+}

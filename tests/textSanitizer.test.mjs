@@ -173,3 +173,32 @@ test('large paste stays fast', () => {
   assert.equal(result.text.includes('\u200B'), false);
   assert.ok(elapsed < 5000, `took ${elapsed}ms`);
 });
+
+test('keeps joiners inside Arabic and Indic words', () => {
+  const persian = 'می\u200Cخواهم'; // ZWNJ is part of the spelling
+  const hindi = 'क्\u200Dष'; // ZWJ builds a conjunct
+
+  assert.equal(clean(persian), persian);
+  assert.equal(clean(hindi), hindi);
+  assert.equal(clean(persian, aggressive), persian);
+});
+
+test('still removes joiners between Latin words', () => {
+  assert.equal(clean('a\u200Cb\u200Dc'), 'abc');
+});
+
+test('keeps a no-break space between a number and its unit', () => {
+  assert.equal(clean('9\u00A0am'), '9\u00A0am');
+  assert.equal(clean('5\u00A0kg'), '5\u00A0kg');
+  assert.equal(clean('a\u00A0b'), 'a b');
+});
+
+test('soft hyphen joins the word instead of adding a space', () => {
+  assert.equal(clean('extra\u00ADordinary'), 'extraordinary');
+});
+
+test('removing tag characters does not leave a double space', () => {
+  const hidden = [...'hello'].map((char) => String.fromCodePoint(0xe0000 + char.charCodeAt(0))).join('');
+  assert.equal(clean(`before ${hidden} after`), 'before after');
+});
+
