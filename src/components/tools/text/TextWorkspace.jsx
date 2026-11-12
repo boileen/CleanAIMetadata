@@ -5,6 +5,7 @@ import {
   ChevronDown,
   Eye,
   EyeOff,
+  GitCompare,
   SlidersHorizontal,
   Sparkles,
   Trash2,
@@ -17,7 +18,9 @@ import {
   sanitize,
 } from '../../../utils/textSanitizer';
 import { analyzePatterns } from '../../../utils/textPatterns';
+import { diffTexts, hasChanges } from '../../../utils/textDiff';
 import EditorPane from './EditorPane';
+import DiffView from './DiffView';
 import FindingsPanel from './FindingsPanel';
 import OutputBar from './OutputBar';
 import RulesPopover from './RulesPopover';
@@ -38,6 +41,7 @@ export default function TextWorkspace() {
   const [presetId, setPresetId] = useState('standard');
   const [rulesOpen, setRulesOpen] = useState(false);
   const [revealSource, setRevealSource] = useState(false);
+  const [showDiff, setShowDiff] = useState(true);
   const [tab, setTab] = useState('characters');
   const [selectedSample, setSelectedSample] = useState(null);
 
@@ -60,6 +64,11 @@ export default function TextWorkspace() {
     return reveal(deferredInput, options);
   }, [deferredInput, options, revealSource, tooLong]);
 
+  const diff = useMemo(() => {
+    if (!result || tooLong) return null;
+    return diffTexts(deferredInput, result.text);
+  }, [deferredInput, result, tooLong]);
+
   const choosePreset = (preset) => {
     setPresetId(preset.id);
     setOptions((prev) => ({ ...prev, ...preset.options }));
@@ -75,6 +84,7 @@ export default function TextWorkspace() {
     setOptions({ ...DEFAULT_OPTIONS });
     setPresetId('standard');
     setRevealSource(false);
+    setShowDiff(true);
     setTab('characters');
     setSelectedSample(null);
     setRulesOpen(false);
@@ -207,34 +217,89 @@ export default function TextWorkspace() {
           emptyHint="Paste text to reveal its hidden characters."
         />
 
-        <EditorPane
-          label="Cleaned"
-          meta={
-            hasInput && result
-              ? `${formatCount(result.stats.after.words)} words · ${formatCount(
-                  result.stats.after.chars,
-                )} chars`
-              : ''
-          }
-          actions={
-            hasInput && result ? (
-              isClean ? (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-risk-emerald-bg border border-risk-emerald-border text-risk-emerald-text font-mono text-[9px] font-bold">
-                  <CheckCircle2 className="w-3 h-3" />
-                  clean
+        <div className="flex min-h-0 flex-col">
+          {/* Cleaned pane header */}
+          <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 border-b border-subtle bg-card-raised/60">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-foreground">
+              Cleaned
+            </span>
+            <div className="flex items-center gap-2">
+              {hasInput && result && (
+                <span className="font-mono text-[10px] text-muted">
+                  {formatCount(result.stats.after.words)} words · {formatCount(result.stats.after.chars)} chars
                 </span>
-              ) : result.residual > 0 ? (
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-risk-amber-bg border border-risk-amber-border text-risk-amber-text font-mono text-[9px] font-bold">
-                  <AlertTriangle className="w-3 h-3" />
-                  {formatCount(result.residual)} left
-                </span>
-              ) : null
-            ) : null
-          }
-          value={output}
-          readOnly
-          placeholder="Cleaned text appears here as you type."
-        />
+              )}
+
+              {/* Diff / Plain toggle */}
+              {hasInput && result && (
+                <button
+                  type="button"
+                  onClick={() => setShowDiff((v) => !v)}
+                  aria-pressed={showDiff}
+                  title={showDiff ? 'Switch to plain text' : 'Show what changed'}
+                  className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold border transition-colors ${
+                    showDiff
+                      ? 'border-brand bg-brand-soft text-brand'
+                      : 'border-subtle text-muted hover:text-foreground'
+                  }`}
+                >
+                  <GitCompare className="w-3 h-3" />
+                  {showDiff ? 'Diff' : 'Plain'}
+                </button>
+              )}
+
+              {/* Clean / residual badge */}
+              {hasInput && result ? (
+                isClean ? (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-risk-emerald-bg border border-risk-emerald-border text-risk-emerald-text font-mono text-[9px] font-bold">
+                    <CheckCircle2 className="w-3 h-3" />
+                    clean
+                  </span>
+                ) : result.residual > 0 ? (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-risk-amber-bg border border-risk-amber-border text-risk-amber-text font-mono text-[9px] font-bold">
+                    <AlertTriangle className="w-3 h-3" />
+                    {formatCount(result.residual)} left
+                  </span>
+                ) : null
+              ) : null}
+            </div>
+          </div>
+
+          {/* Diff legend — only when diff is visible and there are actual changes */}
+          {hasInput && result && showDiff && diff && hasChanges(diff) && (
+            <div className="flex flex-wrap items-center gap-3 px-4 py-1.5 border-b border-subtle bg-card-raised/40 text-[10px] font-mono">
+              <span className="flex items-center gap-1">
+                <span className="inline-block w-3 h-3 rounded-sm bg-red-100 border border-red-200" />
+                <span className="text-muted">removed</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-200" />
+                <span className="text-muted">inserted</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block w-3 h-3 rounded-sm bg-amber-100 border border-amber-200" />
+                <span className="text-muted">changed</span>
+              </span>
+            </div>
+          )}
+
+          {/* Diff or plain text */}
+          {hasInput && result && showDiff && diff ? (
+            <DiffView
+              ops={diff}
+              placeholder="Cleaned text appears here as you type."
+            />
+          ) : (
+            <textarea
+              readOnly
+              rows={12}
+              value={output}
+              placeholder="Cleaned text appears here as you type."
+              spellCheck={false}
+              className="h-[16rem] sm:h-[19rem] w-full resize-none border-0 bg-transparent p-3.5 font-editor text-xs sm:text-[13px] leading-relaxed text-foreground placeholder:text-muted focus:outline-none bg-card-raised/40"
+            />
+          )}
+        </div>
       </div>
 
       {hasInput && result && (
