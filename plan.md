@@ -131,6 +131,10 @@
     4. Create an **OAuth Client ID** (Web application) with authorized JS origins `http://localhost:3000` and `https://aimetadataeraser.com`.
     5. Create an **API key** restricted to HTTP referrers for those same origins.
     6. Copy `.env.example` → `.env.local` and fill `VITE_GOOGLE_CLIENT_ID`, `VITE_GOOGLE_API_KEY` (both are public by design). Restart the dev server.
+- [x] **Step 4.8: Per-Tool Upload Scope**
+  - The 5-file batch queue is exclusive to **Remove Metadata** and **View Metadata**, which share `BatchWorkspaceLayout`. The queue follows the user between those two pages and is freed when they leave.
+  - **Edit Metadata** and **Geo Tag Photo** are single-photo tools. Extra files in a multi-drop are ignored with an explicit notice instead of being silently dropped.
+  - `UploadDropzone` carries a monospace `limit` pill ("Up to 5 images · 100 MB" / "1 image at a time") and a tightened subtitle so the container reads as one hierarchy.
 
 ---
 

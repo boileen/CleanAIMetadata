@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
+import BatchWorkspaceLayout from './components/layout/BatchWorkspaceLayout';
 
 // Pages
 import RemoveMetadataPage from './pages/RemoveMetadataPage';
@@ -17,9 +18,13 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
-        {/* Core Tool Routes */}
-        <Route index element={<RemoveMetadataPage />} />
-        <Route path="view-metadata" element={<ViewMetadataPage />} />
+        {/* Batch tools: these two share the 5-file workspace queue */}
+        <Route element={<BatchWorkspaceLayout />}>
+          <Route index element={<RemoveMetadataPage />} />
+          <Route path="view-metadata" element={<ViewMetadataPage />} />
+        </Route>
+
+        {/* Single-photo tools */}
         <Route path="edit-metadata" element={<EditMetadataPage />} />
         <Route path="geo-tag-photo" element={<GeoTagPage />} />
         <Route path="ai-text-cleaner" element={<AiTextCleanerPage />} />

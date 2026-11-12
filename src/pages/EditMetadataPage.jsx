@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Loader2 } from 'lucide-react';
+import { ChevronDown, Loader2, Info } from 'lucide-react';
 import SeoHead from '../components/layout/SeoHead';
 import { SEO_CONFIG, getWebApplicationSchema } from '../config/seoConfig';
 import useMetadataEditor from '../hooks/useMetadataEditor';
@@ -190,12 +190,20 @@ export default function EditMetadataPage() {
   const editor = useMetadataEditor();
   const fileInputRef = useRef(null);
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
+  const [dropNotice, setDropNotice] = useState(null);
 
   const browse = () => fileInputRef.current?.click();
 
   const handleFiles = (files) => {
-    const file = files?.[0];
-    if (file) editor.selectFile(file);
+    const list = Array.from(files || []);
+    const file = list[0];
+    if (!file) return;
+    setDropNotice(
+      list.length > 1
+        ? `Edit works on one photo at a time — only “${file.name}” was opened. Use Remove Metadata for batches.`
+        : null,
+    );
+    editor.selectFile(file);
   };
 
   useEffect(() => {
@@ -249,11 +257,24 @@ export default function EditMetadataPage() {
         />
 
         {!showEditor && !showReading && (
-          <UploadDropzone
-            onFiles={handleFiles}
-            error={editor.error}
-            inputId="edit-metadata-input"
-          />
+          <>
+            {dropNotice && (
+              <div className="flex items-start gap-2.5 rounded-xl border border-risk-amber-border bg-risk-amber-bg px-4 py-3 text-xs sm:text-[13px] text-risk-amber-text">
+                <Info className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{dropNotice}</span>
+              </div>
+            )}
+            <UploadDropzone
+              onFiles={handleFiles}
+              error={editor.error}
+              inputId="edit-metadata-input"
+              maxFiles={1}
+              title="Drop one photo here to edit its metadata"
+              subtitle="JPEG, PNG or WebP"
+              limit="1 image at a time"
+              buttonLabel="Choose a photo"
+            />
+          </>
         )}
 
         {showReading && (

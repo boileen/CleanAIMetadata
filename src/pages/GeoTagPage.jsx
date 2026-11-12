@@ -10,16 +10,15 @@ import {
   ChevronDown,
   AlertCircle,
   Loader2,
+  ImagePlus,
 } from 'lucide-react';
 import SeoHead from '../components/layout/SeoHead';
 import { SEO_CONFIG, getWebApplicationSchema } from '../config/seoConfig';
-import { useWorkspace } from '../context/WorkspaceContext';
 
 // Shared Components
 import UploadDropzone from '../components/shared/UploadDropzone';
 
 // Tool Components
-import FileSwitcherBar from '../components/tools/FileSwitcherBar';
 import MapPicker from '../components/tools/MapPicker';
 
 // Geotag editor hook
@@ -219,11 +218,12 @@ function LocationReadout({ gps }) {
 export default function GeoTagPage() {
   const seo = SEO_CONFIG.geoTag;
   const schema = getWebApplicationSchema(seo);
-  const { files, addFiles, maxFiles } = useWorkspace();
   const geo = useGeoTagEditor();
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
+  const [dropNotice, setDropNotice] = useState(null);
 
-  const hasFiles = files && files.length > 0;
+  // One photo at a time: the editor owns the only file this page ever holds.
+  const hasFile = Boolean(geo.previewUrl);
 
   // Form state
   const [coords, setCoords] = useState({ ...DEFAULT_COORDS });
@@ -242,12 +242,17 @@ export default function GeoTagPage() {
     }));
   }, [geo.entry, geo.existingGps]);
 
-  // When a file is added to workspace, also load it into the geo editor
-  useEffect(() => {
-    const latestFile = files?.[files.length - 1]?.originalFile;
-    if (latestFile) geo.selectFile(latestFile);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files?.length]);
+  const selectPhoto = (incoming) => {
+    const list = Array.from(incoming || []);
+    const file = list[0];
+    if (!file) return;
+    setDropNotice(
+      list.length > 1
+        ? 'Geo Tag works on one photo at a time — extra files were ignored. Use Remove Metadata for batches.'
+        : null,
+    );
+    geo.selectFile(file);
+  };
 
   // Auto-download once processing is done
   useEffect(() => {
@@ -307,37 +312,73 @@ export default function GeoTagPage() {
         </div>
 
         {/* STATE 1: empty — show shared dropzone */}
-        {!hasFiles && (
-          <UploadDropzone
-            onFiles={(fileList) => addFiles(fileList)}
-            multiple
-            maxFiles={Math.max(0, (maxFiles ?? 5) - files.length)}
-            title="Drag & drop your images here"
-            subtitle="JPEG, PNG, WebP, TIFF, or HEIC up to 100MB"
-            buttonLabel="Upload"
-            inputId="geotag-file-input"
-          />
+        {!hasFile && (
+          <>
+            {geo.error && (
+              <div className="flex items-start gap-2.5 rounded-xl border border-risk-rose-border bg-risk-rose-bg px-4 py-3 text-xs sm:text-[13px] text-risk-rose-text">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{geo.error}</span>
+              </div>
+            )}
+            <UploadDropzone
+              onFiles={selectPhoto}
+              title="Drag & drop a photo here"
+              subtitle="JPEG, PNG or WebP for GPS editing"
+              limit="1 image at a time"
+              buttonLabel="Upload"
+              inputId="geotag-file-input"
+            />
+          </>
         )}
 
-        {/* STATE 2: active workspace */}
-        {hasFiles && (
+        {/* STATE 2: active single photo */}
+        {hasFile && (
           <div className="space-y-6 animate-fadeIn">
 
-            <FileSwitcherBar onAddMoreClick={() => {
-              const inp = document.getElementById('geotag-add-more');
-              inp?.click();
-            }} />
-            <input
-              type="file"
-              id="geotag-add-more"
-              multiple
-              accept="image/jpeg,image/png,image/webp,image/tiff,image/heic"
-              className="hidden"
-              onChange={(e) => {
-                if (e.target.files?.length) addFiles(e.target.files);
-                e.target.value = '';
-              }}
-            />
+            {/* Current photo strip — replaces the old multi-file tray */}
+            <div className="bg-white rounded-2xl border border-subtle shadow-subtle p-2.5 sm:p-3 flex flex-wrap items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-card-strong border border-subtle overflow-hidden shrink-0 flex items-center justify-center">
+                {geo.previewUrl ? (
+                  <img src={geo.previewUrl} alt={geo.entry?.file?.name || 'Selected photo'} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-[10px] font-mono font-bold text-muted">IMG</span>
+                )}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="text-[13px] font-bold text-foreground truncate">
+                  {geo.entry?.file?.name || 'Loading photo…'}
+                </p>
+                <p className="text-[10px] font-mono text-muted uppercase tracking-wide">
+                  {geo.format ? (geo.format === 'jpeg' ? 'JPG' : geo.format.toUpperCase()) : '—'} · one photo
+                </p>
+              </div>
+
+              <label
+                htmlFor="geotag-replace"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-card-strong border border-subtle text-xs font-semibold text-muted-strong hover:text-foreground transition-all cursor-pointer ml-auto"
+              >
+                <ImagePlus className="w-3.5 h-3.5" />
+                <span>Replace photo</span>
+              </label>
+              <input
+                type="file"
+                id="geotag-replace"
+                accept="image/jpeg,image/png,image/webp,image/tiff,image/heic"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files?.length) selectPhoto(e.target.files);
+                  e.target.value = '';
+                }}
+              />
+            </div>
+
+            {dropNotice && (
+              <div className="flex items-start gap-2.5 rounded-xl border border-risk-amber-border bg-risk-amber-bg px-4 py-3 text-xs sm:text-[13px] text-risk-amber-text">
+                <Info className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{dropNotice}</span>
+              </div>
+            )}
 
             {/* Global error banner */}
             {geo.error && (
