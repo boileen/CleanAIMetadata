@@ -120,51 +120,74 @@ project-root/
 │   │   └── seoConfig.js         # Page metadata, titles, descriptions, and JSON-LD schemas
 │   │
 │   ├── components/
+│   │   ├── brand/
+│   │   │   └── LogoIcon.jsx     # Inline SVG brand mark
+│   │   │
 │   │   ├── layout/
-│   │   │   ├── Navbar.jsx       # Unheic-style sticky navigation with tool tabs & CTA
-│   │   │   ├── Footer.jsx       # Clean multi-column footer with internal link graph
+│   │   │   ├── Navbar.jsx       # Sticky navigation with tool tabs & CTA
+│   │   │   ├── Footer.jsx       # Multi-column footer with internal link graph
 │   │   │   ├── MainLayout.jsx   # Shared layout wrapper (Header + Content + Footer)
-│   │   │   └── SeoHead.jsx      # Dynamic React Helmet + JSON-LD injector
+│   │   │   ├── BatchWorkspaceLayout.jsx # Scopes the 5-file queue to Remove + View only
+│   │   │   └── SeoHead.jsx      # Dynamic React Helmet + JSON-LD injector (accepts schema arrays)
 │   │   │
 │   │   ├── shared/
-│   │   │   ├── Dropzone.jsx     # Unheic-styled dashed upload zone (drag-and-drop / click)
-│   │   │   ├── FileSwitcherBar.jsx # Horizontal thumbnail pills for active batch files
+│   │   │   ├── UploadDropzone.jsx # Dashed upload zone, single source of batch/size copy
+│   │   │   ├── FileQueueCard.jsx # Uploaded file row with risk badges & actions
 │   │   │   ├── HowItWorksStrip.jsx # 4-step workflow process strip
-│   │   │   ├── FeatureGrid.jsx  # 9-card utility feature directory
-│   │   │   ├── FootprintMatrix.jsx # AI Generator footprint detection matrix
+│   │   │   ├── FeatureGrid.jsx  # Utility feature directory
+│   │   │   ├── VerificationTable.jsx # Before/after verification matrix
 │   │   │   └── FaqAccordion.jsx # Expandable Q&A accordion list
 │   │   │
-│   │   └── tools/               # Skeleton UI (Phase 1) & Tool Logic (Phase 2)
-│   │       ├── FileQueueRow.jsx # Uploaded file queue row with risk badges & buttons
-│   │       ├── MetadataInspector.jsx # Split-view tag inspector table (view mode)
-│   │       ├── MetadataEditorForm.jsx # EXIF & camera spoofing form (edit mode)
-│   │       ├── MapPicker.jsx    # Leaflet interactive map & coordinate inputs (geotag mode)
-│   │       └── TextSanitizer.jsx # Dual-pane text cleaner with character counters
+│   │   └── tools/               # Tool-specific UI
+│   │       ├── CleanedResults.jsx # Cleaned-file results + ZIP download
+│   │       ├── UploadProgressBar.jsx # Per-file processing progress
+│   │       ├── ViewFileList.jsx # Batch sidebar for the View inspector
+│   │       ├── MetadataTable.jsx # Tag inspector table (view mode)
+│   │       ├── MetadataPreview.jsx # Inline summary card of notable tags
+│   │       ├── MetadataEditorForm.jsx # EXIF & creator form (edit mode)
+│   │       ├── MapPicker.jsx    # Leaflet map & coordinate inputs (geotag mode)
+│   │       ├── TextSanitizer.jsx # Preset-driven sanitiser: findings table, reveal mode, copy/download
+│   │       └── edit/            # Single-photo editor shell (dropzone, sidebar, panel, result)
+│   │
+│   ├── content/
+│   │   └── blog/                # Static, SEO-only articles (no runtime API)
 │   │
 │   ├── context/
 │   │   └── WorkspaceContext.jsx # Cross-tool batch state (up to 5 files / 100 MB) & RAM cleanup
 │   │
-│   ├── pages/                   # The 6 Dedicated SEO Routes
+│   ├── data/
+│   │   └── confusables.js       # Curated Cyrillic/Greek → Latin lookalike map
+│   │
+│   ├── hooks/
+│   │   ├── useMetadataEditor.js # Edit-form state + export pipeline
+│   │   └── useGeoTagEditor.js   # GPS read/write + map state
+│   │
+│   ├── pages/                   # Dedicated SEO routes (+ /blog)
 │   │   ├── RemoveMetadataPage.jsx    # Route: /
 │   │   ├── ViewMetadataPage.jsx      # Route: /view-metadata
 │   │   ├── EditMetadataPage.jsx      # Route: /edit-metadata
 │   │   ├── GeoTagPage.jsx            # Route: /geo-tag-photo
 │   │   ├── AiTextCleanerPage.jsx     # Route: /ai-text-cleaner
-│   │   └── InstagramGuidePage.jsx    # Route: /instagram-ai-label-guide
+│   │   ├── InstagramGuidePage.jsx    # Route: /instagram-ai-label-guide
+│   │   ├── BlogIndexPage.jsx         # Route: /blog
+│   │   ├── BlogPostPage.jsx          # Route: /blog/:slug (static content only)
+│   │   └── AboutPage.jsx             # Route: /about
 │   │
-│   ├── services/                # Phase 2: Binary & Client-Side Processing Engines
+│   ├── utils/                   # Binary & text processing engines
 │   │   ├── fileValidation.js    # Magic-byte format detection (JPEG, PNG, WebP)
-│   │   ├── metadataScanner.js   # exifr + custom C2PA JUMBF / PNG chunk parser
-│   │   ├── losslessStripper.js  # Binary header slicing (APP1, APP11, eXIf, tEXt)
-│   │   ├── exifWriter.js        # piexifjs EXIF/GPS binary serializer
-│   │   ├── textCleaner.js       # Zero-width & Unicode watermark sanitizer
-│   │   └── zipService.js        # JSZip client-side batch packaging
-│   │
-│   ├── styles/
-│   │   └── index.css            # Tailwind directives + Unheic color variables
+│   │   ├── metadataReader.js    # exifr-based tag extraction + C2PA/JUMBF detection
+│   │   ├── metadataStripper.js  # Lossless header slicing (APP1, APP11, eXIf, tEXt)
+│   │   ├── metadataNormalize.js # Shared tag normalisation for display/export
+│   │   ├── textSanitizer.js     # Deterministic Unicode sanitiser (rules, presets, analyze/sanitize/reveal)
+│   │   ├── webpContainer.js     # WebP RIFF chunk surgery
+│   │   ├── zipDownloader.js     # JSZip client-side batch packaging
+│   │   └── metadataWriter/      # EXIF/IPTC/XMP serialisers per container (jpeg, png, webp)
 │   │
 │   ├── App.jsx                  # React Router configuration
 │   └── main.jsx                 # Application entry point with HelmetProvider
+│
+├── tests/
+│   └── textSanitizer.test.mjs   # node --test suite for the text engine
 │
 ├── index.html                   # HTML shell with Google fonts preconnected
 ├── tailwind.config.js           # Design tokens, fonts, and responsive breakpoints

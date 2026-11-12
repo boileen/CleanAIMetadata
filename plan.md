@@ -114,10 +114,12 @@
   - TIFF / HEIC / AVIF fall back to a canvas re-encode when the browser can decode them (marked "re-encoded" in the UI).
 - [x] **Step 4.3: Deep Metadata Scanner**
   - `exifr` + custom JUMBF/C2PA signatures extracting tags into the View inspector and the inline `MetadataPreview`.
-- [ ] **Step 4.4: EXIF & GPS Writer**
-  - `piexifjs` encoding for metadata editing and Leaflet GPS coordinate tagging.
-- [ ] **Step 4.5: Regex Text Sanitizer Engine**
-  - Zero-width character stripping and Unicode punctuation normalization.
+- [x] **Step 4.4: EXIF & GPS Writer**
+  - `piexifjs`-compatible EXIF/IPTC/XMP serialisers in `src/utils/metadataWriter/` (JPEG, PNG, WebP) and Leaflet GPS coordinate tagging.
+- [x] **Step 4.5: Text Sanitizer Engine**
+  - `src/utils/textSanitizer.js`: deterministic rule registry with three presets (Light / Standard / Aggressive), character tables, findings analysis, and reveal mode.
+  - Characters and punctuation only — no word or phrase rewriting, no model calls. Code fences, inline code, URLs, emails, and emoji sequences are protected.
+  - Covered by `tests/textSanitizer.test.mjs` (`npm test`, `node --test`), including idempotency and a 200k-character performance case.
 - [x] **Step 4.6: Batch Archiver**
   - `jszip` packaging up to 5 cleaned images into a single `.zip` download (dynamically imported).
 - [x] **Step 4.8: Per-Tool Upload Scope**
