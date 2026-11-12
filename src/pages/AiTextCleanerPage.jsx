@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ChevronDown,
-  AlertTriangle,
   Eye,
   ScanText,
   Braces,
@@ -191,27 +190,6 @@ export default function AiTextCleanerPage() {
                   </div>
                 );
               })}
-            </div>
-          </div>
-        </section>
-
-        {/* Limits */}
-        <section className="space-y-3">
-          <div className="flex items-start gap-3 rounded-panel border border-risk-amber-border bg-risk-amber-bg p-5 sm:p-6">
-            <AlertTriangle className="w-5 h-5 text-risk-amber-text shrink-0 mt-0.5" />
-            <div className="space-y-2 text-xs sm:text-[13px] leading-relaxed text-risk-amber-text">
-              <p className="font-bold uppercase tracking-wider font-mono text-[11px]">
-                What this cannot do
-              </p>
-              <p>
-                Invisible characters are not the same as AI detection. Learned watermarks such as
-                SynthID-Text live in token probabilities, and detector scores come from perplexity and
-                burstiness — neither is stored in a code point, so neither can be erased here.
-              </p>
-              <p>
-                If a text still reads as machine-written after cleaning, the fix is editing: rewrite the
-                sentences you want to change. This tool will never do that for you.
-              </p>
             </div>
           </div>
         </section>
