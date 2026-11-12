@@ -168,11 +168,6 @@ export default function Footer() {
                   <ArrowUpRight className="w-3 h-3 text-white/40" />
                 </a>
               </li>
-              <li>
-                <span className="text-white/50 text-[11px] block pt-2 leading-relaxed">
-                  Execution: 100% In-Browser WebAssembly / JS Thread.
-                </span>
-              </li>
             </ul>
           </div>
         </div>
