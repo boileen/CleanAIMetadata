@@ -1,0 +1,42 @@
+Options -MultiViews
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # www -> apex (canonical host, prevents duplicate-content)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Legacy URL 301s (edge-level, replaces client-side <Navigate> routes)
+  RewriteRule ^view-image-metadata/?$       /view-metadata            [R=301,L]
+  RewriteRule ^add-image-metadata/?$        /edit-metadata            [R=301,L]
+  RewriteRule ^ai-text-watermark-remover/?$ /ai-text-cleaner          [R=301,L]
+  RewriteRule ^remove-ai-info-instagram/?$  /instagram-ai-label-guide [R=301,L]
+
+  # SPA fallback: serve real files/dirs as-is, everything else -> index.html
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Correct MIME types
+AddType application/manifest+json .webmanifest
+AddType image/svg+xml             .svg
+
+# Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+# Caching: hashed assets forever, HTML always revalidated
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html                 "access plus 0 seconds"
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 month"
+  ExpiresByType image/svg+xml             "access plus 1 month"
+  ExpiresByType application/manifest+json "access plus 1 day"
+</IfModule>
